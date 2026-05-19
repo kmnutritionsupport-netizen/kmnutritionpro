@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>İndir — KM Nutrition Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#1A3C34;--green2:#2D6A4F;--sage:#52796F;--sagel:#84A98C;--gold:#B8973D;--goldl:#E8C96A;--cream:#F7F4EC;--text:#1C1C1C;--muted:#64748B;--border:#E2DDD5}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+
+/* NAV */
+.nav{background:var(--green);padding:20px 40px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--goldl));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff}
+.nav-logo-text span{color:var(--goldl)}
+.nav-back{color:rgba(255,255,255,.6);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.nav-back:hover{color:#fff}
+@media(max-width:600px){.nav{padding:16px 20px}}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#0a1f17,var(--green));padding:72px 24px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(184,151,61,.15),transparent 60%)}
+.hero-inner{position:relative;z-index:2}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(184,151,61,.18);border:1px solid rgba(184,151,61,.4);color:var(--goldl);border-radius:30px;padding:7px 18px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,56px);font-weight:900;color:#fff;margin-bottom:14px;line-height:1.1}
+.hero h1 span{color:var(--goldl)}
+.hero-sub{font-size:16px;color:rgba(255,255,255,.55);margin-bottom:48px;font-weight:300}
+.version-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:500;margin-bottom:32px}
+
+/* İNDİRME KARTLARI */
+.download-cards{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+.dl-card{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);border-radius:20px;padding:28px 32px;text-align:center;min-width:220px;transition:border-color .2s,transform .2s}
+.dl-card.primary{background:rgba(184,151,61,.15);border-color:rgba(184,151,61,.4)}
+.dl-card:hover{transform:translateY(-3px);border-color:rgba(184,151,61,.5)}
+.dl-os-icon{font-size:40px;margin-bottom:12px}
+.dl-os-name{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+.dl-os-sub{font-size:12px;color:rgba(255,255,255,.45);margin-bottom:20px}
+.dl-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--gold),var(--goldl));color:#1a1a1a;border:none;border-radius:10px;padding:13px 24px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;transition:transform .2s}
+.dl-btn:hover{transform:translateY(-1px)}
+.dl-btn-outline{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:12px 22px;font-size:13px;font-weight:500;cursor:pointer;text-decoration:none}
+.dl-size{font-size:11px;color:rgba(255,255,255,.35);margin-top:10px}
+
+.hero-note{font-size:12px;color:rgba(255,255,255,.35);margin-top:8px}
+
+/* KURULUM ADIMLAR */
+.steps-section{padding:80px 24px;background:#fff}
+.container{max-width:960px;margin:0 auto}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sage);margin-bottom:12px;text-align:center}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(24px,3.5vw,36px);font-weight:700;color:var(--green);text-align:center;margin-bottom:48px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative}
+.steps::before{content:'';position:absolute;top:32px;left:12%;right:12%;height:2px;background:linear-gradient(90deg,var(--green),var(--sagel),var(--gold));opacity:.25;pointer-events:none}
+.step{text-align:center}
+.step-num{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;font-family:'Playfair Display',serif;font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 8px 24px rgba(26,60,52,.2);position:relative;z-index:2}
+.step-title{font-size:14px;font-weight:700;color:var(--green);margin-bottom:6px}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.55}
+@media(max-width:700px){.steps{grid-template-columns:repeat(2,1fr)}.steps::before{display:none}}
+@media(max-width:400px){.steps{grid-template-columns:1fr}}
+
+/* SİSTEM GEREKSİNİMLERİ */
+.specs-section{padding:72px 24px;background:var(--cream)}
+.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+.spec-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:28px}
+.spec-card-title{font-size:15px;font-weight:700;color:var(--green);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.spec-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.spec-row:last-child{border-bottom:none}
+.spec-key{color:var(--muted)}
+.spec-val{font-weight:600;color:var(--text)}
+@media(max-width:600px){.specs-grid{grid-template-columns:1fr}}
+
+/* SÜRÜM NOTLARI */
+.changelog-section{padding:72px 24px;background:#fff}
+.changelog{max-width:680px;margin:40px auto 0}
+.cl-version{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.cl-badge{background:var(--green);color:#fff;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700}
+.cl-date{font-size:12px;color:var(--muted)}
+.cl-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:40px;padding-left:4px}
+.cl-list li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:#374151;line-height:1.5}
+.cl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.cl-dot.new{background:#16a34a}
+.cl-dot.fix{background:#2563eb}
+.cl-dot.improve{background:#d97706}
+
+/* SSS */
+.faq-section{padding:72px 24px;background:var(--cream)}
+.faq{max-width:680px;margin:40px auto 0;display:flex;flex-direction:column;gap:12px}
+.faq-item{background:#fff;border:1.5px solid var(--border);border-radius:14px;overflow:hidden}
+.faq-q{padding:18px 20px;font-size:14px;font-weight:600;color:var(--green);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.faq-q::after{content:'﹢';font-size:18px;color:var(--sage);transition:transform .2s}
+.faq-item.open .faq-q::after{content:'−'}
+.faq-a{display:none;padding:0 20px 18px;font-size:13px;color:var(--muted);line-height:1.65}
+.faq-item.open .faq-a{display:block}
+
+/* CTA */
+.cta{background:linear-gradient(135deg,var(--green),#0f2a20);padding:80px 24px;text-align:center;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(184,151,61,.18),transparent 60%)}
+.cta-inner{position:relative;z-index:2}
+.cta h2{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,44px);font-weight:900;color:#fff;margin-bottom:16px}
+.cta p{font-size:16px;color:rgba(255,255,255,.55);margin-bottom:36px;font-weight:300}
+
+/* FOOTER */
+.footer{background:#0a1f17;padding:36px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.footer-logo{display:flex;align-items:center;gap:10px}
+.footer-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--goldl));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.footer-logo-text{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#fff}
+.footer-logo-text span{color:var(--goldl)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.3);margin-top:3px}
+.footer-note{font-size:11px;color:rgba(255,255,255,.25);max-width:400px;line-height:1.6;text-align:right}
+@media(max-width:600px){.footer{padding:28px 20px}.footer-note{text-align:left}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">🌿</div>
+    <div class="nav-logo-text">KM <span>Nutrition</span> Pro</div>
+  </a>
+  <a href="index.html" class="nav-back">← Ana Sayfa</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">📥 İndir</div>
+    <div class="version-badge">🔖 v1.1.0 — En Güncel Sürüm</div>
+    <h1>KM Nutrition Pro'yu<br><span>indirin</span></h1>
+    <p class="hero-sub">Kurulumu tamamlayın, dakikalar içinde çalışmaya başlayın.</p>
+
+    <div class="download-cards">
+      <div class="dl-card primary">
+        <div class="dl-os-icon">🪟</div>
+        <div class="dl-os-name">Windows</div>
+        <div class="dl-os-sub">Windows 10 / 11 (64-bit)</div>
+        <a href="#" class="dl-btn">⬇ İndir (.exe)</a>
+        <div class="dl-size">~85 MB · Kurulum dosyası</div>
+      </div>
+      <div class="dl-card">
+        <div class="dl-os-icon">🍎</div>
+        <div class="dl-os-name">macOS</div>
+        <div class="dl-os-sub">Yakında</div>
+        <span class="dl-btn-outline">⏳ Yakında</span>
+        <div class="dl-size">Hazırlanıyor</div>
+      </div>
+    </div>
+    <div class="hero-note">✓ Reklamsız · ✓ İnternet gerektirmez</div>
+  </div>
+</div>
+
+<!-- KURULUM ADIMLARI -->
+<section class="steps-section">
+  <div class="container">
+    <div class="section-label">Kurulum</div>
+    <div class="section-title">4 adımda hazır</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">İndir</div>
+        <div class="step-desc">Yukarıdaki butona tıklayın, kurulum dosyasını indirin.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Kur</div>
+        <div class="step-desc">.exe dosyasını çalıştırın, kurulum sihirbazını takip edin.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Lisans</div>
+        <div class="step-desc">Size iletilen lisans kodunu girin, hesabınızı aktifleştirin.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Başlayın</div>
+        <div class="step-desc">İlk hastanızı ekleyin ve hemen kullanmaya başlayın.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SİSTEM GEREKSİNİMLERİ -->
+<section class="specs-section">
+  <div class="container">
+    <div class="section-label">Teknik Bilgi</div>
+    <div class="section-title">Sistem gereksinimleri</div>
+    <div class="specs-grid">
+      <div class="spec-card">
+        <div class="spec-card-title">🪟 Windows</div>
+        <div class="spec-row"><span class="spec-key">İşletim Sistemi</span><span class="spec-val">Windows 10 / 11</span></div>
+        <div class="spec-row"><span class="spec-key">Mimari</span><span class="spec-val">64-bit</span></div>
+        <div class="spec-row"><span class="spec-key">RAM</span><span class="spec-val">Minimum 4 GB</span></div>
+        <div class="spec-row"><span class="spec-key">Disk Alanı</span><span class="spec-val">500 MB</span></div>
+        <div class="spec-row"><span class="spec-key">İnternet</span><span class="spec-val">Gerekmez (AI için opsiyonel)</span></div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-card-title">📦 Paket İçeriği</div>
+        <div class="spec-row"><span class="spec-key">Uygulama</span><span class="spec-val">KM Nutrition Pro v1.1.0</span></div>
+        <div class="spec-row"><span class="spec-key">Platform</span><span class="spec-val">Electron (Masaüstü)</span></div>
+        <div class="spec-row"><span class="spec-key">Veri Depolama</span><span class="spec-val">Yerel (Firebase opsiyonel)</span></div>
+        <div class="spec-row"><span class="spec-key">Güncelleme</span><span class="spec-val">Manuel (bildirim gelir)</span></div>
+        <div class="spec-row"><span class="spec-key">Lisans</span><span class="spec-val">Aylık abonelik</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SÜRÜM NOTLARI -->
+<section class="changelog-section">
+  <div class="container">
+    <div class="section-label">Sürüm Notları</div>
+    <div class="section-title">Neler değişti?</div>
+    <div class="changelog">
+
+      <div class="cl-version">
+        <span class="cl-badge">v1.1.0</span>
+        <span class="cl-date">Mayıs 2026 — Güncel Sürüm</span>
+      </div>
+      <ul class="cl-list">
+        <li><div class="cl-dot new"></div>Menü motoru protein öğün zamanlaması düzeltildi — balık/tavuk/et sadece seçilen öğünlere yazılıyor</li>
+        <li><div class="cl-dot new"></div>Mercimek, nohut ve bulgur köftesi baklagil olarak doğru tanınıyor</li>
+        <li><div class="cl-dot new"></div>Yemek havuzu aramasında input focus sorunu giderildi</li>
+        <li><div class="cl-dot improve"></div>PDF okuma motoru güncellendi — e-Nabız formatı iyileştirildi</li>
+        <li><div class="cl-dot improve"></div>Uygulama logosu güncellendi</li>
+        <li><div class="cl-dot improve"></div>Scrollbar tasarımı iyileştirildi</li>
+        <li><div class="cl-dot fix"></div>Yumurta öğün zamanlaması varsayılan olarak kahvaltıya düzenlendi</li>
+        <li><div class="cl-dot fix"></div>Düşük KH modunda balık öğün kısıtı düzeltildi</li>
+      </ul>
+
+      <div class="cl-version">
+        <span class="cl-badge" style="background:var(--sage)">v1.0.0</span>
+        <span class="cl-date">Nisan 2026</span>
+      </div>
+      <ul class="cl-list">
+        <li><div class="cl-dot new"></div>İlk yayın — hasta yönetimi, diyet analizi, menü planlama</li>
+        <li><div class="cl-dot new"></div>Kan tahlili PDF okuma (e-Nabız uyumlu)</li>
+        <li><div class="cl-dot new"></div>4 AI motoru entegrasyonu (Claude, ChatGPT, Groq, Ollama)</li>
+        <li><div class="cl-dot new"></div>Klinik finans takibi</li>
+      </ul>
+
+      <!-- Renk açıklaması -->
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)"><div class="cl-dot new" style="width:8px;height:8px;border-radius:50%;background:#16a34a;flex-shrink:0"></div>Yeni özellik</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)"><div class="cl-dot improve" style="width:8px;height:8px;border-radius:50%;background:#d97706;flex-shrink:0"></div>İyileştirme</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)"><div class="cl-dot fix" style="width:8px;height:8px;border-radius:50%;background:#2563eb;flex-shrink:0"></div>Hata düzeltme</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SSS -->
+<section class="faq-section">
+  <div class="container">
+    <div class="section-label">SSS</div>
+    <div class="section-title">Sık sorulan sorular</div>
+    <div class="faq">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Lisans kaç cihazda kullanılabilir?</div>
+        <div class="faq-a">Her abonelik 1 cihaz için geçerlidir. Birden fazla cihaz için ek lisans gerekir.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Hasta verilerim nerede saklanıyor?</div>
+        <div class="faq-a">Tüm veriler yalnızca bilgisayarınızda yerel olarak saklanır. Hiçbir veri sunucuya gönderilmez. KVKK uyumludur.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">İnternet bağlantısı şart mı?</div>
+        <div class="faq-a">Hayır. Uygulama %100 çevrimdışı çalışır. Sadece AI asistan özelliği için internet gerekir (opsiyonel).</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Aboneliği iptal edersem verilerime ne olur?</div>
+        <div class="faq-a">Verileriniz bilgisayarınızda saklandığı için silinmez. Ancak abonelik bitmesi halinde yazılıma giriş yapılamaz.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Güncelleme nasıl yapılıyor?</div>
+        <div class="faq-a">Yeni sürüm çıktığında uygulama size bildirim gönderir. Bu sayfadan manuel olarak da güncel sürümü indirebilirsiniz.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Teknik destek alabilir miyim?</div>
+        <div class="faq-a">Evet. WhatsApp üzerinden destek alabilirsiniz: <a href="https://wa.me/905422050936" target="_blank" style="color:var(--green2)">+90 542 205 09 36</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta">
+  <div class="cta-inner">
+    <h2>Hemen indirin,<br>ücretsiz deneyin</h2>
+    <p>İlk 7 gün ücretsiz — kredi kartı gerekmez.</p>
+    <a href="#" class="dl-btn" style="font-size:16px;padding:16px 36px">⬇ Windows için İndir</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>
+    <div class="footer-logo">
+      <div class="footer-logo-icon">🌿</div>
+      <div>
+        <div class="footer-logo-text">KM <span>Nutrition</span> Pro</div>
+        <div class="footer-copy">© 2026 KM Nutrition Pro. Tüm hakları saklıdır.</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-note">⚠️ Üretilen planlar diyetisyen onayına tabidir. Yazılım tıbbi tavsiye niteliği taşımaz.</div>
+</div>
+
+<script>
+function toggleFaq(el) {
+  var item = el.parentElement;
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+
+</body>
+</html>
