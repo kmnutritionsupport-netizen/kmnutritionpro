@@ -451,6 +451,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
   .hero-mockup{display:none !important}
 }
 
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 </style>
 
   <!-- SEO Meta Etiketleri -->
@@ -517,6 +518,14 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
       <a href="indir.html" class="btn-outline">7 Gün Ücretsiz Dene</a>
       <a href="ekran-goruntuleri.html" class="btn-outline" style="font-size:13px">📸 Ekran Görüntüleri</a>
     </div>
+    <!-- Scroll ok -->
+    <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:10;text-align:center;animation:bounce 2s infinite">
+      <div style="font-size:12px;color:rgba(26,60,52,.4);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;font-weight:600">Keşfet</div>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(26,60,52,.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+
     <div class="hero-stats">
       <div class="hero-stat">
         <div class="hero-stat-num">%100</div>
