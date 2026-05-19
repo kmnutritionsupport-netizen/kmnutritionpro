@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KM Nutrition Pro — Tanıtım</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1A3C34;--green2:#2D6A4F;--sage:#52796F;--sagel:#84A98C;
+  --gold:#B8973D;--goldl:#E8C96A;--cream:#F7F4EC;--white:#fff;
+  --text:#1C1C1C;--muted:#64748B;--border:#E2DDD5;
+}
+body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
+
+/* ─── SHOWCASE WRAPPER ─── */
+.showcase{background:var(--green);padding:96px 0;overflow:hidden;position:relative}
+.showcase::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(184,151,61,.1),transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(82,121,111,.1),transparent 50%)}
+.showcase-inner{max-width:1160px;margin:0 auto;padding:0 24px;position:relative;z-index:2}
+.showcase-header{text-align:center;margin-bottom:72px}
+.showcase-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(184,151,61,.18);border:1px solid rgba(184,151,61,.4);color:var(--goldl);border-radius:30px;padding:7px 18px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px}
+.showcase-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4.5vw,52px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:14px}
+.showcase-title em{font-style:normal;color:var(--goldl)}
+.showcase-sub{font-size:16px;color:rgba(255,255,255,.5);font-weight:300}
+
+/* ─── SLIDE CONTAINER ─── */
+.slides-wrap{position:relative;width:100%}
+.slides{display:flex;transition:none;width:100%}
+.slide{min-width:100%;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;opacity:0;transform:translateX(40px);transition:opacity .6s ease,transform .6s ease}
+.slide.active{opacity:1;transform:translateX(0)}
+.slide.exit-left{opacity:0;transform:translateX(-40px)}
+
+/* ─── SLIDE TEXT ─── */
+.slide-text{}
+.slide-num{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+.slide-title{font-family:'Playfair Display',serif;font-size:clamp(26px,3.5vw,40px);font-weight:700;color:#fff;margin-bottom:16px;line-height:1.2}
+.slide-desc{font-size:15px;color:rgba(255,255,255,.6);line-height:1.75;margin-bottom:28px;font-weight:300}
+.slide-points{display:flex;flex-direction:column;gap:10px}
+.sp{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.5}
+.sp-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px}
+
+/* ─── SLIDE VISUAL ─── */
+.slide-visual{position:relative}
+.mock-window{background:#1e2a24;border-radius:16px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06)}
+.mock-bar{background:#161f1a;padding:12px 16px;display:flex;align-items:center;gap:8px}
+.mock-dot{width:11px;height:11px;border-radius:50%}
+.mock-bar-title{flex:1;text-align:center;font-size:11px;color:rgba(255,255,255,.3)}
+.mock-content{padding:16px}
+
+/* Dashboard screen */
+.dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.ds-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px;text-align:center}
+.ds-val{font-size:18px;font-weight:700;color:var(--goldl);font-family:'Playfair Display',serif}
+.ds-lbl{font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.dash-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px}
+.dc-title{font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;margin-bottom:8px}
+.dc-item{display:flex;align-items:center;gap:6px;padding:4px 0;font-size:10px;color:rgba(255,255,255,.6);border-bottom:1px solid rgba(255,255,255,.04)}
+.dc-item:last-child{border-bottom:none}
+.dc-dot{width:5px;height:5px;border-radius:50%;background:var(--sagel);flex-shrink:0}
+.dc-pill{background:rgba(110,231,183,.15);color:#6ee7b7;border-radius:6px;padding:1px 6px;font-size:8px;font-weight:600;margin-left:auto}
+
+/* Lab screen */
+.lab-header-mock{background:linear-gradient(135deg,var(--green),var(--green2));border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.lh-icon{width:28px;height:28px;background:rgba(255,255,255,.15);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.lh-title{font-size:12px;font-weight:600;color:#fff}
+.lh-sub{font-size:10px;color:rgba(255,255,255,.5)}
+.lab-rows{display:flex;flex-direction:column;gap:5px}
+.lr{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:7px 10px}
+.lr-name{font-size:10px;color:rgba(255,255,255,.7)}
+.lr-val{font-size:10px;font-weight:700;color:#93c5fd}
+.lr-status{font-size:9px;padding:2px 7px;border-radius:6px;font-weight:600}
+.lr-ok{background:rgba(110,231,183,.15);color:#6ee7b7}
+.lr-warn{background:rgba(251,191,36,.15);color:#fbbf24}
+.lr-high{background:rgba(248,113,113,.15);color:#f87171}
+
+/* Menu screen */
+.menu-grid-mock{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px}
+.mg-day{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:5px 3px;text-align:center}
+.mg-name{font-size:7px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-bottom:3px}
+.mg-num{font-size:9px;font-weight:700;color:var(--goldl);margin-bottom:3px}
+.mg-meal{font-size:7px;background:rgba(255,255,255,.06);border-radius:3px;padding:2px 3px;margin-bottom:2px;color:rgba(255,255,255,.6);line-height:1.2}
+.mg-meal.fish{background:rgba(147,197,253,.15);color:#93c5fd}
+.mg-meal.chicken{background:rgba(110,231,183,.15);color:#6ee7b7}
+.mg-meal.veg{background:rgba(134,239,172,.1);color:#86efac}
+.menu-info{background:rgba(255,255,255,.04);border-radius:6px;padding:8px 10px;font-size:9px;color:rgba(255,255,255,.5);display:flex;gap:12px}
+
+/* Finance screen */
+.fin-top{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.ft-card{border-radius:8px;padding:10px;text-align:center}
+.ft-card.g{background:rgba(110,231,183,.12);border:1px solid rgba(110,231,183,.2)}
+.ft-card.r{background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.2)}
+.ft-card.b{background:rgba(147,197,253,.12);border:1px solid rgba(147,197,253,.2)}
+.ft-val{font-size:13px;font-weight:700;margin-bottom:2px}
+.ft-card.g .ft-val{color:#6ee7b7}
+.ft-card.r .ft-val{color:#f87171}
+.ft-card.b .ft-val{color:#93c5fd}
+.ft-lbl{font-size:8px;opacity:.6;font-weight:600}
+.fin-bars{background:rgba(255,255,255,.04);border-radius:8px;padding:10px}
+.fb-title{font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;margin-bottom:8px}
+.fb-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.fb-label{font-size:9px;color:rgba(255,255,255,.4);width:60px;flex-shrink:0}
+.fb-track{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.fb-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.fb-amount{font-size:9px;font-weight:600;color:rgba(255,255,255,.6);width:48px;text-align:right}
+
+/* Yemek havuzu screen */
+.yh-cats{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.yh-cat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:4px 8px;font-size:9px;color:rgba(255,255,255,.5)}
+.yh-cat.active{background:rgba(184,151,61,.2);border-color:rgba(184,151,61,.4);color:var(--goldl)}
+.yh-search{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:7px 10px;font-size:10px;color:rgba(255,255,255,.6);margin-bottom:8px;width:100%}
+.yh-items{display:flex;flex-direction:column;gap:4px}
+.yh-item{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border-radius:6px;padding:6px 9px;font-size:10px;color:rgba(255,255,255,.7)}
+.yh-x{color:rgba(255,255,255,.2);font-size:12px}
+
+/* ─── NAVIGATION ─── */
+.nav-dots{display:flex;justify-content:center;gap:10px;margin-top:48px}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .3s}
+.nav-dot.active{background:var(--goldl);width:24px;border-radius:4px}
+.nav-arrows{display:flex;gap:12px;justify-content:center;margin-top:20px}
+.nav-arrow{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
+.nav-arrow:hover{background:rgba(255,255,255,.15)}
+
+/* Progress bar */
+.progress-bar{width:100%;height:2px;background:rgba(255,255,255,.08);border-radius:1px;margin-top:24px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--goldl));border-radius:1px;width:0%;transition:width .1s linear}
+
+@media(max-width:860px){
+  .slide{grid-template-columns:1fr;gap:32px}
+  .slide-visual{order:-1}
+  .dash-stats{grid-template-columns:repeat(2,1fr)}
+  .menu-grid-mock{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:480px){.showcase{padding:64px 0}}
+</style>
+</head>
+<body>
+
+<section class="showcase">
+  <div class="showcase-inner">
+    <div class="showcase-header">
+      <div class="showcase-tag">✨ Özellikler</div>
+      <h2 class="showcase-title">Her şeyi <em>tek ekranda</em> yönetin</h2>
+      <p class="showcase-sub">5 temel modül, sonsuz verimlilik</p>
+    </div>
+
+    <div class="slides-wrap">
+      <div class="slides" id="slides">
+
+        <!-- SLIDE 1: Dashboard -->
+        <div class="slide active" data-index="0">
+          <div class="slide-text">
+            <div class="slide-num">01 / 05</div>
+            <div class="slide-title">Gösterge Paneli</div>
+            <div class="slide-desc">Kliniğinizin tüm önemli verilerini tek bakışta görün. Aktif hastalar, günlük randevular, aylık gelir ve aktif planlar — hepsi anlık.</div>
+            <div class="slide-points">
+              <div class="sp"><div class="sp-dot"></div><div>Sınırsız hasta kaydı ve profil yönetimi</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>Günlük randevu takvimi ve seans notları</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>Aylık gelir ve aktif plan özeti</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>Kilo takibi ve ilerleme grafikleri</div></div>
+            </div>
+          </div>
+          <div class="slide-visual">
+            <div class="mock-window">
+              <div class="mock-bar">
+                <div class="mock-dot" style="background:#ff5f57"></div>
+                <div class="mock-dot" style="background:#ffbd2e"></div>
+                <div class="mock-dot" style="background:#28c840"></div>
+                <div class="mock-bar-title">KM Nutrition Pro — Gösterge Paneli</div>
+              </div>
+              <div class="mock-content">
+                <div class="dash-stats">
+                  <div class="ds-card"><div class="ds-val">32</div><div class="ds-lbl">Hasta</div></div>
+                  <div class="ds-card"><div class="ds-val">4</div><div class="ds-lbl">Randevu</div></div>
+                  <div class="ds-card"><div class="ds-val">28</div><div class="ds-lbl">Aktif Plan</div></div>
+                  <div class="ds-card"><div class="ds-val" style="font-size:14px">18.4K</div><div class="ds-lbl">Gelir ₺</div></div>
+                </div>
+                <div class="dash-cards">
+                  <div class="dc">
+                    <div class="dc-title">📅 Bugünkü Randevular</div>
+                    <div class="dc-item"><div class="dc-dot"></div>09:00 Ayşe Y.<div class="dc-pill">Devam</div></div>
+                    <div class="dc-item"><div class="dc-dot"></div>10:30 Mehmet K.<div class="dc-pill">Bekliyor</div></div>
+                    <div class="dc-item"><div class="dc-dot"></div>14:00 Zeynep A.<div class="dc-pill">Devam</div></div>
+                    <div class="dc-item"><div class="dc-dot"></div>16:30 Can D.<div class="dc-pill">Bekliyor</div></div>
+                  </div>
+                  <div class="dc">
+                    <div class="dc-title">👥 Son Hastalar</div>
+                    <div class="dc-item"><div class="dc-dot"></div>Selin B. — Kilo Verme</div>
+                    <div class="dc-item"><div class="dc-dot"></div>Ali R. — Diyabetik</div>
+                    <div class="dc-item"><div class="dc-dot"></div>Fatma K. — PKOS</div>
+                    <div class="dc-item"><div class="dc-dot"></div>Burak T. — Kas Yapma</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 2: Kan Tahlili -->
+        <div class="slide" data-index="1">
+          <div class="slide-text">
+            <div class="slide-num">02 / 05</div>
+            <div class="slide-title">Kan Tahlili<br>Otomatik Okuma</div>
+            <div class="slide-desc">e-Nabız veya hastane PDF'ini yükleyin — 30'dan fazla biyokimyasal parametre saniyeler içinde otomatik okunur ve forma aktarılır.</div>
+            <div class="slide-points">
+              <div class="sp"><div class="sp-dot"></div><div>e-Nabız PDF formatıyla tam uyumlu</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>Referans dışı değerleri otomatik işaretler</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>HOMA-IR glukoz+insülinden hesaplar</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>Metin yapıştırma alternatifi de mevcut</div></div>
+            </div>
+          </div>
+          <div class="slide-visual">
+            <div class="mock-window">
+              <div class="mock-bar">
+                <div class="mock-dot" style="background:#ff5f57"></div>
+                <div class="mock-dot" style="background:#ffbd2e"></div>
+                <div class="mock-dot" style="background:#28c840"></div>
+                <div class="mock-bar-title">Kan Tahlili Analizi</div>
+              </div>
+              <div class="mock-content">
+                <div class="lab-header-mock">
+                  <div class="lh-icon">🩺</div>
+                  <div><div class="lh-title">e-Nabız PDF Otomatik Okuma</div><div class="lh-sub">Mehmet K. — 12.05.2026</div></div>
+                </div>
+                <div class="lab-rows">
+                  <div class="lr"><span class="lr-name">Açlık Kan Şekeri</span><span class="lr-val">108 mg/dL</span><span class="lr-status lr-warn">⚠ Yüksek</span></div>
+                  <div class="lr"><span class="lr-name">HbA1c</span><span class="lr-val">5.9%</span><span class="lr-status lr-warn">⚠ Prediyabet</span></div>
+                  <div class="lr"><span class="lr-name">LDL Kolesterol</span><span class="lr-val">142 mg/dL</span><span class="lr-status lr-high">↑ Yüksek</span></div>
+                  <div class="lr"><span class="lr-name">D Vitamini</span><span class="lr-val">18 ng/mL</span><span class="lr-status lr-warn">↓ Düşük</span></div>
+                  <div class="lr"><span class="lr-name">Hemoglobin</span><span class="lr-val">14.8 g/dL</span><span class="lr-status lr-ok">✓ Normal</span></div>
+                  <div class="lr"><span class="lr-name">Ferritin</span><span class="lr-val">42 ng/mL</span><span class="lr-status lr-ok">✓ Normal</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 3: Menü -->
+        <div class="slide" data-index="2">
+          <div class="slide-text">
+            <div class="slide-num">03 / 05</div>
+            <div class="slide-title">28 Günlük Menü<br>Planlama</div>
+            <div class="slide-desc">Hasta profiline özel, alerji ve hastalık kısıtlarına uygun 28 günlük menü saniyeler içinde hazır. Protein öğün zamanlaması tam kontrol altında.</div>
+            <div class="slide-points">
+              <div class="sp"><div class="sp-dot"></div><div>Alerji ve hastalık kısıtları otomatik uygulanır</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>Balık/tavuk/et öğün zamanlaması seçilebilir</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>Tek tıkla yemek değiştirme</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>PDF olarak yazdırma ve paylaşma</div></div>
+            </div>
+          </div>
+          <div class="slide-visual">
+            <div class="mock-window">
+              <div class="mock-bar">
+                <div class="mock-dot" style="background:#ff5f57"></div>
+                <div class="mock-dot" style="background:#ffbd2e"></div>
+                <div class="mock-dot" style="background:#28c840"></div>
+                <div class="mock-bar-title">28 Günlük Menü — Mayıs 2026</div>
+              </div>
+              <div class="mock-content">
+                <div class="menu-grid-mock">
+                  <div class="mg-day"><div class="mg-name">Pzt</div><div class="mg-num">1</div><div class="mg-meal chicken">Tavuk</div><div class="mg-meal veg">Zy.</div><div class="mg-meal">Yoğurt</div></div>
+                  <div class="mg-day"><div class="mg-name">Sal</div><div class="mg-num">2</div><div class="mg-meal fish">Somon</div><div class="mg-meal veg">Salata</div><div class="mg-meal">Komposto</div></div>
+                  <div class="mg-day"><div class="mg-name">Çar</div><div class="mg-num">3</div><div class="mg-meal veg">Nohut</div><div class="mg-meal veg">Bulgur</div><div class="mg-meal">Ayran</div></div>
+                  <div class="mg-day"><div class="mg-name">Per</div><div class="mg-num">4</div><div class="mg-meal chicken">Hindi</div><div class="mg-meal veg">Çorba</div><div class="mg-meal">Yoğurt</div></div>
+                  <div class="mg-day"><div class="mg-name">Cum</div><div class="mg-num">5</div><div class="mg-meal fish">Levrek</div><div class="mg-meal veg">Pilav</div><div class="mg-meal">Salata</div></div>
+                  <div class="mg-day"><div class="mg-name">Cmt</div><div class="mg-num">6</div><div class="mg-meal chicken">Köfte</div><div class="mg-meal veg">Sebze</div><div class="mg-meal">Cacık</div></div>
+                  <div class="mg-day"><div class="mg-name">Paz</div><div class="mg-num">7</div><div class="mg-meal veg">Baklagil</div><div class="mg-meal veg">Zy.</div><div class="mg-meal">Meyve</div></div>
+                </div>
+                <div class="menu-info">
+                  <span>✓ Alerji kısıtları uygulandı</span>
+                  <span>✓ Protein rotasyonu aktif</span>
+                  <span>✓ Mevsimsel ürünler</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 4: Finans -->
+        <div class="slide" data-index="3">
+          <div class="slide-text">
+            <div class="slide-num">04 / 05</div>
+            <div class="slide-title">Klinik Finans<br>Takibi</div>
+            <div class="slide-desc">Gelir-gider takibi, kategori analizi ve aylık grafikler ile kliniğinizin mali durumunu anlık görün. CSV olarak dışa aktarın.</div>
+            <div class="slide-points">
+              <div class="sp"><div class="sp-dot"></div><div>Gelir ve gider kategorisi yönetimi</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>Aylık ve yıllık karşılaştırmalı grafikler</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>Net kâr/zarar anlık hesaplama</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>CSV export ile muhasebeciye kolay iletim</div></div>
+            </div>
+          </div>
+          <div class="slide-visual">
+            <div class="mock-window">
+              <div class="mock-bar">
+                <div class="mock-dot" style="background:#ff5f57"></div>
+                <div class="mock-dot" style="background:#ffbd2e"></div>
+                <div class="mock-dot" style="background:#28c840"></div>
+                <div class="mock-bar-title">Finans Takibi — Mayıs 2026</div>
+              </div>
+              <div class="mock-content">
+                <div class="fin-top">
+                  <div class="ft-card g"><div class="ft-val">₺22.4K</div><div class="ft-lbl">Gelir</div></div>
+                  <div class="ft-card r"><div class="ft-val">₺4.85K</div><div class="ft-lbl">Gider</div></div>
+                  <div class="ft-card b"><div class="ft-val">₺17.5K</div><div class="ft-lbl">Net Kâr</div></div>
+                </div>
+                <div class="fin-bars">
+                  <div class="fb-title">Kategori Dağılımı</div>
+                  <div class="fb-row"><div class="fb-label">İlk Görüşme</div><div class="fb-track"><div class="fb-fill" style="width:75%;background:#6ee7b7"></div></div><div class="fb-amount">₺8.400</div></div>
+                  <div class="fb-row"><div class="fb-label">Kontrol</div><div class="fb-track"><div class="fb-fill" style="width:52%;background:#93c5fd"></div></div><div class="fb-amount">₺6.000</div></div>
+                  <div class="fb-row"><div class="fb-label">Online</div><div class="fb-track"><div class="fb-fill" style="width:36%;background:#c4b5fd"></div></div><div class="fb-amount">₺4.200</div></div>
+                  <div class="fb-row"><div class="fb-label">Kira</div><div class="fb-track"><div class="fb-fill" style="width:22%;background:#f87171"></div></div><div class="fb-amount">₺2.500</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 5: Yemek Havuzu -->
+        <div class="slide" data-index="4">
+          <div class="slide-text">
+            <div class="slide-num">05 / 05</div>
+            <div class="slide-title">Yemek Havuzu<br>Yönetimi</div>
+            <div class="slide-desc">15 kategori, 400'den fazla yemek. Diyet motorunun yemek havuzunu özelleştirin — ekleyin, çıkarın, besin değerleriyle zenginleştirin.</div>
+            <div class="slide-points">
+              <div class="sp"><div class="sp-dot"></div><div>15 kategori: tavuk, balık, baklagil, çorba ve daha fazlası</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>Özel yemek ekleme ve besin değeri girişi</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>Belirli yemekleri menü motorundan çıkarma</div></div>
+              <div class="sp"><div class="sp-dot"></div><div>JSON yedekleme ve geri yükleme</div></div>
+            </div>
+          </div>
+          <div class="slide-visual">
+            <div class="mock-window">
+              <div class="mock-bar">
+                <div class="mock-dot" style="background:#ff5f57"></div>
+                <div class="mock-dot" style="background:#ffbd2e"></div>
+                <div class="mock-dot" style="background:#28c840"></div>
+                <div class="mock-bar-title">Yemek Havuzu Yönetimi</div>
+              </div>
+              <div class="mock-content">
+                <div class="yh-cats">
+                  <div class="yh-cat active">🐟 Balık</div>
+                  <div class="yh-cat">🍗 Tavuk</div>
+                  <div class="yh-cat">🥩 Kırmızı Et</div>
+                  <div class="yh-cat">🫘 Baklagil</div>
+                  <div class="yh-cat">🥗 Salata</div>
+                  <div class="yh-cat">🍲 Çorba</div>
+                </div>
+                <div class="yh-search">🔍 Yemek ara…</div>
+                <div class="yh-items">
+                  <div class="yh-item"><span>Somon fileto 150g (ızgara, limonlu)</span><span class="yh-x">✕</span></div>
+                  <div class="yh-item"><span>Levrek buğulama 150g (sebzeli)</span><span class="yh-x">✕</span></div>
+                  <div class="yh-item"><span>Hamsi tava 100g (mısır unlu)</span><span class="yh-x">✕</span></div>
+                  <div class="yh-item"><span>Çipura fırın 150g (zeytinyağlı)</span><span class="yh-x">✕</span></div>
+                  <div class="yh-item"><span>Palamut ızgara 150g (Karadeniz)</span><span class="yh-x">✕</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /slides -->
+    </div><!-- /slides-wrap -->
+
+    <!-- Progress -->
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+    <!-- Dots & Arrows -->
+    <div class="nav-dots" id="dots">
+      <div class="nav-dot active" onclick="goTo(0)"></div>
+      <div class="nav-dot" onclick="goTo(1)"></div>
+      <div class="nav-dot" onclick="goTo(2)"></div>
+      <div class="nav-dot" onclick="goTo(3)"></div>
+      <div class="nav-dot" onclick="goTo(4)"></div>
+    </div>
+    <div class="nav-arrows">
+      <div class="nav-arrow" onclick="prev()">←</div>
+      <div class="nav-arrow" onclick="next()">→</div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+var current = 0;
+var total = 5;
+var duration = 6000;
+var elapsed = 0;
+var interval;
+var progressInterval;
+
+function getSlides(){ return document.querySelectorAll('.slide'); }
+function getDots(){ return document.querySelectorAll('.nav-dot'); }
+
+function goTo(n){
+  var slides = getSlides();
+  var dots = getDots();
+  slides[current].classList.remove('active');
+  slides[current].classList.add('exit-left');
+  setTimeout(function(){ slides[current].classList.remove('exit-left'); }, 600);
+  current = (n + total) % total;
+  slides[current].classList.add('active');
+  dots.forEach(function(d,i){ d.classList.toggle('active', i===current); });
+  elapsed = 0;
+}
+
+function next(){ goTo(current + 1); }
+function prev(){ goTo(current - 1); }
+
+// Progress bar
+function startProgress(){
+  clearInterval(progressInterval);
+  elapsed = 0;
+  progressInterval = setInterval(function(){
+    elapsed += 100;
+    var pct = (elapsed / duration) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+    if(elapsed >= duration){ next(); }
+  }, 100);
+}
+
+startProgress();
+
+// Keyboard
+document.addEventListener('keydown', function(e){
+  if(e.key === 'ArrowRight') next();
+  if(e.key === 'ArrowLeft') prev();
+});
+</script>
+
+</body>
+</html>
