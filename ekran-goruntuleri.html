@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ekran Görüntüleri — KM Nutrition Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#1A3C34;--green2:#2D6A4F;--sage:#52796F;--sagel:#84A98C;--gold:#B8973D;--goldl:#E8C96A;--cream:#F7F4EC;--text:#1C1C1C;--muted:#64748B;--border:#E2DDD5}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+
+/* NAV */
+.nav{background:var(--green);padding:20px 40px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--goldl));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff}
+.nav-logo-text span{color:var(--goldl)}
+.nav-links{display:flex;gap:6px;align-items:center}
+.nav-link{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:500;padding:7px 13px;border-radius:8px;transition:color .2s}
+.nav-link:hover{color:#fff}
+.nav-link.primary{background:linear-gradient(135deg,var(--gold),var(--goldl));color:#1a1a1a;font-weight:700}
+@media(max-width:600px){.nav{padding:16px 20px}.nav-link span{display:none}}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#0a1f17,var(--green));padding:64px 24px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(184,151,61,.15),transparent 60%)}
+.hero-inner{position:relative;z-index:2}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(184,151,61,.18);border:1px solid rgba(184,151,61,.4);color:var(--goldl);border-radius:30px;padding:7px 18px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:900;color:#fff;margin-bottom:12px}
+.hero h1 span{color:var(--goldl)}
+.hero p{font-size:15px;color:rgba(255,255,255,.5);font-weight:300}
+
+/* FILTER TABS */
+.filter-section{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 24px}
+.filter-inner{max-width:1160px;margin:0 auto;display:flex;gap:4px;overflow-x:auto;padding:12px 0}
+.filter-inner::-webkit-scrollbar{height:3px}
+.filter-inner::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.filter-btn{background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:20px;padding:7px 16px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:'Inter',sans-serif}
+.filter-btn:hover{border-color:var(--sage);color:var(--green)}
+.filter-btn.active{background:var(--green);border-color:var(--green);color:#fff}
+
+/* GALLERY */
+.gallery-section{padding:48px 24px;max-width:1160px;margin:0 auto}
+.gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.gallery-item{border-radius:16px;overflow:hidden;border:1.5px solid var(--border);background:#fff;cursor:pointer;transition:transform .25s,box-shadow .25s;display:none}
+.gallery-item.visible{display:block}
+.gallery-item:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(26,60,52,.12)}
+.gallery-img{width:100%;display:block;aspect-ratio:16/10;object-fit:cover;object-position:top}
+.gallery-info{padding:16px 18px;border-top:1px solid var(--border)}
+.gallery-category{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--sage);margin-bottom:5px}
+.gallery-title{font-size:15px;font-weight:700;color:var(--green);margin-bottom:4px}
+.gallery-desc{font-size:12px;color:var(--muted);line-height:1.5}
+
+@media(max-width:768px){.gallery-grid{grid-template-columns:1fr}}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;display:none;align-items:center;justify-content:center;padding:24px}
+.lightbox.open{display:flex}
+.lb-inner{position:relative;max-width:1100px;width:100%}
+.lb-img{width:100%;border-radius:12px;display:block;box-shadow:0 40px 100px rgba(0,0,0,.5)}
+.lb-close{position:fixed;top:20px;right:24px;width:40px;height:40px;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:20px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.lb-close:hover{background:rgba(255,255,255,.2)}
+.lb-info{margin-top:16px;text-align:center}
+.lb-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+.lb-desc{font-size:13px;color:rgba(255,255,255,.5)}
+.lb-nav{display:flex;gap:12px;justify-content:center;margin-top:16px}
+.lb-nav-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:8px 20px;font-size:13px;cursor:pointer;transition:background .2s;font-family:'Inter',sans-serif}
+.lb-nav-btn:hover{background:rgba(255,255,255,.2)}
+
+/* CTA */
+.cta{background:linear-gradient(135deg,var(--green),#0f2a20);padding:72px 24px;text-align:center}
+.cta h2{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,40px);font-weight:900;color:#fff;margin-bottom:14px}
+.cta p{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:32px;font-weight:300}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--goldl));color:#1a1a1a;text-decoration:none;border-radius:12px;padding:14px 28px;font-size:14px;font-weight:700}
+.btn-outline{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;border-radius:12px;padding:13px 24px;font-size:14px}
+
+.footer{background:#0a1f17;padding:32px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{display:flex;align-items:center;gap:10px}
+.footer-logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),var(--goldl));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.footer-logo-text{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#fff}
+.footer-logo-text span{color:var(--goldl)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.3);margin-top:2px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">🌿</div>
+    <div class="nav-logo-text">KM <span>Nutrition</span> Pro</div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link"><span>Ana Sayfa</span></a>
+    <a href="satin-al.html" class="nav-link"><span>Fiyatlar</span></a>
+    <a href="indir.html" class="nav-link primary">⬇ İndir</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">📸 Ekran Görüntüleri</div>
+    <h1>Uygulamayı <span>yakından görün</span></h1>
+    <p>Gerçek kullanım ekran görüntüleri — hiç abartı yok, olduğu gibi</p>
+  </div>
+</div>
+
+<!-- FILTER -->
+<div class="filter-section">
+  <div class="filter-inner">
+    <button class="filter-btn active" onclick="filterGallery('all', this)">Tümü (16)</button>
+    <button class="filter-btn" onclick="filterGallery('genel', this)">Genel Yönetim</button>
+    <button class="filter-btn" onclick="filterGallery('klinik', this)">Klinik & Analiz</button>
+    <button class="filter-btn" onclick="filterGallery('finans', this)">Finans & Ayarlar</button>
+    <button class="filter-btn" onclick="filterGallery('menu', this)">Menü & Havuz</button>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="gallery-grid" id="gallery">
+
+    <div class="gallery-item visible" data-cat="genel" data-index="0">
+      <img class="gallery-img" src="screenshots/01-gosterge-paneli.png" alt="Gösterge Paneli" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Genel Yönetim</div>
+        <div class="gallery-title">Gösterge Paneli</div>
+        <div class="gallery-desc">Toplam hasta, randevu, aktif plan ve aylık gelir — tek bakışta</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="genel" data-index="1">
+      <img class="gallery-img" src="screenshots/02-hasta-listesi.png" alt="Hasta Listesi" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Genel Yönetim</div>
+        <div class="gallery-title">Hasta Listesi</div>
+        <div class="gallery-desc">Tüm hastalar, VKİ, hedef ve kayıt tarihi — arama ve dışa aktarma</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="genel" data-index="2">
+      <img class="gallery-img" src="screenshots/03-yeni-hasta.png" alt="Yeni Hasta Kaydı" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Genel Yönetim</div>
+        <div class="gallery-title">Yeni Hasta Kaydı</div>
+        <div class="gallery-desc">4 adımlı kayıt formu: kişisel, ölçüm, laboratuvar, hedef & plan</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="genel" data-index="3">
+      <img class="gallery-img" src="screenshots/04-ilerleme-takibi.png" alt="İlerleme Takibi" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Genel Yönetim</div>
+        <div class="gallery-title">İlerleme Takibi</div>
+        <div class="gallery-desc">Kilo grafiği, ölçüm geçmişi, hedef ilerleme çubuğu ve VKİ takibi</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="genel" data-index="4">
+      <img class="gallery-img" src="screenshots/05-randevu-yonetimi.png" alt="Randevu Yönetimi" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Genel Yönetim</div>
+        <div class="gallery-title">Randevu Yönetimi</div>
+        <div class="gallery-desc">Tarih ve durum filtreli randevu listesi, onay ve iptal işlemleri</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="klinik" data-index="5">
+      <img class="gallery-img" src="screenshots/06-diyet-analizi-kisisel.png" alt="Diyet Analizi - Kişisel" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Klinik & Analiz</div>
+        <div class="gallery-title">Diyet Analizi — Kişisel Bilgiler</div>
+        <div class="gallery-desc">Hasta profili, eşlik eden hastalıklar ve özel durumlar adım 1/4</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="klinik" data-index="6">
+      <img class="gallery-img" src="screenshots/07-diyet-analizi-olcum.png" alt="Diyet Analizi - Ölçümler" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Klinik & Analiz</div>
+        <div class="gallery-title">Diyet Analizi — Antropometrik Ölçümler</div>
+        <div class="gallery-desc">VKİ hesabı, bel/kalça/boyun ölçümleri, aktivite seviyesi</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="klinik" data-index="7">
+      <img class="gallery-img" src="screenshots/08-diyet-analizi-kan.png" alt="Diyet Analizi - Kan Bulguları" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Klinik & Analiz</div>
+        <div class="gallery-title">Diyet Analizi — Laboratuvar Bulguları</div>
+        <div class="gallery-desc">30+ parametre: kan şekeri, lipid profili, tiroid, vitaminler ve mineraller</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="klinik" data-index="8">
+      <img class="gallery-img" src="screenshots/09-diyet-analizi-hedef.png" alt="Diyet Analizi - Hedef" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Klinik & Analiz</div>
+        <div class="gallery-title">Diyet Analizi — Hedef & Tercihler</div>
+        <div class="gallery-desc">Beslenme hedefi, diyet tipi, makro dağılımı, kısıtlamalar ve tatlı tercihleri</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="klinik" data-index="9">
+      <img class="gallery-img" src="screenshots/10-diyet-analizi-makro.png" alt="Makro Besin Analizi" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Klinik & Analiz</div>
+        <div class="gallery-title">Makro Besin Analizi</div>
+        <div class="gallery-desc">BMH, TDEE, hedef kalori ve makro dağılımı — doğrulanmış hesaplama</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="klinik" data-index="10">
+      <img class="gallery-img" src="screenshots/11-besin-degisim.png" alt="Besin Değişim Listesi" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Klinik & Analiz</div>
+        <div class="gallery-title">Besin Değişim Listesi</div>
+        <div class="gallery-desc">TDE sistemine göre porsiyon bazlı besin grupları ve kalori dağılımı</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="menu" data-index="11">
+      <img class="gallery-img" src="screenshots/12-aylik-menu.png" alt="1 Aylık Menü" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Menü & Havuz</div>
+        <div class="gallery-title">1 Aylık Diyet Menüsü</div>
+        <div class="gallery-desc">28 günlük kişiselleştirilmiş beslenme programı, haftalık görünüm</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="finans" data-index="12">
+      <img class="gallery-img" src="screenshots/13-gelir-gider.png" alt="Klinik Gelir-Gider" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Finans & Ayarlar</div>
+        <div class="gallery-title">Klinik Gelir-Gider</div>
+        <div class="gallery-desc">Aylık gelir-gider özeti, kategori dağılımı ve işlem geçmişi</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="finans" data-index="13">
+      <img class="gallery-img" src="screenshots/14-temalar.png" alt="Tema & Görünüm" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Finans & Ayarlar</div>
+        <div class="gallery-title">Tema & Görünüm Ayarları</div>
+        <div class="gallery-desc">8 hazır tema, yazı boyutu ve sidebar genişliği özelleştirme</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="finans" data-index="14">
+      <img class="gallery-img" src="screenshots/15-ai-ayarlar.png" alt="AI Ayarları" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Finans & Ayarlar</div>
+        <div class="gallery-title">Yapay Zeka Motoru Ayarları</div>
+        <div class="gallery-desc">Claude, ChatGPT, Groq veya Ollama — tek tıkla AI motoru seçimi</div>
+      </div>
+    </div>
+
+    <div class="gallery-item visible" data-cat="menu" data-index="15">
+      <img class="gallery-img" src="screenshots/16-yemek-havuzu.png" alt="Yemek Havuzu" loading="lazy">
+      <div class="gallery-info">
+        <div class="gallery-category">Menü & Havuz</div>
+        <div class="gallery-title">Yemek Havuzu Yönetimi</div>
+        <div class="gallery-desc">15 kategori, 400+ yemek — ekleme, çıkarma ve özelleştirme</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Hazır mısınız?</h2>
+  <p>7 gün ücretsiz deneyin — kredi kartı gerekmez.</p>
+  <div class="cta-btns">
+    <a href="satin-al.html" class="btn-gold">💳 699 ₺/ay — Başla</a>
+    <a href="indir.html" class="btn-outline">⬇ Ücretsiz İndir</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>
+    <div class="footer-logo">
+      <div class="footer-logo-icon">🌿</div>
+      <div>
+        <div class="footer-logo-text">KM <span>Nutrition</span> Pro</div>
+        <div class="footer-copy">© 2026 KM Nutrition Pro. <a href="kvkk.html" style="color:rgba(255,255,255,.3);text-decoration:none">KVKK & Gizlilik</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lb-inner">
+    <button class="lb-close" onclick="closeLightboxBtn()">✕</button>
+    <img class="lb-img" id="lb-img" src="" alt="">
+    <div class="lb-info">
+      <div class="lb-title" id="lb-title"></div>
+      <div class="lb-desc" id="lb-desc"></div>
+    </div>
+    <div class="lb-nav">
+      <button class="lb-nav-btn" onclick="lbPrev()">← Önceki</button>
+      <button class="lb-nav-btn" onclick="lbNext()">Sonraki →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var currentIndex = 0;
+var visibleItems = [];
+
+function filterGallery(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  var items = document.querySelectorAll('.gallery-item');
+  items.forEach(function(item){
+    if (cat === 'all' || item.dataset.cat === cat) {
+      item.classList.add('visible');
+    } else {
+      item.classList.remove('visible');
+    }
+  });
+}
+
+function openLightbox(index) {
+  visibleItems = Array.from(document.querySelectorAll('.gallery-item.visible'));
+  currentIndex = index;
+  showLightboxItem();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function showLightboxItem() {
+  var item = visibleItems[currentIndex];
+  if (!item) return;
+  document.getElementById('lb-img').src = item.querySelector('img').src;
+  document.getElementById('lb-title').textContent = item.querySelector('.gallery-title').textContent;
+  document.getElementById('lb-desc').textContent = item.querySelector('.gallery-desc').textContent;
+}
+
+function lbNext() {
+  currentIndex = (currentIndex + 1) % visibleItems.length;
+  showLightboxItem();
+}
+
+function lbPrev() {
+  currentIndex = (currentIndex - 1 + visibleItems.length) % visibleItems.length;
+  showLightboxItem();
+}
+
+function closeLightbox(e) {
+  if (e.target === document.getElementById('lightbox')) {
+    closeLightboxBtn();
+  }
+}
+
+function closeLightboxBtn() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'ArrowRight') lbNext();
+  if (e.key === 'ArrowLeft') lbPrev();
+  if (e.key === 'Escape') closeLightboxBtn();
+});
+
+// Galeri itemlarına tıklama ekle
+document.querySelectorAll('.gallery-item').forEach(function(item, i) {
+  item.addEventListener('click', function() {
+    visibleItems = Array.from(document.querySelectorAll('.gallery-item.visible'));
+    var idx = visibleItems.indexOf(item);
+    openLightbox(idx);
+  });
+});
+</script>
+
+</body>
+</html>
