@@ -483,6 +483,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
     </div>
     <div class="nav-links">
       <a href="klinik.html" class="nav-link"><span>Klinik</span></a>
+      <a href="ekran-goruntuleri.html" class="nav-link"><span>Galeri</span></a>
       <a href="satin-al.html" class="nav-link"><span>Fiyatlar</span></a>
       <a href="indir.html" class="nav-link primary">⬇ İndir</a>
     </div>
@@ -1411,11 +1412,15 @@ function getDots(){ return document.querySelectorAll('.nav-dot'); }
 function goTo(n){
   var slides = getSlides();
   var dots = getDots();
+  // Aktif slaytı gizle
   slides[current].classList.remove('active');
-  slides[current].classList.add('exit-left');
-  setTimeout(function(){ slides[current].classList.remove('exit-left'); }, 600);
+  slides[current].style.display = 'none';
   current = (n + total) % total;
-  slides[current].classList.add('active');
+  // Yeni slaytı göster
+  slides[current].style.display = 'grid';
+  setTimeout(function(){
+    slides[current].classList.add('active');
+  }, 10);
   dots.forEach(function(d,i){ d.classList.toggle('active', i===current); });
   elapsed = 0;
 }
@@ -1435,6 +1440,11 @@ function startProgress(){
   }, 100);
 }
 
+// Başlangıçta aktif olmayan slaytları gizle
+getSlides().forEach(function(s, i){
+  if (i !== 0) s.style.display = 'none';
+  else s.style.display = 'grid';
+});
 startProgress();
 
 // Keyboard
