@@ -432,7 +432,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
 .nav-links .nav-link:hover{color:#1A3C34 !important;background:rgba(26,60,52,.08) !important}
 .nav-links .nav-link.primary{background:linear-gradient(135deg,#B8973D,#E8C96A) !important;color:#1a1a1a !important}
 
-.hero-body{position:relative;z-index:10;flex:1;display:flex;flex-direction:column;justify-content:center;padding:60px 40px 80px;max-width:580px}
+.hero-body{position:relative;z-index:10;flex:1;display:flex;flex-direction:column;justify-content:center;padding:60px 40px 80px;max-width:50%}
 .hero-tag{background:rgba(26,60,52,.08);border:1px solid rgba(26,60,52,.15);color:#52796F;margin-bottom:28px}
 .hero-h1{font-family:'Playfair Display',serif;font-size:clamp(38px,5vw,68px);font-weight:900;color:#1A3C34;line-height:1.05;letter-spacing:-1.5px;margin-bottom:20px}
 .hero-h1 em{font-style:normal;color:#B8973D}
@@ -448,6 +448,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
   .hero-bg-right{width:100%;clip-path:none;opacity:.08}
   .hero-body{max-width:100%;padding:40px 24px 60px}
   .hero-h1{color:#1A3C34}
+  .hero-mockup{display:none !important}
 }
 
 </style>
@@ -489,6 +490,20 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
   </nav>
 
   <div class="hero-bg-right"></div>
+  
+  <!-- Sağ taraf uygulama görseli -->
+  <div style="position:absolute;top:0;right:0;width:50%;height:100%;display:flex;align-items:center;justify-content:center;padding:40px 40px 40px 60px;z-index:5">
+    <div style="width:100%;max-width:560px;background:#1e2a24;border-radius:14px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.06)">
+      <div style="background:#0a1f17;padding:11px 16px;display:flex;align-items:center;gap:7px">
+        <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57"></div>
+        <div style="width:11px;height:11px;border-radius:50%;background:#ffbd2e"></div>
+        <div style="width:11px;height:11px;border-radius:50%;background:#28c840"></div>
+        <span style="flex:1;text-align:center;font-size:11px;color:rgba(255,255,255,.3);font-family:Inter,sans-serif">KM Nutrition Pro</span>
+      </div>
+      <img src="screenshots/01-gosterge-paneli.png" alt="KM Nutrition Pro Gösterge Paneli" style="width:100%;display:block">
+    </div>
+  </div>
+
   <div class="hero-body">
     <div class="hero-tag">Profesyonel Diyetisyen Yazılımı</div>
     <h1 class="hero-h1">
