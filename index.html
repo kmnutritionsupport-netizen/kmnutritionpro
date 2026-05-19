@@ -423,7 +423,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
 
 /* ─── HERO v4 ─── */
 .hero{position:relative;overflow:hidden;min-height:100vh;display:flex;flex-direction:column;background:#F7F4EC}
-.hero-bg-right{position:absolute;top:0;right:0;width:50%;height:100%;background:linear-gradient(135deg,#1A3C34,#0f2a20);clip-path:polygon(18% 0,100% 0,100% 100%,0 100%)}
+.hero-bg-right{display:none}
 .hero-bg-circle{display:none}
 .hero-grid-dots{display:none}
 .nav{background:rgba(247,244,236,.95);backdrop-filter:blur(8px);position:relative;z-index:20;border-bottom:1px solid rgba(26,60,52,.1)}
@@ -489,18 +489,16 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
     </div>
   </nav>
 
-  <div class="hero-bg-right"></div>
-  
-  <!-- Sağ taraf uygulama görseli -->
-  <div style="position:absolute;top:0;right:0;width:50%;height:100%;display:flex;align-items:center;justify-content:center;padding:40px 40px 40px 60px;z-index:5">
-    <div style="width:100%;max-width:560px;background:#1e2a24;border-radius:14px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.06)">
-      <div style="background:#0a1f17;padding:11px 16px;display:flex;align-items:center;gap:7px">
-        <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57"></div>
-        <div style="width:11px;height:11px;border-radius:50%;background:#ffbd2e"></div>
-        <div style="width:11px;height:11px;border-radius:50%;background:#28c840"></div>
-        <span style="flex:1;text-align:center;font-size:11px;color:rgba(255,255,255,.3);font-family:Inter,sans-serif">KM Nutrition Pro</span>
+  <!-- Yeşil sağ panel — görsel içinde -->
+  <div style="position:absolute;top:0;right:0;width:50%;height:100%;background:linear-gradient(135deg,#1A3C34,#0f2a20);clip-path:polygon(18% 0,100% 0,100% 100%,0 100%);z-index:1;display:flex;align-items:center;justify-content:flex-end;padding:40px 40px 40px 80px">
+    <div style="width:100%;max-width:520px;background:#1e2a24;border-radius:14px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08)">
+      <div style="background:#0a1f17;padding:10px 14px;display:flex;align-items:center;gap:6px">
+        <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57"></div>
+        <div style="width:10px;height:10px;border-radius:50%;background:#ffbd2e"></div>
+        <div style="width:10px;height:10px;border-radius:50%;background:#28c840"></div>
+        <span style="flex:1;text-align:center;font-size:10px;color:rgba(255,255,255,.3);font-family:Inter,sans-serif">KM Nutrition Pro</span>
       </div>
-      <img src="screenshots/01-gosterge-paneli.png" alt="KM Nutrition Pro Gösterge Paneli" style="width:100%;display:block">
+      <img src="screenshots/01-gosterge-paneli.png" alt="KM Nutrition Pro" style="width:100%;display:block">
     </div>
   </div>
 
