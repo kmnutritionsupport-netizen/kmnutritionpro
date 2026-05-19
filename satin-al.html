@@ -161,15 +161,10 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
   </div>
 </div>
 
-<!-- TOGGLE -->
+<!-- PLANLAR -->
 <div class="pricing-section">
-  <div class="toggle-wrap">
-    <span class="toggle-label active" id="lbl-aylik">Aylık</span>
-    <label class="toggle">
-      <input type="checkbox" id="billingToggle" onchange="toggleBilling()">
-      <span class="toggle-slider"></span>
-    </label>
-    <span class="toggle-label" id="lbl-yillik">Yıllık <span class="save-badge">%28 Tasarruf</span></span>
+  <div style="text-align:center;margin-bottom:40px">
+    <div style="font-size:13px;color:var(--muted)">Tüm planlar 7 gün ücretsiz deneme ile başlar</div>
   </div>
 
   <!-- PLAN KARTLARI -->
@@ -178,13 +173,13 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
     <!-- Aylık Plan -->
     <div class="plan-card">
       <div class="plan-name">Aylık Plan</div>
-      <div class="plan-old-price" id="aylik-eski"></div>
+      <div class="plan-old-price"></div>
       <div class="plan-price-wrap">
-        <div class="plan-price"><sup>₺</sup><span id="aylik-fiyat">699</span><sub>/ay</sub></div>
+        <div class="plan-price"><sup>₺</sup>699<sub>/ay</sub></div>
       </div>
-      <div class="plan-desc" id="aylik-desc">İstediğiniz zaman iptal edin.</div>
+      <div class="plan-desc">İstediğiniz zaman iptal edin.</div>
       <div class="plan-trial">🎁 İlk 7 gün tamamen ücretsiz</div>
-      <a href="https://wa.me/905422050936?text=Merhaba%2C%20KM%20Nutrition%20Pro%20ayl%C4%B1k%20abonelik%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" class="plan-btn outline" id="aylik-btn">WhatsApp ile Başvur</a>
+      <a href="https://wa.me/905422050936?text=Merhaba%2C%20KM%20Nutrition%20Pro%20ayl%C4%B1k%20abonelik%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" class="plan-btn outline">WhatsApp ile Başvur</a>
       <div class="plan-divider"></div>
       <div class="plan-features">
         <div class="pf"><div class="pf-check">✓</div><div>Sınırsız hasta kaydı</div></div>
@@ -202,13 +197,13 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
     <div class="plan-card featured">
       <div class="plan-badge">⭐ En Çok Tercih Edilen</div>
       <div class="plan-name">Yıllık Plan</div>
-      <div class="plan-old-price" id="yillik-eski">699 ₺ × 12 = 8.388 ₺ yerine</div>
+      <div class="plan-old-price">699 ₺ × 12 = 8.388 ₺ yerine</div>
       <div class="plan-price-wrap">
-        <div class="plan-price"><sup>₺</sup><span id="yillik-fiyat">499</span><sub>/ay</sub></div>
+        <div class="plan-price"><sup>₺</sup>499<sub>/ay</sub></div>
       </div>
-      <div class="plan-desc" id="yillik-desc">Yıllık 5.990 ₺ tek ödeme · 2.398 ₺ tasarruf</div>
+      <div class="plan-desc">Yıllık 5.990 ₺ tek ödeme · 2.398 ₺ tasarruf</div>
       <div class="plan-trial">🎁 İlk 7 gün tamamen ücretsiz</div>
-      <a href="https://wa.me/905422050936?text=Merhaba%2C%20KM%20Nutrition%20Pro%20y%C4%B1ll%C4%B1k%20abonelik%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" class="plan-btn" id="yillik-btn">WhatsApp ile Başvur</a>
+      <a href="https://wa.me/905422050936?text=Merhaba%2C%20KM%20Nutrition%20Pro%20y%C4%B1ll%C4%B1k%20abonelik%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" class="plan-btn">WhatsApp ile Başvur</a>
       <div class="plan-divider"></div>
       <div class="plan-features">
         <div class="pf"><div class="pf-check">✓</div><div>Aylık plandaki her şey</div></div>
@@ -300,31 +295,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
   <div class="footer-note">⚠️ Üretilen planlar diyetisyen onayına tabidir. Yazılım tıbbi tavsiye niteliği taşımaz.</div>
 </div>
 
-<script>
-var isYillik = false;
 
-function toggleBilling() {
-  isYillik = document.getElementById('billingToggle').checked;
-  document.getElementById('lbl-aylik').classList.toggle('active', !isYillik);
-  document.getElementById('lbl-yillik').classList.toggle('active', isYillik);
-
-  if (isYillik) {
-    document.getElementById('aylik-fiyat').textContent = '499';
-    document.getElementById('aylik-eski').textContent = '699 ₺/ay yerine';
-    document.getElementById('aylik-desc').textContent = 'Yıllık 5.990 ₺ tek ödeme.';
-    document.getElementById('yillik-fiyat').textContent = '415';
-    document.getElementById('yillik-eski').textContent = '699 ₺ × 12 = 8.388 ₺ yerine';
-    document.getElementById('yillik-desc').textContent = 'Yıllık 4.990 ₺ tek ödeme · 3.398 ₺ tasarruf';
-  } else {
-    document.getElementById('aylik-fiyat').textContent = '699';
-    document.getElementById('aylik-eski').textContent = '';
-    document.getElementById('aylik-desc').textContent = 'İstediğiniz zaman iptal edin.';
-    document.getElementById('yillik-fiyat').textContent = '499';
-    document.getElementById('yillik-eski').textContent = '699 ₺ × 12 = 8.388 ₺ yerine';
-    document.getElementById('yillik-desc').textContent = 'Yıllık 5.990 ₺ tek ödeme · 2.398 ₺ tasarruf';
-  }
-}
-</script>
 
 </body>
 </html>
