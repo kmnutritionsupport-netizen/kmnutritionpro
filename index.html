@@ -312,9 +312,9 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
 
 /* ─── SLIDE CONTAINER ─── */
 .slides-wrap{position:relative;width:100%}
-.slides{display:flex;transition:none;width:100%}
-.slide{min-width:100%;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;opacity:0;transform:translateX(40px);transition:opacity .6s ease,transform .6s ease}
-.slide.active{opacity:1;transform:translateX(0)}
+.slides{display:block;width:100%;position:relative}
+.slide{min-width:100%;display:none;grid-template-columns:1fr 1fr;gap:56px;align-items:center;opacity:0;transform:translateX(40px);transition:opacity .6s ease,transform .6s ease}
+.slide.active{display:grid;opacity:1;transform:translateX(0)}
 .slide.exit-left{opacity:0;transform:translateX(-40px)}
 
 /* ─── SLIDE TEXT ─── */
