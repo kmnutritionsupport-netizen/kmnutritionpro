@@ -596,24 +596,28 @@ function toast(msg, type='success') {
 function fmtDate(d){ if(!d) return '—'; const date = d.toDate?d.toDate():new Date(d); return new Intl.DateTimeFormat('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric'}).format(date); }
 function planLabel(p){ return {monthly:'Aylık',yearly:'Yıllık',trial:'Deneme',lifetime:'Ömür Boyu'}[p]||p||'—'; }
 
+// Timeout: 5 sn içinde auth gelmezse login göster
+const authTimeout = setTimeout(() => {
+  document.getElementById('initLoading').style.display = 'none';
+  document.getElementById('authScreen').style.display = 'flex';
+}, 5000);
+
 onAuthStateChanged(auth, async (user) => {
-  // Auth durumu belli olunca loading'i gizle
+  clearTimeout(authTimeout);
   document.getElementById('initLoading').style.display = 'none';
   
   if (user && user.email === ADMIN_EMAIL) {
-    document.getElementById('authScreen').style.display='none';
-    document.getElementById('adminPanel').style.display='block';
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('adminNavEmail').textContent = user.email;
     await loadAllData();
   } else if (user) {
-    // Admin değil — çıkış yap ve hata göster
     await fbSignOut(auth);
-    document.getElementById('authScreen').style.display='flex';
-    document.getElementById('authError').textContent='Bu hesabın admin yetkisi yok.';
-    document.getElementById('authError').style.display='block';
+    document.getElementById('authScreen').style.display = 'flex';
+    document.getElementById('authError').textContent = 'Bu hesabın admin yetkisi yok: ' + user.email;
+    document.getElementById('authError').style.display = 'block';
   } else {
-    // Giriş yapılmamış — login ekranını göster
-    document.getElementById('authScreen').style.display='flex';
+    document.getElementById('authScreen').style.display = 'flex';
   }
 });
 
