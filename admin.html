@@ -254,7 +254,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
             </div>
             <div class="form-group">
               <label class="form-label-dark">Plan *</label>
-              <select class="form-select" id="subPlan">
+              <select class="form-select" id="subPlan" onchange="planSecildi()">
                 <option value="trial">7 Günlük Deneme</option>
                 <option value="monthly">Aylık Plan (699₺)</option>
                 <option value="yearly">Yıllık Plan (5.990₺)</option>
@@ -442,6 +442,7 @@ function renderPendingTable() {
       <td style="display:flex;gap:6px">
         <button class="act-btn green" onclick="approveSub('${s.id}')">✓ Onayla</button>
         <button class="act-btn red" onclick="rejectSub('${s.id}')">✗ Reddet</button>
+        <button class="act-btn" onclick="deleteSub('${s.id}')" style="color:#f87171">🗑</button>
       </td>
     </tr>`).join('');
 }
@@ -468,19 +469,23 @@ function renderUsersTable(users) {
 function renderSubsTable(subs) {
   const tbody = document.getElementById('subsTable');
   if(subs.length===0){ tbody.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-icon">🔑</div>Abonelik bulunamadı</div></td></tr>'; return; }
-  tbody.innerHTML = subs.map(s=>`
-    <tr>
+  tbody.innerHTML = subs.map(s=>{
+    const statusLabel = {active:'Aktif',trial:'Deneme',pending:'Bekliyor',expired:'Doldu',cancelled:'İptal'};
+    const isCancelled = s.status === 'cancelled' || s.status === 'expired';
+    return `<tr>
       <td>${getUserName(s.id)}</td>
       <td>${planLabel(s.plan)}</td>
-      <td><span class="badge ${s.status}">${{active:'Aktif',trial:'Deneme',pending:'Bekliyor',expired:'Doldu',cancelled:'İptal'}[s.status]||s.status}</span></td>
+      <td><span class="badge ${s.status}">${statusLabel[s.status]||s.status}</span></td>
       <td>${fmtDate(s.startDate)}</td>
       <td>${fmtDate(s.endDate)}</td>
       <td style="font-family:monospace;font-size:11px;color:#94a3b8">${s.licenseKey||'—'}</td>
       <td style="display:flex;gap:4px;flex-wrap:wrap">
-        <button class="act-btn green" onclick="approveSub('${s.id}')">Onayla</button>
-        <button class="act-btn red" onclick="rejectSub('${s.id}')">İptal</button>
+        ${!isCancelled ? `<button class="act-btn green" onclick="approveSub('${s.id}')">Onayla</button>` : ''}
+        ${!isCancelled ? `<button class="act-btn red" onclick="rejectSub('${s.id}')">İptal Et</button>` : ''}
+        ${isCancelled ? `<button class="act-btn red" onclick="deleteSub('${s.id}')">🗑 Sil</button>` : ''}
       </td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 }
 
 function renderOrdersTable(orders) {
@@ -512,8 +517,45 @@ window.approveSub = async function(uid) {
 };
 
 window.rejectSub = async function(uid) {
+  if (!confirm('Aboneliği iptal etmek istediğinize emin misiniz?')) return;
+  const sub = allSubs.find(s=>s.id===uid);
+  // Firestore'da iptal et
   await setDoc(doc(db,'subscriptions',uid),{status:'cancelled'},{merge:true});
-  toast('Abonelik iptal edildi.','error');
+  // RTDB'den lisans anahtarını sil
+  if (sub && sub.licenseKey) {
+    try {
+      const rtdb = await initLegacyFirebase();
+      if (rtdb) {
+        const clean = sub.licenseKey.replace(/[\s\-]/g,'').toUpperCase();
+        await rtdb.ref('km_licenses/'+clean).remove();
+        toast('Abonelik iptal edildi, lisans anahtarı sistemden silindi.');
+      }
+    } catch(e) {
+      toast('Abonelik iptal edildi, RTDB silme hatası: '+e.message,'error');
+    }
+  } else {
+    toast('Abonelik iptal edildi.','error');
+  }
+  await loadAllData();
+};
+
+window.deleteSub = async function(uid) {
+  if (!confirm('Bu aboneliği tamamen silmek istediğinize emin misiniz? Bu işlem geri alınamaz.')) return;
+  const sub = allSubs.find(s=>s.id===uid);
+  // Firestore'dan sil
+  const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js");
+  await deleteDoc(doc(db,'subscriptions',uid));
+  // RTDB'den lisans anahtarını sil
+  if (sub && sub.licenseKey) {
+    try {
+      const rtdb = await initLegacyFirebase();
+      if (rtdb) {
+        const clean = sub.licenseKey.replace(/[\s\-]/g,'').toUpperCase();
+        await rtdb.ref('km_licenses/'+clean).remove();
+      }
+    } catch(e) { console.warn('RTDB silme:', e.message); }
+  }
+  toast('Abonelik tamamen silindi.');
   await loadAllData();
 };
 
@@ -525,6 +567,38 @@ window.goAddSub = function(uid) {
 window.filterUsers = function(val) {
   const filtered = allUsers.filter(u=>(u.name||'').toLowerCase().includes(val.toLowerCase())||(u.email||'').toLowerCase().includes(val.toLowerCase()));
   renderUsersTable(filtered);
+};
+
+// ── Plan seçilince tarihleri ve durumu otomatik doldur ──
+window.planSecildi = function() {
+  const plan = document.getElementById('subPlan').value;
+  const today = new Date();
+  const fmt = d => d.toISOString().split('T')[0];
+  
+  // Başlangıç her zaman bugün
+  document.getElementById('subStartDate').value = fmt(today);
+
+  // Bitiş tarihi plana göre
+  const end = new Date(today);
+  if (plan === 'trial') {
+    end.setDate(end.getDate() + 7);
+    document.getElementById('subStatus').value = 'trial';
+    document.getElementById('subLicenseKey').value = '';
+    document.getElementById('subLicenseKey').placeholder = 'Deneme sürümünde anahtar gerekmez';
+  } else if (plan === 'monthly') {
+    end.setMonth(end.getMonth() + 1);
+    document.getElementById('subStatus').value = 'active';
+    document.getElementById('subLicenseKey').placeholder = 'Otomatik oluştur veya gir';
+  } else if (plan === 'yearly') {
+    end.setFullYear(end.getFullYear() + 1);
+    document.getElementById('subStatus').value = 'active';
+    document.getElementById('subLicenseKey').placeholder = 'Otomatik oluştur veya gir';
+  } else if (plan === 'lifetime') {
+    end.setFullYear(end.getFullYear() + 99);
+    document.getElementById('subStatus').value = 'active';
+    document.getElementById('subLicenseKey').placeholder = 'Otomatik oluştur veya gir';
+  }
+  document.getElementById('subEndDate').value = fmt(end);
 };
 
 // ── Lisans Algoritması (keygen ile aynı) ──
@@ -568,26 +642,61 @@ async function initLegacyFirebase() {
 
 window.generateKey = async function() {
   const plan = document.getElementById('subPlan').value;
-  const type = plan === 'yearly' ? 'Y' : 'M';
-  // Seri no: mevcut keylerin sayısına göre artar
-  const serial = Math.floor(Date.now() / 1000) % 9999 + 1;
-  const key = genKey(type, serial);
-  document.getElementById('subLicenseKey').value = key;
+  if (plan === 'trial') {
+    toast('Deneme sürümünde lisans anahtarı gerekmez.','error');
+    return;
+  }
+  const type = plan === 'monthly' ? 'M' : 'Y';
 
-  // Asıl Firebase RTDB'ye de kaydet (desktop uygulama buradan doğruluyor)
   try {
-    const db = await initLegacyFirebase();
-    if (db) {
-      const clean = key.replace(/[\s\-]/g,'').toUpperCase();
-      await db.ref('km_licenses/'+clean).set({
+    const rtdb = await initLegacyFirebase();
+    let serial = 1;
+
+    if (rtdb) {
+      // RTDB'den mevcut tüm lisansları çek ve en yüksek serial'ı bul
+      const snap = await rtdb.ref('km_licenses').once('value');
+      const existing = snap.val() || {};
+      const serials = Object.values(existing)
+        .filter(v => v.type === type)
+        .map(v => parseInt(v.serial) || 0);
+      serial = serials.length > 0 ? Math.max(...serials) + 1 : 1;
+      // 9999 sınırını geç
+      if (serial > 9999) serial = 1;
+    }
+
+    const key = genKey(type, serial);
+
+    // Çakışma kontrolü — aynı key RTDB'de varsa serial artır
+    if (rtdb) {
+      const clean = key.replace(/[-\s]/g,'').toUpperCase();
+      const existing = await rtdb.ref('km_licenses/'+clean).once('value');
+      if (existing.exists()) {
+        serial += 1;
+        const newKey = genKey(type, serial);
+        document.getElementById('subLicenseKey').value = newKey;
+        await rtdb.ref('km_licenses/'+newKey.replace(/[-\s]/g,'').toUpperCase()).set({
+          key: newKey, type, serial, days: type==='M'?30:365,
+          note: document.getElementById('subNote').value||'',
+          used: false, generated_at: new Date().toISOString(), activated_at: null
+        });
+        toast('✓ Benzersiz lisans anahtarı üretildi ve sisteme kaydedildi');
+        return;
+      }
+      await rtdb.ref('km_licenses/'+clean).set({
         key, type, serial, days: type==='M'?30:365,
-        note: document.getElementById('subNote').value || '',
+        note: document.getElementById('subNote').value||'',
         used: false, generated_at: new Date().toISOString(), activated_at: null
       });
-      toast('Lisans anahtarı üretildi ve sisteme kaydedildi ✓');
     }
+
+    document.getElementById('subLicenseKey').value = key;
+    toast('✓ Benzersiz lisans anahtarı üretildi ve sisteme kaydedildi');
   } catch(e) {
-    toast('Anahtar üretildi (RTDB kayıt hatası: '+e.message+')','error');
+    // RTDB erişilemezse zaman bazlı fallback
+    const serial = Date.now() % 8999 + 1000;
+    const key = genKey(type, serial);
+    document.getElementById('subLicenseKey').value = key;
+    toast('Anahtar üretildi (offline mod — manuel kontrol edin)','error');
   }
 };
 
@@ -643,7 +752,15 @@ window.showPage = function(page, el) {
 };
 
 // Set today's date default
-window.addEventListener('load',()=>{ const today=new Date().toISOString().split('T')[0]; const sd=document.getElementById('subStartDate'); if(sd)sd.value=today; });
+window.addEventListener('load',()=>{
+  // Varsayılan tarihleri ayarla
+  const today = new Date();
+  const fmt = d => d.toISOString().split('T')[0];
+  const sd = document.getElementById('subStartDate');
+  const ed = document.getElementById('subEndDate');
+  if(sd) sd.value = fmt(today);
+  if(ed) { const end = new Date(today); end.setDate(end.getDate()+7); ed.value = fmt(end); }
+});
 </script>
 </body>
 </html>
