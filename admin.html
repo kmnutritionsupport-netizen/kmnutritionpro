@@ -278,7 +278,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label-dark">Kullanıcı ID veya E-posta *</label>
-              <input type="text" class="form-input-dark" id="subUserId" placeholder="Kullanıcı ID veya e-posta">
+              <input type="text" class="form-input-dark" id="subUserId" placeholder="E-posta adresi veya Kullanıcı ID">
             </div>
             <div class="form-group">
               <label class="form-label-dark">Plan *</label>
@@ -799,7 +799,7 @@ window.generateKey = async function() {
 };
 
 window.saveSubscription = async function() {
-  const userId = document.getElementById('subUserId').value.trim();
+  let userId = document.getElementById('subUserId').value.trim();
   const plan = document.getElementById('subPlan').value;
   const status = document.getElementById('subStatus').value;
   const licenseKey = document.getElementById('subLicenseKey').value.trim();
@@ -807,9 +807,31 @@ window.saveSubscription = async function() {
   const endDateVal = document.getElementById('subEndDate').value;
   const note = document.getElementById('subNote').value.trim();
   if(!userId||!startDateVal||!endDateVal){ toast('Zorunlu alanları doldurun.','error'); return; }
+
+  // E-posta girilmişse → UID'ye çevir
+  if(userId.includes('@')) {
+    const user = allUsers.find(u => u.email === userId);
+    if(user) {
+      userId = user.id;
+    } else {
+      toast('Bu e-posta ile kayıtlı kullanıcı bulunamadı.','error');
+      return;
+    }
+  }
+
+  // Kullanıcı var mı kontrol et
+  const userExists = allUsers.find(u => u.id === userId);
+  if(!userExists) {
+    toast('Kullanıcı bulunamadı. Lütfen önce kullanıcının panel.html'den kayıt olduğundan emin olun.','error');
+    return;
+  }
+
   const data = { plan, status, licenseKey, note, updatedAt:serverTimestamp(), startDate:Timestamp.fromDate(new Date(startDateVal)), endDate:Timestamp.fromDate(new Date(endDateVal)) };
   await setDoc(doc(db,'subscriptions',userId), data, {merge:true});
-  toast('Abonelik kaydedildi!');
+  
+  // UI'da kullanıcıya göster
+  document.getElementById('subUserId').value = '';
+  toast('✓ Abonelik kaydedildi! Kullanıcı panelinde görünür: ' + (userExists.name || userExists.email));
   await loadAllData();
 };
 
