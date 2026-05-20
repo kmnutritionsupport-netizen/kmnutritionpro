@@ -468,14 +468,16 @@ onAuthStateChanged(auth, async (user) => {
     }
     hide('authScreen');
     show('loadingScreen');
-    show('mainNav');
-    document.getElementById('navUserEmail').textContent = user.email;
-    await loadDashboard(user);
-    hide('loadingScreen');
-    document.getElementById('dashboard').style.display = 'block';
+    try {
+      await loadDashboard(user);
+    } catch(e) {
+      console.error('Dashboard yükleme hatası:', e);
+    } finally {
+      hide('loadingScreen');
+      document.getElementById('dashboard').style.display = 'block';
+    }
   } else {
     hide('loadingScreen');
-    hide('mainNav');
     document.getElementById('dashboard').style.display = 'none';
     show('authScreen');
   }
