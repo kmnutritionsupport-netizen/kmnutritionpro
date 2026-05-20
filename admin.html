@@ -527,9 +527,68 @@ window.filterUsers = function(val) {
   renderUsersTable(filtered);
 };
 
-window.generateKey = function() {
-  const key = 'KMN-'+Math.random().toString(36).substr(2,4).toUpperCase()+'-'+Math.random().toString(36).substr(2,4).toUpperCase()+'-'+Math.random().toString(36).substr(2,4).toUpperCase();
+// ── Lisans Algoritması (keygen ile aynı) ──
+const _S = [75,77,78,75,65,65,78,50,48,50,52];
+function _kh(str) { let h=0x811c9dc5>>>0; for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;} return h; }
+function _b36(n,len){ return n.toString(36).padStart(len,'0').toUpperCase(); }
+function _sk(){ return String.fromCharCode(..._S); }
+function genKey(type, serial) {
+  const s=_b36(parseInt(serial),4), sk=_sk();
+  const h1=_kh(sk+type+s), h2=_kh(type+s+sk);
+  const h4=_b36(h1%1679616,4), c2=_b36(h2%1296,2);
+  const raw='KMN'+type+s+h4+c2;
+  return raw.slice(0,3)+'-'+raw[3]+'-'+raw.slice(4,8)+'-'+raw.slice(8,12)+'-'+raw.slice(12);
+}
+
+// Firebase RTDB (lisans doğrulama sistemi — km-nutrition-pro projesi)
+let _legacyDb = null;
+async function initLegacyFirebase() {
+  if (_legacyDb) return _legacyDb;
+  // Compat SDK'yı dinamik yükle
+  if (!window.firebase) {
+    await new Promise((res,rej)=>{
+      const s1=document.createElement('script'); s1.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
+      s1.onload=()=>{
+        const s2=document.createElement('script'); s2.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
+        s2.onload=res; s2.onerror=rej; document.head.appendChild(s2);
+      }; s1.onerror=rej; document.head.appendChild(s1);
+    });
+  }
+  try {
+    const legacyApp = window.firebase.apps.find(a=>a.name==='legacy') ||
+      window.firebase.initializeApp({
+        apiKey:"AIzaSyBlYzrAPpaD_KrGxIsmgf42C5O1NXEpnto",
+        databaseURL:"https://km-nutrition-pro-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId:"km-nutrition-pro"
+      }, 'legacy');
+    _legacyDb = legacyApp.database();
+  } catch(e) { console.warn('Legacy Firebase:', e.message); }
+  return _legacyDb;
+}
+
+window.generateKey = async function() {
+  const plan = document.getElementById('subPlan').value;
+  const type = plan === 'yearly' ? 'Y' : 'M';
+  // Seri no: mevcut keylerin sayısına göre artar
+  const serial = Math.floor(Date.now() / 1000) % 9999 + 1;
+  const key = genKey(type, serial);
   document.getElementById('subLicenseKey').value = key;
+
+  // Asıl Firebase RTDB'ye de kaydet (desktop uygulama buradan doğruluyor)
+  try {
+    const db = await initLegacyFirebase();
+    if (db) {
+      const clean = key.replace(/[\s\-]/g,'').toUpperCase();
+      await db.ref('km_licenses/'+clean).set({
+        key, type, serial, days: type==='M'?30:365,
+        note: document.getElementById('subNote').value || '',
+        used: false, generated_at: new Date().toISOString(), activated_at: null
+      });
+      toast('Lisans anahtarı üretildi ve sisteme kaydedildi ✓');
+    }
+  } catch(e) {
+    toast('Anahtar üretildi (RTDB kayıt hatası: '+e.message+')','error');
+  }
 };
 
 window.saveSubscription = async function() {
