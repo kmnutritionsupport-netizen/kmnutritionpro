@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z5WKKRRCWE"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Z5WKKRRCWE');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beslenme & Diyet Blog — KM Nutrition Pro</title>
+<meta name="description" content="Diyetisyenler ve hastalar için beslenme makaleleri. Kilo yönetimi, diyabet, sporcu beslenmesi, hamilelik, çocuk beslenmesi ve daha fazlası.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Beslenme & Diyet Blog — KM Nutrition Pro">
+<meta property="og:description" content="Uzman beslenme makaleleri. Kilo yönetimi, diyabet, sporcu beslenmesi ve daha fazlası.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kmnutritionpro.com.tr/blog.html">
+<meta property="og:image" content="https://kmnutritionpro.com.tr/logo.png">
+<link rel="canonical" href="https://kmnutritionpro.com.tr/blog.html">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#1A3C34;--green2:#2D6A4F;--sage:#52796F;--gold:#B8973D;--goldl:#E8C96A;--cream:#F7F4EC;--text:#1C1C1C;--muted:#64748B;--border:#E2DDD5}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text)}
+/* NAV */
+.nav{background:var(--green);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--goldl));border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff}
+.nav-logo-text span{color:var(--goldl)}
+.nav-links{display:flex;gap:6px;align-items:center}
+.nav-link{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:500;padding:7px 13px;border-radius:8px;transition:color .2s}
+.nav-link:hover,.nav-link.active{color:#fff}
+.nav-link.primary{background:linear-gradient(135deg,var(--gold),var(--goldl));color:#1a1a1a !important;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border:none;background:transparent;z-index:9999}
+.hamburger span{display:block;width:24px;height:2px;background:rgba(255,255,255,.9);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-nav-overlay{display:none;position:fixed;inset:0;background:#0f2a20;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:9990;padding:40px 24px}
+.mobile-nav-overlay.open{display:flex}
+.mobile-nav-overlay a{display:block;width:100%;max-width:280px;text-align:center;color:rgba(255,255,255,.85);text-decoration:none;font-size:18px;font-weight:600;padding:15px 24px;border-radius:12px;border:1.5px solid rgba(255,255,255,.12);font-family:'Inter',sans-serif}
+.mobile-nav-overlay a.primary{background:linear-gradient(135deg,#B8973D,#E8C96A);color:#1a1a1a !important;border-color:transparent;font-weight:700;margin-top:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.mobile-nav-close{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+@media(max-width:768px){.hamburger{display:flex}.nav-links{display:none !important}.nav{padding:16px 20px}}
+/* FOOTER */
+.footer{background:#0a1f17;padding:36px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-top:0}
+.footer-logo{display:flex;align-items:center;gap:10px}
+.footer-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--goldl));border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.footer-logo-text{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#fff}
+.footer-logo-text span{color:var(--goldl)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.3);margin-top:3px}
+@media(max-width:600px){.footer{padding:28px 20px;flex-direction:column;align-items:flex-start}}
+</style>
+<style>
+.blog-hero{background:linear-gradient(160deg,#0a1f17,var(--green));padding:72px 24px;text-align:center;position:relative;overflow:hidden}
+.blog-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(184,151,61,.12),transparent 60%)}
+.blog-hero-inner{position:relative;z-index:2}
+.blog-hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(184,151,61,.18);border:1px solid rgba(184,151,61,.4);color:var(--goldl);border-radius:30px;padding:7px 18px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px}
+.blog-hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,52px);font-weight:900;color:#fff;margin-bottom:12px}
+.blog-hero p{font-size:16px;color:rgba(255,255,255,.5);max-width:500px;margin:0 auto}
+.blog-section{max-width:1080px;margin:0 auto;padding:64px 24px 80px}
+.blog-count{font-size:13px;color:var(--muted);margin-bottom:28px;font-weight:500}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.blog-card{background:#fff;border:1.5px solid var(--border);border-radius:20px;overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
+.blog-card:hover{transform:translateY(-5px);box-shadow:0 20px 56px rgba(26,60,52,.12)}
+.blog-card-emoji{background:linear-gradient(135deg,#0a1f17,var(--green));height:100px;display:flex;align-items:center;justify-content:center;font-size:44px}
+.blog-card-body{padding:22px;display:flex;flex-direction:column;flex:1}
+.blog-card-tag{display:inline-block;border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px;width:fit-content}
+.blog-card-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--green);line-height:1.35;margin-bottom:8px}
+.blog-card-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;flex:1}
+.blog-card-meta{font-size:12px;font-weight:600;color:var(--sage)}
+@media(max-width:860px){.blog-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.blog-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon"><img src="logo.png" alt="KM Nutrition Pro" style="width:26px;height:26px;object-fit:contain"></div>
+    <div class="nav-logo-text">KM <span>Nutrition</span> Pro</div>
+  </a>
+  <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menü">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links">
+    <a href="klinik.html" class="nav-link"><span>Klinik</span></a>
+    <a href="blog.html" class="nav-link active"><span>Blog</span></a>
+    <a href="satin-al.html" class="nav-link"><span>Fiyatlar</span></a>
+    <a href="iletisim.html" class="nav-link"><span>İletişim</span></a>
+    <a href="indir.html" class="nav-link primary"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> İndir</a>
+  </div>
+</nav>
+<div class="blog-hero">
+  <div class="blog-hero-inner">
+    <div class="blog-hero-tag">📝 Blog</div>
+    <h1>Beslenme & Diyet Rehberi</h1>
+    <p>Uzman içeriklerle sağlıklı beslenmenin her boyutunu keşfedin</p>
+  </div>
+</div>
+<div class="blog-section">
+  <div class="blog-count">10 makale</div>
+  <div class="blog-grid">
+    <a href="saglikli-kilo-verme.html" class="blog-card">
+      <div class="blog-card-emoji">⚖️</div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0">Kilo Yönetimi</div>
+        <div class="blog-card-title">Sağlıklı Kilo Vermenin 7 Altın Kuralı</div>
+        <div class="blog-card-desc">Kalıcı kilo vermenin bilimsel yollarını öğrenin.</div>
+        <div class="blog-card-meta">⏱ 7 dk okuma →</div>
+      </div>
+    </a>
+    <a href="diyabet-beslenmesi.html" class="blog-card">
+      <div class="blog-card-emoji">🩺</div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe">Hastalığa Özel</div>
+        <div class="blog-card-title">Diyabetli Bireyler İçin Beslenme Rehberi</div>
+        <div class="blog-card-desc">Kan şekerini kontrol etmenin beslenme yolları.</div>
+        <div class="blog-card-meta">⏱ 8 dk okuma →</div>
+      </div>
+    </a>
+    <a href="hipertansiyon-dash-diyeti.html" class="blog-card">
+      <div class="blog-card-emoji">❤️</div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe">Hastalığa Özel</div>
+        <div class="blog-card-title">Yüksek Tansiyonda DASH Diyeti</div>
+        <div class="blog-card-desc">Hipertansiyonu kontrol altına almanın kanıtlanmış yöntemi.</div>
+        <div class="blog-card-meta">⏱ 7 dk okuma →</div>
+      </div>
+    </a>
+    <a href="sporcu-beslenmesi.html" class="blog-card">
+      <div class="blog-card-emoji">🏋️</div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag" style="background:#fff7ed;color:#9a3412;border:1px solid #fed7aa">Sporcu Beslenmesi</div>
+        <div class="blog-card-title">Sporcularda Performansı Artıran Beslenme</div>
+        <div class="blog-card-desc">Antrenman öncesi, sırası ve sonrasında beslenme.</div>
+        <div class="blog-card-meta">⏱ 8 dk okuma →</div>
+      </div>
+    </a>
+    <a href="cocuk-beslenmesi.html" class="blog-card">
+      <div class="blog-card-emoji">👧</div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag" style="background:#fdf4ff;color:#7e22ce;border:1px solid #e9d5ff">Çocuk Beslenmesi</div>
+        <div class="blog-card-title">Okul Çağı Çocuklarda Sağlıklı Beslenme</div>
+        <div class="blog-card-desc">6-12 yaş çocuklar için dengeli beslenme önerileri.</div>
+        <div class="blog-card-meta">⏱ 7 dk okuma →</div>
+      </div>
+    </a>
+    <a href="bebek-ek-gida.html" class="blog-card">
+      <div class="blog-card-emoji">👶</div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag" style="background:#fff1f2;color:#9f1239;border:1px solid #fecdd3">Bebek Beslenmesi</div>
+        <div class="blog-card-title">6. Aydan Sonra Ek Gıdaya Geçiş Rehberi</div>
+        <div class="blog-card-desc">Bebeğinize ek gıda başlarken bilmeniz gerekenler.</div>
+        <div class="blog-card-meta">⏱ 9 dk okuma →</div>
+      </div>
+    </a>
+    <a href="hamilelikte-beslenme.html" class="blog-card">
+      <div class="blog-card-emoji">🤱</div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag" style="background:#fef9c3;color:#854d0e;border:1px solid #fef08a">Gebelik & Emzirme</div>
+        <div class="blog-card-title">Hamilelikte Doğru Beslenme Rehberi</div>
+        <div class="blog-card-desc">Trimester bazlı beslenme önerileri.</div>
+        <div class="blog-card-meta">⏱ 9 dk okuma →</div>
+      </div>
+    </a>
+    <a href="emzirme-beslenmesi.html" class="blog-card">
+      <div class="blog-card-emoji">🍼</div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag" style="background:#fef9c3;color:#854d0e;border:1px solid #fef08a">Gebelik & Emzirme</div>
+        <div class="blog-card-title">Emzirme Döneminde Beslenme</div>
+        <div class="blog-card-desc">Süt kalitesi, miktar ve enerji ihtiyacı.</div>
+        <div class="blog-card-meta">⏱ 7 dk okuma →</div>
+      </div>
+    </a>
+    <a href="aralikli-oruc.html" class="blog-card">
+      <div class="blog-card-emoji">⏰</div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0">Kilo Yönetimi</div>
+        <div class="blog-card-title">Aralıklı Oruç: Faydaları ve Riskleri</div>
+        <div class="blog-card-desc">16:8, 5:2 yöntemlerini bilimsel verilerle inceleyin.</div>
+        <div class="blog-card-meta">⏱ 8 dk okuma →</div>
+      </div>
+    </a>
+    <a href="kolesterol-beslenmesi.html" class="blog-card">
+      <div class="blog-card-emoji">🫀</div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe">Hastalığa Özel</div>
+        <div class="blog-card-title">Kolesterolü Düşüren Beslenme Önerileri</div>
+        <div class="blog-card-desc">LDL kolesterolü düşürmek için kanıtlanmış stratejiler.</div>
+        <div class="blog-card-meta">⏱ 8 dk okuma →</div>
+      </div>
+    </a>
+  </div>
+</div>
+<div class="footer">
+  <div class="footer-logo">
+    <div class="footer-logo-icon"><img src="logo.png" alt="KM Nutrition Pro" style="width:22px;height:22px;object-fit:contain"></div>
+    <div>
+      <div class="footer-logo-text">KM <span>Nutrition</span> Pro</div>
+      <div class="footer-copy">© 2026 KM Nutrition Pro. <a href="kvkk.html" style="color:rgba(255,255,255,.3);text-decoration:none">KVKK & Gizlilik</a></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap">
+    <a href="blog.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:12px">Blog</a>
+    <a href="iletisim.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:12px">İletişim</a>
+    <a href="satin-al.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:12px">Fiyatlar</a>
+  </div>
+</div>
+<a href="https://wa.me/905422050936?text=Merhaba%2C%20KM%20Nutrition%20Pro%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" style="position:fixed;bottom:28px;right:28px;z-index:999;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);text-decoration:none" title="WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+<div class="mobile-nav-overlay" id="mobileNavOverlay">
+  <button class="mobile-nav-close" onclick="closeMobileNav()" aria-label="Kapat">✕</button>
+  <a href="klinik.html">🌿 Klinik</a>
+  <a href="blog.html">📝 Blog</a>
+  <a href="satin-al.html">💳 Fiyatlar</a>
+  <a href="iletisim.html">📬 İletişim</a>
+  <a href="indir.html" class="primary" style="display:inline-flex;align-items:center;justify-content:center;gap:8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> İndir</a>
+</div>
+<script>
+function toggleNav(){var o=document.getElementById('mobileNavOverlay');var b=document.getElementById('hamburger');var open=o.classList.toggle('open');b.classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';}
+function closeMobileNav(){document.getElementById('mobileNavOverlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open');document.body.style.overflow='';}
+document.querySelectorAll('#mobileNavOverlay a').forEach(function(l){l.addEventListener('click',closeMobileNav);});
+</script>
+</body>
+</html>
