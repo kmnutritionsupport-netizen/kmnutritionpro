@@ -977,7 +977,7 @@ window.saveSubscription = async function() {
   // Kullanıcı var mı kontrol et
   const userExists = allUsers.find(u => u.id === userId);
   if(!userExists) {
-    toast('Kullanıcı bulunamadı. Lütfen önce kullanıcının panel.html'den kayıt olduğundan emin olun.','error');
+    toast("Kullanıcı bulunamadı. Önce panel.html'den kayıt olması gerekiyor.","error");
     return;
   }
 
