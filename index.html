@@ -631,31 +631,32 @@ h2.section-title{line-height:1.1 !important}
 @media(max-width:768px){
   .hero-mobile-card{
     display:block;
-    margin:0 20px 8px;
-    background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.14);
+    margin:0 20px 16px;
+    background:#0f2a20;
+    border:1px solid rgba(184,151,61,.3);
     border-radius:18px;
     padding:18px 20px;
-    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    box-shadow:0 8px 32px rgba(0,0,0,.3);
   }
   .hero-mobile-card-top{
     display:flex;align-items:center;gap:10px;
     margin-bottom:14px;
     padding-bottom:12px;
-    border-bottom:1px solid rgba(255,255,255,.1);
+    border-bottom:1px solid rgba(255,255,255,.12);
   }
   .hero-mobile-card-icon{
     width:36px;height:36px;border-radius:10px;
     background:linear-gradient(135deg,#B8973D,#E8C96A);
     display:flex;align-items:center;justify-content:center;
-    font-size:18px;flex-shrink:0;
+    overflow:hidden;flex-shrink:0;
   }
+  .hero-mobile-card-icon img{width:24px;height:24px;object-fit:contain}
   .hero-mobile-card-title{font-size:13px;font-weight:700;color:#fff}
-  .hero-mobile-card-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
+  .hero-mobile-card-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px}
   .hero-mobile-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-  .hms{text-align:center;background:rgba(255,255,255,.05);border-radius:10px;padding:10px 6px}
-  .hms-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#E8C96A;line-height:1}
-  .hms-lbl{font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+  .hms{text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px 6px}
+  .hms-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:#E8C96A;line-height:1}
+  .hms-lbl{font-size:9px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
 }
 
 /* ════════════════════════════════════════
@@ -821,7 +822,7 @@ h2.section-title{line-height:1.1 !important}
     <!-- Mobil uygulama önizleme kartı -->
     <div class="hero-mobile-card">
       <div class="hero-mobile-card-top">
-        <div class="hero-mobile-card-icon">🌿</div>
+        <div class="hero-mobile-card-icon"><img src="logo.png" alt="KM Nutrition Pro"></div>
         <div>
           <div class="hero-mobile-card-title">KM Nutrition Pro</div>
           <div class="hero-mobile-card-sub">Canlı Gösterge Paneli</div>
