@@ -227,5 +227,62 @@ function toggleNav(){var o=document.getElementById('mobileNavOverlay');var b=doc
 function closeMobileNav(){document.getElementById('mobileNavOverlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open');document.body.style.overflow='';}
 document.querySelectorAll('#mobileNavOverlay a').forEach(function(l){l.addEventListener('click',closeMobileNav);});
 </script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyCoOGEpRbVjP1Y31swQBx9SfnRQND6zIuE",
+  authDomain: "km-nutrition-web.firebaseapp.com",
+  projectId: "km-nutrition-web",
+  storageBucket: "km-nutrition-web.firebasestorage.app",
+  messagingSenderId: "1086344971047",
+  appId: "1:1086344971047:web:37b111568022b300865f02"
+});
+const db = getFirestore(app);
+
+const TAG_COLORS = {
+  "Kilo Yönetimi": ["#f0fdf4","#166534","#bbf7d0"],
+  "Hastalığa Özel Beslenme": ["#eff6ff","#1e40af","#bfdbfe"],
+  "Sporcu Beslenmesi": ["#fff7ed","#9a3412","#fed7aa"],
+  "Çocuk Beslenmesi": ["#fdf4ff","#7e22ce","#e9d5ff"],
+  "Bebek Beslenmesi": ["#fff1f2","#9f1239","#fecdd3"],
+  "Gebelik & Emzirme": ["#fef9c3","#854d0e","#fef08a"],
+  "Genel Beslenme": ["#f0fdf4","#166534","#bbf7d0"],
+};
+
+try {
+  const snap = await getDocs(query(collection(db,'articles'), where('status','==','published'), orderBy('createdAt','desc')));
+  const articles = snap.docs.map(d=>({id:d.id,...d.data()}));
+  
+  if(articles.length > 0) {
+    const grid = document.querySelector('.blog-grid');
+    const countEl = document.querySelector('.blog-count');
+    
+    // Add dynamic articles to the grid
+    articles.forEach(a => {
+      const [bg,text,border] = TAG_COLORS[a.category] || ["#f1f5f9","#475569","#cbd5e1"];
+      const card = document.createElement('a');
+      card.href = 'makale.html?id=' + a.id;
+      card.className = 'blog-card';
+      card.innerHTML = `
+        <div class="blog-card-emoji">${a.emoji||'📝'}</div>
+        <div class="blog-card-body">
+          <div class="blog-card-tag" style="background:${bg};color:${text};border:1px solid ${border}">${a.category||'Blog'}</div>
+          <div class="blog-card-title">${a.title}</div>
+          <div class="blog-card-desc">${a.excerpt||''}</div>
+          <div class="blog-card-meta">⏱ ${a.readTime||'5 dk'} okuma →</div>
+        </div>`;
+      grid.insertBefore(card, grid.firstChild);
+    });
+
+    // Update count
+    const staticCount = grid.querySelectorAll('.blog-card').length;
+    if(countEl) countEl.textContent = staticCount + ' makale';
+  }
+} catch(e) { console.log('Dinamik makaleler yüklenemedi:', e.message); }
+</script>
+
 </body>
 </html>

@@ -155,6 +155,26 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .modal-btn.cancel{background:#2d3748;color:#94a3b8}
 .modal-btn.mark-paid{background:#1e3a5f;color:#93c5fd;border:1px solid #2563eb}
 .modal-btn.mark-paid:hover{background:#2563eb;color:#fff}
+
+/* ── ARTICLE EDITOR ── */
+.editor-toolbar{display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px;background:#0f1923;border:1px solid #374151;border-radius:10px 10px 0 0;border-bottom:none}
+.editor-btn{background:#2d3748;border:1px solid #4a5568;color:#e2e8f0;border-radius:6px;padding:5px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.editor-btn:hover{background:#374151;color:#fff}
+.editor-btn.active{background:#4ade80;color:#000;border-color:#4ade80}
+.editor-area{width:100%;min-height:320px;background:#0f1923;border:1px solid #374151;border-radius:0 0 10px 10px;padding:16px;font-size:14px;font-family:'Inter',sans-serif;color:#e2e8f0;outline:none;resize:vertical;line-height:1.7}
+.editor-area:focus{border-color:#4ade80}
+.editor-preview{background:#fff;border-radius:10px;padding:24px;min-height:200px;color:#1C1C1C;font-family:'Inter',sans-serif;font-size:14px;line-height:1.8;display:none}
+.editor-preview h2{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#1A3C34;margin:24px 0 10px;padding-bottom:8px;border-bottom:2px solid #E2DDD5}
+.editor-preview h2:first-child{margin-top:0}
+.editor-preview p{margin-bottom:14px;color:#374151}
+.editor-preview ul{margin:0 0 14px 20px;display:flex;flex-direction:column;gap:6px}
+.editor-preview ul li{color:#374151}
+.editor-preview strong{color:#1A3C34}
+.article-status-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:12px 16px;background:#0f1923;border:1px solid #2d3748;border-radius:10px;flex-wrap:wrap;gap:10px}
+.char-count{font-size:12px;color:#64748b}
+.preview-toggle{background:#2d3748;border:1px solid #4a5568;color:#94a3b8;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.article-row{cursor:pointer;transition:background .15s}
+.article-row:hover td{background:rgba(74,222,128,.04) !important}
 </style>
 </head>
 <body>
@@ -204,6 +224,11 @@ tr:hover td{background:rgba(255,255,255,.02)}
         <div class="sidebar-link" onclick="showPage('users',this)">👥 Kullanıcılar</div>
         <div class="sidebar-link" onclick="showPage('subscriptions',this)">🔑 Abonelikler <span class="badge" id="pendingBadge" style="display:none">0</span></div>
         <div class="sidebar-link" onclick="showPage('orders',this)">💳 Siparişler <span class="order-badge" id="orderBadge" style="display:none">0</span></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">İçerik</div>
+        <div class="sidebar-link" onclick="showPage('articles',this)">📝 Makaleler</div>
+        <div class="sidebar-link" onclick="newArticle()">✏️ Yeni Makale</div>
       </div>
       <div class="sidebar-section">
         <div class="sidebar-label">İşlemler</div>
@@ -371,6 +396,98 @@ tr:hover td{background:rgba(255,255,255,.02)}
         </div>
       </div>
 
+
+      <!-- ARTICLES LIST -->
+      <div class="page" id="page-articles">
+        <div class="page-title">Makaleler</div>
+        <div class="page-sub">Blog makalelerini yönetin</div>
+        <div class="table-card">
+          <div class="table-header">
+            <div class="table-title">Makale Listesi</div>
+            <button class="act-btn green" onclick="newArticle()" style="padding:8px 16px;font-size:13px">✏️ Yeni Makale</button>
+          </div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Başlık</th><th>Kategori</th><th>Durum</th><th>Tarih</th><th>İşlem</th></tr></thead>
+            <tbody id="articlesTable"><tr><td colspan="5"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARTICLE EDITOR -->
+      <div class="page" id="page-articleEditor">
+        <div class="page-title" id="editorPageTitle">Yeni Makale</div>
+        <div class="page-sub">Makaleyi yazın ve yayınlayın</div>
+        <input type="hidden" id="editingArticleId">
+
+        <div class="form-card">
+          <div class="form-grid">
+            <div class="form-group" style="grid-column:1/-1">
+              <label class="form-label-dark">Başlık *</label>
+              <input type="text" class="form-input-dark" id="artTitle" placeholder="Makale başlığı" oninput="updateSlug()">
+            </div>
+            <div class="form-group">
+              <label class="form-label-dark">Kategori</label>
+              <select class="form-select" id="artCategory">
+                <option value="Kilo Yönetimi">⚖️ Kilo Yönetimi</option>
+                <option value="Hastalığa Özel Beslenme">🩺 Hastalığa Özel Beslenme</option>
+                <option value="Sporcu Beslenmesi">🏋️ Sporcu Beslenmesi</option>
+                <option value="Çocuk Beslenmesi">👧 Çocuk Beslenmesi</option>
+                <option value="Bebek Beslenmesi">👶 Bebek Beslenmesi</option>
+                <option value="Gebelik & Emzirme">🤱 Gebelik & Emzirme</option>
+                <option value="Genel Beslenme">🥗 Genel Beslenme</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label-dark">Emoji & Okuma Süresi</label>
+              <div style="display:flex;gap:8px">
+                <input type="text" class="form-input-dark" id="artEmoji" placeholder="🥗" style="width:70px;text-align:center;font-size:20px">
+                <input type="text" class="form-input-dark" id="artReadTime" placeholder="5 dk" style="width:80px">
+              </div>
+            </div>
+            <div class="form-group" style="grid-column:1/-1">
+              <label class="form-label-dark">Kısa Açıklama (SEO)</label>
+              <input type="text" class="form-input-dark" id="artExcerpt" placeholder="Google'da görünecek kısa açıklama (150 karakter önerilir)">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card" style="padding-bottom:16px">
+          <div class="form-card-title" style="margin-bottom:10px">İçerik</div>
+          <div class="article-status-bar">
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <select class="form-select" id="artStatus" style="width:140px;padding:6px 10px;font-size:12px">
+                <option value="published">✅ Yayında</option>
+                <option value="draft">📝 Taslak</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="char-count" id="charCount">0 karakter</span>
+              <button class="preview-toggle" onclick="togglePreview()">👁 Önizle</button>
+            </div>
+          </div>
+
+          <!-- Toolbar -->
+          <div class="editor-toolbar">
+            <button class="editor-btn" onclick="insertTag('h2')" title="Başlık">H2</button>
+            <button class="editor-btn" onclick="insertTag('b')" title="Kalın"><b>B</b></button>
+            <button class="editor-btn" onclick="insertTag('i')" title="İtalik"><i>I</i></button>
+            <button class="editor-btn" onclick="insertList()" title="Liste">• Liste</button>
+            <button class="editor-btn" onclick="insertTemplate('intro')" title="Giriş paragrafı">Giriş</button>
+            <button class="editor-btn" onclick="insertTemplate('section')" title="Yeni bölüm">+ Bölüm</button>
+            <button class="editor-btn" onclick="insertTemplate('list')" title="Liste şablonu">+ Liste</button>
+          </div>
+          <textarea class="editor-area" id="artContent" placeholder="Makale içeriğini buraya yazın. HTML etiketleri kullanabilirsiniz.&#10;&#10;Örnek:&#10;&lt;h2&gt;Bölüm Başlığı&lt;/h2&gt;&#10;&lt;p&gt;Paragraf metni&lt;/p&gt;" oninput="updateCharCount()"></textarea>
+          <div class="editor-preview" id="artPreview"></div>
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
+          <button class="btn-green" onclick="saveArticle()" style="flex:1;min-width:160px">💾 Kaydet & Yayınla</button>
+          <button class="act-btn" onclick="saveArticleDraft()" style="padding:12px 20px;font-size:13px">📝 Taslak Kaydet</button>
+          <button class="act-btn" onclick="showPage('articles',null)" style="padding:12px 20px;font-size:13px;color:#f87171">✕ İptal</button>
+        </div>
+      </div>
+
     </div><!-- /admin-main -->
   </div><!-- /admin-layout -->
 
@@ -467,7 +584,7 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 async function loadAllData() {
-  await Promise.all([loadUsers(), loadSubscriptions(), loadOrders()]);
+  await Promise.all([loadUsers(), loadSubscriptions(), loadOrders(), loadArticles()]);
   updateKPIs();
   renderPendingTable();
 }
@@ -956,6 +1073,176 @@ window.deleteOrder = async function(orderId) {
   } catch(e) {
     toast('Hata: ' + e.message, 'error');
   }
+};
+
+
+// ════════════════════════════════
+//  MAKALE YÖNETİMİ
+// ════════════════════════════════
+let allArticles = [];
+
+async function loadArticles() {
+  const snap = await getDocs(collection(db,'articles')).catch(()=>({docs:[]}));
+  allArticles = snap.docs.map(d=>({id:d.id,...d.data()}));
+  allArticles.sort((a,b)=>{
+    const ta = a.createdAt?.toDate?.()?.getTime() || 0;
+    const tb = b.createdAt?.toDate?.()?.getTime() || 0;
+    return tb - ta;
+  });
+  renderArticlesTable(allArticles);
+}
+
+function renderArticlesTable(articles) {
+  const tbody = document.getElementById('articlesTable');
+  if(!tbody) return;
+  if(articles.length===0){
+    tbody.innerHTML='<tr><td colspan="5"><div class="empty"><div class="empty-icon">📝</div>Henüz makale yok. Yeni makale ekleyin.</div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = articles.map(a=>`
+    <tr class="article-row" onclick="editArticle('${a.id}')">
+      <td style="font-weight:600;color:#e2e8f0">${a.emoji||'📝'} ${a.title||'Başlıksız'}</td>
+      <td style="color:#94a3b8;font-size:12px">${a.category||'—'}</td>
+      <td><span class="badge ${a.status==='published'?'active':'cancelled'}">${a.status==='published'?'Yayında':'Taslak'}</span></td>
+      <td style="color:#64748b;font-size:12px">${fmtDate(a.createdAt)}</td>
+      <td style="display:flex;gap:6px" onclick="event.stopPropagation()">
+        <button class="act-btn" onclick="editArticle('${a.id}')">✏️ Düzenle</button>
+        <button class="act-btn" onclick="previewArticle('${a.id}')">👁</button>
+        <button class="act-btn red" onclick="deleteArticle('${a.id}')">🗑</button>
+      </td>
+    </tr>`).join('');
+}
+
+window.newArticle = function() {
+  document.getElementById('editingArticleId').value = '';
+  document.getElementById('editorPageTitle').textContent = 'Yeni Makale';
+  document.getElementById('artTitle').value = '';
+  document.getElementById('artExcerpt').value = '';
+  document.getElementById('artContent').value = '';
+  document.getElementById('artEmoji').value = '🥗';
+  document.getElementById('artReadTime').value = '5 dk';
+  document.getElementById('artStatus').value = 'published';
+  document.getElementById('artPreview').style.display = 'none';
+  document.querySelector('.editor-area').style.display = 'block';
+  updateCharCount();
+  showPage('articleEditor', document.querySelector('[onclick*="newArticle"]'));
+};
+
+window.editArticle = async function(id) {
+  const a = allArticles.find(x=>x.id===id);
+  if(!a) return;
+  document.getElementById('editingArticleId').value = id;
+  document.getElementById('editorPageTitle').textContent = 'Makale Düzenle';
+  document.getElementById('artTitle').value = a.title||'';
+  document.getElementById('artExcerpt').value = a.excerpt||'';
+  document.getElementById('artContent').value = a.content||'';
+  document.getElementById('artEmoji').value = a.emoji||'🥗';
+  document.getElementById('artReadTime').value = a.readTime||'5 dk';
+  document.getElementById('artStatus').value = a.status||'published';
+  document.getElementById('artCategory').value = a.category||'Genel Beslenme';
+  document.getElementById('artPreview').style.display = 'none';
+  document.querySelector('.editor-area').style.display = 'block';
+  updateCharCount();
+  showPage('articleEditor', null);
+};
+
+window.saveArticle = async function() { await _saveArt('published'); };
+window.saveArticleDraft = async function() { await _saveArt('draft'); };
+
+async function _saveArt(forcedStatus) {
+  const id = document.getElementById('editingArticleId').value;
+  const title = document.getElementById('artTitle').value.trim();
+  const content = document.getElementById('artContent').value.trim();
+  if(!title||!content){ toast('Başlık ve içerik zorunludur.','error'); return; }
+
+  const data = {
+    title,
+    excerpt: document.getElementById('artExcerpt').value.trim(),
+    content,
+    category: document.getElementById('artCategory').value,
+    emoji: document.getElementById('artEmoji').value.trim() || '🥗',
+    readTime: document.getElementById('artReadTime').value.trim() || '5 dk',
+    status: forcedStatus || document.getElementById('artStatus').value,
+    updatedAt: serverTimestamp()
+  };
+
+  if(id) {
+    await setDoc(doc(db,'articles',id), data, {merge:true});
+    toast('✓ Makale güncellendi!');
+  } else {
+    data.createdAt = serverTimestamp();
+    await addDoc(collection(db,'articles'), data);
+    toast('✓ Makale yayınlandı!');
+  }
+  await loadArticles();
+  showPage('articles', document.querySelector('[onclick*="articles"]'));
+}
+
+window.deleteArticle = async function(id) {
+  if(!confirm('Bu makaleyi silmek istediğinize emin misiniz?')) return;
+  await deleteDoc(doc(db,'articles',id));
+  allArticles = allArticles.filter(a=>a.id!==id);
+  renderArticlesTable(allArticles);
+  toast('Makale silindi.');
+};
+
+window.previewArticle = function(id) {
+  const a = allArticles.find(x=>x.id===id);
+  if(!a) return;
+  window.open('makale.html?id='+id, '_blank');
+};
+
+window.updateSlug = function() {};
+window.updateCharCount = function() {
+  const len = (document.getElementById('artContent').value||'').length;
+  const el = document.getElementById('charCount');
+  if(el) el.textContent = len.toLocaleString('tr-TR') + ' karakter';
+};
+
+window.togglePreview = function() {
+  const area = document.querySelector('.editor-area');
+  const preview = document.getElementById('artPreview');
+  if(preview.style.display === 'none' || !preview.style.display) {
+    preview.innerHTML = document.getElementById('artContent').value;
+    preview.style.display = 'block';
+    area.style.display = 'none';
+    document.querySelector('.preview-toggle').textContent = '✏️ Düzenle';
+  } else {
+    preview.style.display = 'none';
+    area.style.display = 'block';
+    document.querySelector('.preview-toggle').textContent = '👁 Önizle';
+  }
+};
+
+window.insertTag = function(tag) {
+  const ta = document.getElementById('artContent');
+  const start = ta.selectionStart, end = ta.selectionEnd;
+  const sel = ta.value.substring(start, end) || 'metin';
+  const ins = `<${tag}>${sel}</${tag}>`;
+  ta.value = ta.value.substring(0,start) + ins + ta.value.substring(end);
+  ta.focus();
+  ta.selectionStart = start + tag.length + 2;
+  ta.selectionEnd = start + tag.length + 2 + sel.length;
+  updateCharCount();
+};
+
+window.insertList = function() {
+  const ta = document.getElementById('artContent');
+  const pos = ta.selectionStart;
+  const ins = '\n<ul>\n  <li>Birinci madde</li>\n  <li>İkinci madde</li>\n  <li>Üçüncü madde</li>\n</ul>\n';
+  ta.value = ta.value.substring(0,pos) + ins + ta.value.substring(pos);
+  updateCharCount();
+};
+
+window.insertTemplate = function(type) {
+  const ta = document.getElementById('artContent');
+  const pos = ta.selectionStart;
+  let ins = '';
+  if(type==='intro') ins = '\n<p>Giriş paragrafı buraya gelecek. Okuyucunun ilgisini çekecek bir cümle ile başlayın.</p>\n';
+  if(type==='section') ins = '\n<h2>Yeni Bölüm Başlığı</h2>\n<p>Bu bölümün içeriği buraya gelecek.</p>\n';
+  if(type==='list') ins = '\n<h2>Başlık</h2>\n<ul>\n  <li><strong>Madde 1:</strong> Açıklama</li>\n  <li><strong>Madde 2:</strong> Açıklama</li>\n  <li><strong>Madde 3:</strong> Açıklama</li>\n</ul>\n';
+  ta.value = ta.value.substring(0,pos) + ins + ta.value.substring(pos);
+  updateCharCount();
 };
 
 window.adminLogin = async function() {
