@@ -854,37 +854,58 @@ window.closeOrderModal = function() {
 window.approveOrder = async function(orderId) {
   const o = allOrders.find(x=>x.id===orderId);
   if(!o) return;
-  // Siparişi ödendi yap
-  await setDoc(doc(db,'orders',orderId),{status:'paid'},{merge:true});
-  // Aboneliği aktif et
-  const endDate = new Date();
-  if(o.plan==='monthly') endDate.setMonth(endDate.getMonth()+1);
-  else if(o.plan==='yearly') endDate.setFullYear(endDate.getFullYear()+1);
-  else if(o.plan==='trial') endDate.setDate(endDate.getDate()+7);
-  else endDate.setFullYear(endDate.getFullYear()+99);
-  await setDoc(doc(db,'subscriptions',o.userId),{
-    plan:o.plan, status:'active',
-    startDate:Timestamp.now(),
-    endDate:Timestamp.fromDate(endDate)
-  },{merge:true});
-  closeOrderModal();
-  toast('✓ Sipariş onaylandı, abonelik aktif edildi!');
-  await loadAllData();
+  try {
+    // Siparişi ödendi yap
+    await setDoc(doc(db,'orders',orderId),{status:'paid'},{merge:true});
+    // Aboneliği aktif et
+    const endDate = new Date();
+    if(o.plan==='monthly') endDate.setMonth(endDate.getMonth()+1);
+    else if(o.plan==='yearly') endDate.setFullYear(endDate.getFullYear()+1);
+    else if(o.plan==='trial') endDate.setDate(endDate.getDate()+7);
+    else endDate.setFullYear(endDate.getFullYear()+99);
+    await setDoc(doc(db,'subscriptions',o.userId),{
+      plan:o.plan, status:'active',
+      startDate:Timestamp.now(),
+      endDate:Timestamp.fromDate(endDate)
+    },{merge:true});
+    // Lokal array'i hemen güncelle — yeniden tıklamayı önle
+    const idx = allOrders.findIndex(x=>x.id===orderId);
+    if(idx>=0) allOrders[idx] = {...allOrders[idx], status:'paid'};
+    renderOrdersTable(allOrders);
+    closeOrderModal();
+    toast('✓ Sipariş onaylandı, abonelik aktif edildi!');
+    loadAllData(); // arka planda yenile
+  } catch(e) {
+    toast('Hata: ' + e.message, 'error');
+  }
 };
 
 window.markOrderPaid = async function(orderId) {
-  await setDoc(doc(db,'orders',orderId),{status:'paid'},{merge:true});
-  closeOrderModal();
-  toast('✓ Sipariş ödendi olarak işaretlendi');
-  await loadAllData();
+  try {
+    await setDoc(doc(db,'orders',orderId),{status:'paid'},{merge:true});
+    const idx = allOrders.findIndex(x=>x.id===orderId);
+    if(idx>=0) allOrders[idx] = {...allOrders[idx], status:'paid'};
+    renderOrdersTable(allOrders);
+    closeOrderModal();
+    toast('✓ Sipariş ödendi olarak işaretlendi');
+    loadAllData();
+  } catch(e) {
+    toast('Hata: ' + e.message, 'error');
+  }
 };
 
 window.deleteOrder = async function(orderId) {
   if(!confirm('Bu siparişi silmek istediğinize emin misiniz?')) return;
-  await deleteDoc(doc(db,'orders',orderId));
-  closeOrderModal();
-  toast('Sipariş silindi');
-  await loadAllData();
+  try {
+    await deleteDoc(doc(db,'orders',orderId));
+    allOrders = allOrders.filter(x=>x.id!==orderId);
+    renderOrdersTable(allOrders);
+    closeOrderModal();
+    toast('Sipariş silindi');
+    loadAllData();
+  } catch(e) {
+    toast('Hata: ' + e.message, 'error');
+  }
 };
 
 window.adminLogin = async function() {
