@@ -320,8 +320,15 @@ function showSuccess(msg){ const el=document.getElementById('authSuccess'); el.t
 function clearMessages(){ document.getElementById('authError').style.display='none'; document.getElementById('authSuccess').style.display='none'; }
 
 // ── Auth state ──
+const ADMIN_EMAIL = "kmnutritionsupport@gmail.com";
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
+    // Admin ise admin paneline yönlendir
+    if (user.email === ADMIN_EMAIL) {
+      window.location.href = 'admin.html';
+      return;
+    }
     hide('authScreen');
     show('loadingScreen');
     show('mainNav');
