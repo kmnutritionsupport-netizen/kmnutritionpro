@@ -133,6 +133,38 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);mi
   .dashboard-body{padding:20px 16px}
   .nav{padding:14px 16px}
 }
+
+/* ── SATIN ALMA TALEBİ ── */
+.purchase-section{margin-bottom:24px}
+.plan-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.plan-card{background:#fff;border:2px solid var(--border);border-radius:16px;padding:20px;cursor:pointer;transition:all .2s;position:relative}
+.plan-card:hover{border-color:var(--green2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,60,52,.1)}
+.plan-card.selected{border-color:var(--green);background:#f0fdf4}
+.plan-card-popular{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--gold),var(--goldl));color:#1a1a1a;font-size:10px;font-weight:700;border-radius:20px;padding:3px 12px;white-space:nowrap}
+.plan-card-name{font-size:15px;font-weight:700;color:var(--green);margin-bottom:4px}
+.plan-card-price{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--green);line-height:1}
+.plan-card-period{font-size:11px;color:var(--muted);margin-bottom:10px}
+.plan-card-save{font-size:11px;font-weight:700;color:#16a34a;background:#f0fdf4;border-radius:6px;padding:2px 8px;display:inline-block}
+.iban-box{background:linear-gradient(135deg,#0a1f17,var(--green));border-radius:16px;padding:20px;margin-bottom:16px;color:#fff}
+.iban-title{font-size:12px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.iban-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.iban-label{font-size:12px;color:rgba(255,255,255,.5)}
+.iban-val{font-family:monospace;font-size:13px;font-weight:600;color:#fff;letter-spacing:.5px}
+.iban-copy{background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:7px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s;white-space:nowrap}
+.iban-copy:hover{background:rgba(255,255,255,.25)}
+.iban-amount{background:rgba(184,151,61,.2);border:1px solid rgba(184,151,61,.4);border-radius:10px;padding:12px 16px;margin-top:12px;display:flex;align-items:center;justify-content:space-between}
+.iban-amount-label{font-size:12px;color:rgba(255,255,255,.6)}
+.iban-amount-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--goldl)}
+.request-note{background:var(--cream);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);width:100%;outline:none;resize:none;margin-bottom:14px}
+.request-note:focus{border-color:var(--green2)}
+.btn-request{width:100%;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:transform .2s,box-shadow .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-request:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(26,60,52,.25)}
+.btn-request:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.request-success{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;display:none}
+.request-success-icon{font-size:36px;margin-bottom:8px}
+.request-success-title{font-size:16px;font-weight:700;color:#16a34a;margin-bottom:6px}
+.request-success-desc{font-size:13px;color:#166534}
+@media(max-width:480px){.plan-cards{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -263,6 +295,77 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);mi
     <div class="section-title">Satın Alma Geçmişi</div>
     <div class="history-card" id="historyCard">
       <div class="loading" style="min-height:80px"><div class="spinner"></div></div>
+    </div>
+
+
+    <!-- Satın Alma Talebi -->
+    <div class="section-title purchase-section">Abonelik Satın Al</div>
+    <div class="sub-card" id="purchaseCard">
+      <div id="purchaseForm">
+        <!-- Plan Seçimi -->
+        <div style="font-size:13px;color:var(--muted);margin-bottom:14px">Plan seçin, ardından belirtilen IBAN'a havale/EFT yapın ve talebi gönderin.</div>
+        <div class="plan-cards">
+          <div class="plan-card" id="planMonthly" onclick="selectPlan('monthly')">
+            <div class="plan-card-name">Aylık Plan</div>
+            <div class="plan-card-price">699₺</div>
+            <div class="plan-card-period">/ ay</div>
+          </div>
+          <div class="plan-card selected" id="planYearly" onclick="selectPlan('yearly')">
+            <div class="plan-card-popular">⭐ En Popüler</div>
+            <div class="plan-card-name">Yıllık Plan</div>
+            <div class="plan-card-price">5.990₺</div>
+            <div class="plan-card-period">/ yıl</div>
+            <div class="plan-card-save">2 ay bedava</div>
+          </div>
+        </div>
+
+        <!-- IBAN Bilgileri -->
+        <div class="iban-box">
+          <div class="iban-title">💳 Havale / EFT Bilgileri</div>
+          <div class="iban-row">
+            <div>
+              <div class="iban-label">Hesap Sahibi</div>
+              <div class="iban-val">Salih Kaan MACİT</div>
+            </div>
+          </div>
+          <div class="iban-row">
+            <div>
+              <div class="iban-label">IBAN</div>
+              <div class="iban-val" id="ibanText">TR12 0064 0000 0119 0041 7349 4</div>
+            </div>
+            <button class="iban-copy" onclick="copyIban()">Kopyala</button>
+          </div>
+          <div class="iban-row">
+            <div>
+              <div class="iban-label">Banka</div>
+              <div class="iban-val">Türkiye İş Bankası — Diyalog Hesabı</div>
+            </div>
+          </div>
+          <div class="iban-amount">
+            <div class="iban-amount-label">Gönderilecek Tutar</div>
+            <div class="iban-amount-val" id="ibanAmount">5.990₺</div>
+          </div>
+        </div>
+
+        <!-- Açıklama -->
+        <textarea class="request-note" id="requestNote" rows="2" placeholder="Dekont numarası veya açıklama ekleyebilirsiniz (isteğe bağlı)"></textarea>
+
+        <!-- Gönder -->
+        <button class="btn-request" id="requestBtn" onclick="sendPurchaseRequest()">
+          📨 Satın Alma Talebi Gönder
+        </button>
+        <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px">
+          Havale sonrası talebiniz admin tarafından incelenecek, lisansınız en geç 24 saat içinde tanımlanacaktır.
+        </div>
+      </div>
+
+      <!-- Başarı mesajı -->
+      <div class="request-success" id="requestSuccess">
+        <div class="request-success-icon">✅</div>
+        <div class="request-success-title">Talebiniz alındı!</div>
+        <div class="request-success-desc">Havale dekontunuzu WhatsApp'tan paylaşırsanız işleminiz daha hızlı gerçekleşir. Lisansınız en geç 24 saat içinde tanımlanacaktır.</div>
+        <a href="https://wa.me/905422050936?text=Merhaba%2C%20abonelik%20ödememi%20yaptım.%20Dekont%20gönderiyorum." target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;text-decoration:none;border-radius:10px;padding:10px 20px;font-size:13px;font-weight:700;margin-top:16px">💬 Dekont Gönder</a>
+      </div>
     </div>
 
     <!-- Support -->
@@ -565,6 +668,62 @@ window.forgotPassword = async function() {
     showSuccess('Şifre sıfırlama e-postası gönderildi!');
   } catch(e) {
     showError('E-posta gönderilemedi.');
+  }
+};
+
+
+// ── Satın Alma Talebi ──
+let selectedPlan = 'yearly';
+const planPrices = { monthly: '699₺', yearly: '5.990₺' };
+const IBAN = 'TR12 0064 0000 0119 0041 7349 4';
+
+window.selectPlan = function(plan) {
+  selectedPlan = plan;
+  document.getElementById('planMonthly').classList.toggle('selected', plan==='monthly');
+  document.getElementById('planYearly').classList.toggle('selected', plan==='yearly');
+  document.getElementById('ibanAmount').textContent = planPrices[plan];
+};
+
+window.copyIban = function() {
+  navigator.clipboard.writeText(IBAN.replace(/\s/g,'')).then(()=>{
+    const btn = document.querySelector('.iban-copy');
+    btn.textContent = '✓ Kopyalandı';
+    setTimeout(()=>btn.textContent='Kopyala', 2000);
+  });
+};
+
+window.sendPurchaseRequest = async function() {
+  const user = auth.currentUser;
+  if (!user) return;
+  const btn = document.getElementById('requestBtn');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Gönderiliyor...';
+  try {
+    const note = document.getElementById('requestNote').value.trim();
+    const amount = selectedPlan === 'monthly' ? 699 : 5990;
+    await addDoc(collection(db,'orders'), {
+      userId: user.uid,
+      userEmail: user.email,
+      userName: user.displayName || user.email,
+      plan: selectedPlan,
+      amount,
+      method: 'bank_transfer',
+      status: 'pending',
+      note: note || '',
+      createdAt: serverTimestamp()
+    });
+    // Firestore'da pending subscription oluştur
+    await setDoc(doc(db,'subscriptions',user.uid), {
+      plan: selectedPlan,
+      status: 'pending',
+      createdAt: serverTimestamp()
+    }, { merge: true });
+    document.getElementById('purchaseForm').style.display = 'none';
+    document.getElementById('requestSuccess').style.display = 'block';
+  } catch(e) {
+    btn.disabled = false;
+    btn.innerHTML = '📨 Satın Alma Talebi Gönder';
+    alert('Hata: ' + e.message);
   }
 };
 
