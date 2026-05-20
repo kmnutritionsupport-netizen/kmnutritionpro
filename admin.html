@@ -1267,7 +1267,7 @@ window.insertTag = function(tag) {
 window.insertList = function() {
   const ta = document.getElementById('artContent');
   const pos = ta.selectionStart;
-  const ins = '\n<ul>\n  <li>Birinci madde</li>\n  <li>İkinci madde</li>\n  <li>Üçüncü madde</li>\n</ul>\n';
+  const ins = ["","<ul>","  <li>Birinci madde</li>","  <li>İkinci madde</li>","  <li>Üçüncü madde</li>","</ul>",""].join("\n");
   ta.value = ta.value.substring(0,pos) + ins + ta.value.substring(pos);
   updateCharCount();
 };
@@ -1276,9 +1276,9 @@ window.insertTemplate = function(type) {
   const ta = document.getElementById('artContent');
   const pos = ta.selectionStart;
   let ins = '';
-  if(type==='intro') ins = '\n<p>Giriş paragrafı buraya gelecek. Okuyucunun ilgisini çekecek bir cümle ile başlayın.</p>\n';
-  if(type==='section') ins = '\n<h2>Yeni Bölüm Başlığı</h2>\n<p>Bu bölümün içeriği buraya gelecek.</p>\n';
-  if(type==='list') ins = '\n<h2>Başlık</h2>\n<ul>\n  <li><strong>Madde 1:</strong> Açıklama</li>\n  <li><strong>Madde 2:</strong> Açıklama</li>\n  <li><strong>Madde 3:</strong> Açıklama</li>\n</ul>\n';
+  if(type==='intro') ins = "\n<p>Giriş paragrafı buraya gelecek. Okuyucunun ilgisini çekecek bir cümle ile başlayın.</p>\n";
+  if(type==='section') ins = "\n<h2>Yeni Bölüm Başlığı</h2>\n<p>Bu bölümün içeriği buraya gelecek.</p>\n";
+  if(type==='list') ins = "\n<h2>Başlık</h2>\n<ul>\n  <li><strong>Madde 1:</strong> Açıklama</li>\n  <li><strong>Madde 2:</strong> Açıklama</li>\n  <li><strong>Madde 3:</strong> Açıklama</li>\n</ul>\n";
   ta.value = ta.value.substring(0,pos) + ins + ta.value.substring(pos);
   updateCharCount();
 };
