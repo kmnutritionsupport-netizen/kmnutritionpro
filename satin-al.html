@@ -367,7 +367,12 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
             <div class="payment-card-sub">Hesabınızdan talep oluşturun</div>
           </div>
         </div>
-        <div class="iban-mini">
+        <!-- IBAN Göster Butonu -->
+        <button onclick="showIban(this)" id="ibanToggleBtn" style="width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;padding:12px;font-size:13px;font-weight:600;color:var(--green);cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:12px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px">
+          🏦 IBAN Bilgilerini Göster
+        </button>
+
+        <div class="iban-mini" id="ibanBox" style="display:none">
           <div class="iban-mini-row">
             <span class="iban-mini-label">Hesap Sahibi</span>
             <span class="iban-mini-val">Salih Kaan MACİT</span>
@@ -385,7 +390,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
         <div class="payment-steps">
           <div class="payment-step">
             <div class="payment-step-num">1</div>
-            <div class="payment-step-text"><strong>Hesap oluşturun</strong> — panel.html'den kayıt olun</div>
+            <div class="payment-step-text"><strong>Hesap oluşturun</strong> — Hesabım sekmesinden kayıt olun</div>
           </div>
           <div class="payment-step">
             <div class="payment-step-num">2</div>
@@ -502,6 +507,11 @@ document.querySelectorAll('#mobileNavOverlay a').forEach(function(l){l.addEventL
 </div>
 
 <script>
+function showIban(btn) {
+  document.getElementById('ibanBox').style.display = 'block';
+  btn.style.display = 'none';
+}
+
 function copyIban(btn) {
   navigator.clipboard.writeText('TR120064000001190041734 94'.replace(/\s/g,'')).then(()=>{
     const orig = btn.textContent;
