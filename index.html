@@ -54,7 +54,7 @@ section{padding:96px 0}
 /* NAV */
 .nav{position:relative;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:28px 40px}
 .nav-logo{display:flex;align-items:center;gap:10px}
-.nav-logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--goldl));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.nav-logo-icon{width:44px;height:44px;background:transparent;border-radius:0;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .nav-logo-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:.2px}
 .nav-logo-text span{color:var(--goldl)}
 .nav-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);border-radius:30px;padding:6px 16px;font-size:11px;font-weight:500;letter-spacing:.5px}
@@ -545,7 +545,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
 
 /* ─── STICKY CTA BAR ─── */
 .sticky-cta{
-  position:fixed;bottom:0;left:0;right:0;z-index:888;
+  position:fixed;bottom:0;left:0;right:0;z-index:9980;
   background:rgba(10,31,23,.96);
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   border-top:1px solid rgba(184,151,61,.3);
@@ -581,10 +581,10 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
 /* Push WhatsApp button up when sticky bar visible */
 body.sticky-visible .wa-float{bottom:84px !important}
 @media(max-width:480px){
-  .sticky-cta{padding:10px 16px;gap:8px}
-  .sticky-cta-title{font-size:13px}
+  .sticky-cta{padding:12px 16px;gap:10px;border-top:2px solid rgba(184,151,61,.5)}
+  .sticky-cta-title{font-size:14px}
   .sticky-cta-sub{display:none}
-  .sticky-cta-btn{padding:10px 16px;font-size:12px}
+  .sticky-cta-btn{padding:11px 18px;font-size:13px;font-weight:700}
 }
 
 /* ─── PREMIUM TYPOGRAPHY & COLOR TWEAKS ─── */
