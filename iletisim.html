@@ -99,6 +99,26 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text)}
 .footer-logo-text span{color:var(--goldl)}
 .footer-copy{font-size:11px;color:rgba(255,255,255,.3);margin-top:3px}
 @media(max-width:600px){.footer{padding:28px 20px}}
+
+/* ─── HAMBURGER MENU ─── */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border:none;background:transparent;z-index:200}
+.hamburger span{display:block;width:22px;height:2px;background:rgba(255,255,255,.85);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+@media(max-width:768px){
+  .hamburger{display:flex}
+  .nav-links{
+    display:none;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(15,42,32,.97);backdrop-filter:blur(12px);
+    align-items:center;justify-content:center;gap:16px;z-index:150;
+  }
+  .nav-links.open{display:flex}
+  .nav-links .nav-link{font-size:18px !important;padding:14px 28px !important;color:#fff !important;display:block !important}
+  .nav-links .nav-link span{display:inline !important}
+  .nav-links .nav-link:hover{background:rgba(255,255,255,.1) !important}
+  .nav-links .nav-link.primary{background:linear-gradient(135deg,#B8973D,#E8C96A) !important;color:#1a1a1a !important}
+}
 </style>
 </head>
 <body>
@@ -109,7 +129,10 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text)}
     <div class="nav-logo-icon"><img src="logo.png" alt="KM Nutrition Pro"></div>
     <div class="nav-logo-text">KM <span>Nutrition</span> Pro</div>
   </a>
-  <div class="nav-links">
+      <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
     <a href="index.html" class="nav-link"><span>Ana Sayfa</span></a>
     <a href="ekran-goruntuleri.html" class="nav-link"><span>Galeri</span></a>
     <a href="satin-al.html" class="nav-link"><span>Fiyatlar</span></a>
@@ -259,6 +282,24 @@ function toggleFaq(el) {
   document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
   if (!isOpen) item.classList.add('open');
 }
+</script>
+
+
+<script>
+function toggleNav(){
+  var nav=document.getElementById('navLinks');
+  var btn=document.getElementById('hamburger');
+  nav.classList.toggle('open');
+  btn.classList.toggle('open');
+  document.body.style.overflow=nav.classList.contains('open')?'hidden':'';
+}
+document.querySelectorAll('#navLinks .nav-link').forEach(function(l){
+  l.addEventListener('click',function(){
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow='';
+  });
+});
 </script>
 
 </body>
