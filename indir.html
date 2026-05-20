@@ -21,15 +21,31 @@
 body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
 
 /* NAV */
-.nav{background:var(--green);padding:20px 40px;display:flex;align-items:center;justify-content:space-between}
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 40px;background:var(--green)}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--goldl));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.nav-logo-text{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff}
+.nav-logo-icon{width:44px;height:44px;background:transparent;border-radius:0;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-logo-icon img{width:44px;height:44px;object-fit:contain}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:.2px}
 .nav-logo-text span{color:var(--goldl)}
-.nav-back{color:rgba(255,255,255,.6);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
-.nav-back:hover{color:#fff}
-@media(max-width:600px){.nav{padding:16px 20px}}
-
+.nav-links{display:flex;align-items:center;gap:6px}
+.nav-link{color:rgba(255,255,255,.65);text-decoration:none;font-size:13px;font-weight:500;padding:8px 14px;border-radius:8px;transition:background .2s,color .2s}
+.nav-link:hover,.nav-link.active{background:rgba(255,255,255,.08);color:#fff}
+.nav-link.primary{background:linear-gradient(135deg,#B8973D,#E8C96A);color:#1a1a1a !important;font-weight:700;padding:8px 18px;transition:transform .2s,box-shadow .2s;box-shadow:0 2px 12px rgba(184,151,61,.2)}
+.nav-link.primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(184,151,61,.35)}
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:9px 10px;border:1.5px solid rgba(184,151,61,.5);background:rgba(184,151,61,.2);border-radius:10px;z-index:9999;position:relative;transition:background .2s}
+.hamburger:hover{background:rgba(184,151,61,.35)}
+.hamburger span{display:block;width:22px;height:2.5px;background:#E8C96A;border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0;transform:translateX(8px)}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-nav-overlay{display:none;position:fixed;inset:0;background:#0f2a20;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:9990;padding:40px 24px}
+.mobile-nav-overlay.open{display:flex}
+.mobile-nav-overlay a{display:block;width:100%;max-width:280px;text-align:center;color:rgba(255,255,255,.85);text-decoration:none;font-size:18px;font-weight:600;padding:15px 24px;border-radius:12px;border:1.5px solid rgba(255,255,255,.12);transition:background .2s,color .2s;font-family:'Inter',sans-serif}
+.mobile-nav-overlay a:hover,.mobile-nav-overlay a:active{background:rgba(255,255,255,.1);color:#fff}
+.mobile-nav-overlay a.primary{background:linear-gradient(135deg,#B8973D,#E8C96A);color:#1a1a1a !important;border-color:transparent;font-weight:700;margin-top:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.mobile-nav-close{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+@media(max-width:768px){.hamburger{display:flex}.nav-links{display:none !important}.nav{padding:14px 20px}}
 /* HERO */
 .hero{background:linear-gradient(160deg,#0a1f17,var(--green));padding:72px 24px;text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(184,151,61,.15),transparent 60%)}
@@ -155,14 +171,20 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
 <!-- NAV -->
 <nav class="nav">
   <a href="index.html" class="nav-logo">
-    <div class="nav-logo-icon"><img src="logo.png" alt="KM Nutrition Pro" style="width:26px;height:26px;object-fit:contain"></div>
+    <div class="nav-logo-icon"><img src="logo.png" alt="KM Nutrition Pro"></div>
     <div class="nav-logo-text">KM <span>Nutrition</span> Pro</div>
   </a>
-  <div style="display:flex;gap:6px;align-items:center">
-    <a href="index.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:500;padding:7px 13px;border-radius:8px">Ana Sayfa</a>
-    <a href="klinik.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:500;padding:7px 13px;border-radius:8px">Klinik</a>
-    <a href="ekran-goruntuleri.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:500;padding:7px 13px;border-radius:8px">Galeri</a>
-    <a href="satin-al.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:500;padding:7px 13px;border-radius:8px">Fiyatlar</a>
+  <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menü">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links">
+    <a href="klinik.html" class="nav-link"><span>Klinik</span></a>
+      <a href="ekran-goruntuleri.html" class="nav-link"><span>Galeri</span></a>
+      <a href="blog.html" class="nav-link"><span>Blog</span></a>
+      <a href="satin-al.html" class="nav-link"><span>Fiyatlar</span></a>
+      <a href="iletisim.html" class="nav-link"><span>İletişim</span></a>
+      <a href="panel.html" class="nav-link" style="display:inline-flex;align-items:center;gap:5px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Hesabım</span></a>
+      <a href="indir.html" class="nav-link primary" style="display:inline-flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> İndir</a>
   </div>
 </nav>
 
@@ -371,5 +393,31 @@ function toggleFaq(el) {
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
   </svg>
 </a>
+<div class="mobile-nav-overlay" id="mobileNavOverlay">
+  <button class="mobile-nav-close" onclick="closeMobileNav()" aria-label="Kapat">✕</button>
+  <a href="index.html">🏠 Ana Sayfa</a>
+  <a href="klinik.html">🏥 Klinik</a>
+  <a href="ekran-goruntuleri.html">📸 Galeri</a>
+  <a href="blog.html">📝 Blog</a>
+  <a href="satin-al.html">💳 Fiyatlar</a>
+  <a href="iletisim.html">📬 İletişim</a>
+  <a href="panel.html">👤 Hesabım</a>
+  <a href="indir.html" class="primary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Ücretsiz İndir</a>
+</div>
+<script>
+function toggleNav(){
+  var o=document.getElementById('mobileNavOverlay');
+  var b=document.getElementById('hamburger');
+  var open=o.classList.toggle('open');
+  b.classList.toggle('open',open);
+  document.body.style.overflow=open?'hidden':'';
+}
+function closeMobileNav(){
+  document.getElementById('mobileNavOverlay').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('#mobileNavOverlay a').forEach(function(l){l.addEventListener('click',closeMobileNav);});
+</script>
 </body>
 </html>
