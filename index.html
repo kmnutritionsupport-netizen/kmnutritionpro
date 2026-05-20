@@ -521,6 +521,142 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
   .hero-cta-row{flex-direction:column;align-items:stretch}
   .hero-cta-row .btn-primary,.hero-cta-row .btn-outline{text-align:center;justify-content:center}
 }
+
+/* ════════════════════════════════════════
+   TASARIM İYİLEŞTİRMELERİ
+   ════════════════════════════════════════ */
+
+/* ─── SCROLL ANIMATIONS ─── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-32px);transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(32px);transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+/* Staggered children */
+.stagger-children > *{opacity:0;transform:translateY(28px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
+.stagger-children.visible > *:nth-child(1){opacity:1;transform:translateY(0);transition-delay:.05s}
+.stagger-children.visible > *:nth-child(2){opacity:1;transform:translateY(0);transition-delay:.15s}
+.stagger-children.visible > *:nth-child(3){opacity:1;transform:translateY(0);transition-delay:.25s}
+.stagger-children.visible > *:nth-child(4){opacity:1;transform:translateY(0);transition-delay:.35s}
+.stagger-children.visible > *:nth-child(5){opacity:1;transform:translateY(0);transition-delay:.45s}
+.stagger-children.visible > *:nth-child(6){opacity:1;transform:translateY(0);transition-delay:.55s}
+
+/* ─── STICKY CTA BAR ─── */
+.sticky-cta{
+  position:fixed;bottom:0;left:0;right:0;z-index:888;
+  background:rgba(10,31,23,.96);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-top:1px solid rgba(184,151,61,.3);
+  padding:12px 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  transform:translateY(100%);
+  transition:transform .4s cubic-bezier(.22,1,.36,1);
+  box-shadow:0 -8px 32px rgba(0,0,0,.3);
+}
+.sticky-cta.visible{transform:translateY(0)}
+.sticky-cta-left{display:flex;flex-direction:column}
+.sticky-cta-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#fff;line-height:1.2}
+.sticky-cta-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:2px}
+.sticky-cta-btn{
+  background:linear-gradient(135deg,#B8973D,#E8C96A);
+  color:#1a1a1a;text-decoration:none;
+  border-radius:10px;padding:11px 22px;
+  font-size:13px;font-weight:700;
+  white-space:nowrap;
+  display:inline-flex;align-items:center;gap:7px;
+  transition:transform .2s,box-shadow .2s;
+  flex-shrink:0;
+}
+.sticky-cta-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(184,151,61,.35)}
+.sticky-cta-close{
+  width:28px;height:28px;border-radius:50%;
+  background:rgba(255,255,255,.08);border:none;
+  color:rgba(255,255,255,.5);font-size:14px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .2s;
+}
+.sticky-cta-close:hover{background:rgba(255,255,255,.15)}
+/* Push WhatsApp button up when sticky bar visible */
+body.sticky-visible .wa-float{bottom:84px !important}
+@media(max-width:480px){
+  .sticky-cta{padding:10px 16px;gap:8px}
+  .sticky-cta-title{font-size:13px}
+  .sticky-cta-sub{display:none}
+  .sticky-cta-btn{padding:10px 16px;font-size:12px}
+}
+
+/* ─── PREMIUM TYPOGRAPHY & COLOR TWEAKS ─── */
+/* Sharper hero heading */
+.hero-h1{letter-spacing:-2px !important}
+@media(max-width:768px){.hero-h1{letter-spacing:-1px !important}}
+
+/* Feature cards — richer hover */
+.feat-card{
+  transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s,border-color .3s !important;
+  will-change:transform;
+}
+.feat-card:hover{
+  transform:translateY(-6px) !important;
+  box-shadow:0 24px 64px rgba(26,60,52,.13) !important;
+  border-color:var(--sagel) !important;
+}
+
+/* Section headers — refined */
+h2.section-title{line-height:1.1 !important}
+
+/* Buttons — polished */
+.btn-primary{
+  letter-spacing:.2px;
+  box-shadow:0 4px 24px rgba(184,151,61,.25);
+}
+.btn-primary:hover{
+  transform:translateY(-3px) !important;
+  box-shadow:0 16px 48px rgba(184,151,61,.4) !important;
+}
+.btn-outline{letter-spacing:.2px}
+
+/* Nav primary link */
+.nav-link.primary{
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 2px 12px rgba(184,151,61,.2);
+}
+.nav-link.primary:hover{
+  transform:translateY(-1px) !important;
+  box-shadow:0 6px 20px rgba(184,151,61,.35) !important;
+}
+
+/* ─── MOBILE HERO REDESIGN ─── */
+.hero-mobile-card{display:none}
+@media(max-width:768px){
+  .hero-mobile-card{
+    display:block;
+    margin:0 20px 8px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    padding:18px 20px;
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  }
+  .hero-mobile-card-top{
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:14px;
+    padding-bottom:12px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+  }
+  .hero-mobile-card-icon{
+    width:36px;height:36px;border-radius:10px;
+    background:linear-gradient(135deg,#B8973D,#E8C96A);
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;flex-shrink:0;
+  }
+  .hero-mobile-card-title{font-size:13px;font-weight:700;color:#fff}
+  .hero-mobile-card-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
+  .hero-mobile-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .hms{text-align:center;background:rgba(255,255,255,.05);border-radius:10px;padding:10px 6px}
+  .hms-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#E8C96A;line-height:1}
+  .hms-lbl{font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+}
 </style>
 
   <!-- SEO Meta Etiketleri -->
@@ -562,7 +698,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
       <a href="ekran-goruntuleri.html" class="nav-link"><span>Galeri</span></a>
       <a href="satin-al.html" class="nav-link"><span>Fiyatlar</span></a>
       <a href="iletisim.html" class="nav-link"><span>İletişim</span></a>
-      <a href="indir.html" class="nav-link primary">⬇ İndir</a>
+      <a href="indir.html" class="nav-link primary" style="display:inline-flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> İndir</a>
     </div>
   </nav>
 
@@ -600,6 +736,24 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(26,60,52,.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 5v14M5 12l7 7 7-7"/>
       </svg>
+    </div>
+
+
+    <!-- Mobil uygulama önizleme kartı -->
+    <div class="hero-mobile-card">
+      <div class="hero-mobile-card-top">
+        <div class="hero-mobile-card-icon">🌿</div>
+        <div>
+          <div class="hero-mobile-card-title">KM Nutrition Pro</div>
+          <div class="hero-mobile-card-sub">Canlı Gösterge Paneli</div>
+        </div>
+        <div style="margin-left:auto;background:rgba(110,231,183,.15);border:1px solid rgba(110,231,183,.3);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:#6ee7b7">● Aktif</div>
+      </div>
+      <div class="hero-mobile-stats">
+        <div class="hms"><div class="hms-val">32</div><div class="hms-lbl">Hasta</div></div>
+        <div class="hms"><div class="hms-val">4</div><div class="hms-lbl">Randevu</div></div>
+        <div class="hms"><div class="hms-val">18K₺</div><div class="hms-lbl">Gelir</div></div>
+      </div>
     </div>
 
     <div class="hero-stats">
@@ -711,7 +865,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
 
 <section class="showcase">
   <div class="showcase-inner">
-    <div class="showcase-header">
+    <div class="showcase-header reveal">
       <div class="showcase-tag">✨ Özellikler</div>
       <h2 class="showcase-title">Her şeyi <em>tek ekranda</em> yönetin</h2>
       <p class="showcase-sub">5 temel modül, sonsuz verimlilik</p>
@@ -962,7 +1116,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
       <h2 style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,42px);font-weight:700;color:#1A3C34;margin-bottom:12px">Diyetisyenler ne diyor?</h2>
       <p style="font-size:15px;color:#64748B;font-weight:300">Gerçek kullanıcı deneyimleri</p>
     </div>
-    <div class="inline-grid-3">
+    <div class="inline-grid-3 stagger-children">
       <div style="background:#F7F4EC;border:1.5px solid #E2DDD5;border-radius:20px;padding:28px">
         <div style="font-size:32px;color:#B8973D;margin-bottom:12px;line-height:1">"</div>
         <p style="font-size:14px;color:#374151;line-height:1.75;margin-bottom:20px;font-style:italic">Hasta başına harcadığım hazırlık süresi yarıya indi. Kan tahlillerini PDF'den okutup anında plana dönüştürebiliyorum. Artık analize değil hastama vakit ayırıyorum.</p>
@@ -1045,12 +1199,12 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
 <!-- ══════════════ FEATURES ══════════════ -->
 <section class="features-section" id="ozellikler">
   <div class="container">
-    <div class="features-header">
+    <div class="features-header reveal">
       <div class="tag">Özellikler</div>
       <h2 class="section-title">Her şey tek yerde</h2>
       <p class="section-sub" style="margin:0 auto">Hasta yönetiminden klinik analize, menü planlamadan finans takibine — diyetisyen ihtiyaçlarının tamamı.</p>
     </div>
-    <div class="features-grid">
+    <div class="features-grid stagger-children">
 
       <div class="feat-card">
         <div class="feat-icon-wrap" style="background:#EBF8FF">🧬</div>
@@ -1137,12 +1291,12 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
 <!-- ══════════════ HOW IT WORKS ══════════════ -->
 <section class="workflow-section" id="nasil-calisir">
   <div class="container">
-    <div class="workflow-header">
+    <div class="workflow-header reveal">
       <div class="tag">İş Akışı</div>
       <h2 class="section-title">4 adımda diyet planı</h2>
       <p class="section-sub" style="margin:0 auto">Hastanın bilgilerini girin, analizi çalıştırın — dakikalar içinde kapsamlı klinik rapor ve menü hazır.</p>
     </div>
-    <div class="workflow-steps">
+    <div class="workflow-steps stagger-children">
       <div class="workflow-step">
         <div class="ws-num">1</div>
         <div class="ws-icon">👤</div>
@@ -1175,7 +1329,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
 <section class="ai-section">
   <div class="container">
     <div class="ai-inner">
-      <div class="ai-panel">
+      <div class="ai-panel reveal-right">
         <div class="ai-panel-title">🤖 AI Destekli Özellikler</div>
         <div class="ai-row">
           <div class="ai-row-icon">🩺</div>
@@ -1212,7 +1366,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
           <div class="ai-eng">🦙 Ollama</div>
         </div>
       </div>
-      <div class="ai-text">
+      <div class="ai-text reveal-left">
         <div class="section-label">Yapay Zeka</div>
         <h2 class="section-title section-title-white">Diyetisyeni<br>destekleyen AI</h2>
         <p class="section-sub">4 farklı AI motorundan biriyle çalışın — ya da internet olmadan Ollama ile tamamen yerel AI kullanın. API anahtarınız güvenliğiniz için yerel bellekte tutulur, hiçbir sunucuya gönderilmez.</p>
@@ -1231,7 +1385,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
   <div class="container">
 
     <div class="detail-grid">
-      <div class="detail-visual">
+      <div class="detail-visual reveal-right">
         <div class="lab-visual">
           <div class="lab-header">
             <div class="lab-header-icon">🩺</div>
@@ -1272,7 +1426,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
           </div>
         </div>
       </div>
-      <div class="detail-text">
+      <div class="detail-text reveal-left">
         <div class="section-label">Kan Tahlili Okuma</div>
         <div class="detail-title">PDF'den otomatik<br>form doldurma</div>
         <div class="detail-desc">e-Nabız veya hastane tahlil PDF'ini sürükleyip bırakın. Sistem 30'dan fazla biyokimyasal parametreyi otomatik okur ve analiz formunu doldurur.</div>
@@ -1286,7 +1440,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
     </div>
 
     <div class="detail-grid reverse">
-      <div class="detail-visual">
+      <div class="detail-visual reveal-left">
         <div style="margin-bottom:10px">
           <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">📅 Mayıs 2026 — 28 Günlük Menü</div>
           <div class="menu-visual">
@@ -1345,7 +1499,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
           ✓ Alerji kısıtları uygulandı &nbsp;|&nbsp; ✓ Protein rotasyonu aktif &nbsp;|&nbsp; ✓ Mevsimsel ürünler tercih edildi
         </div>
       </div>
-      <div class="detail-text">
+      <div class="detail-text reveal-right">
         <div class="section-label">Menü Planlama</div>
         <div class="detail-title">28 günlük kişisel<br>beslenme programı</div>
         <div class="detail-desc">Hasta profiline göre üretilen 28 günlük menü — alerji, hastalık, protein tercihleri ve öğün zamanlaması tam olarak uygulanır.</div>
@@ -1372,7 +1526,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
     </div>
 
     <div class="detail-grid">
-      <div class="detail-visual">
+      <div class="detail-visual reveal-right">
         <div class="fin-visual">
           <div class="fin-summary">
             <div class="fin-card green">
@@ -1413,7 +1567,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
           </div>
         </div>
       </div>
-      <div class="detail-text">
+      <div class="detail-text reveal-left">
         <div class="section-label">Finans Takibi</div>
         <div class="detail-title">Klinik gelir-giderinizi<br>tek ekranda görün</div>
         <div class="detail-desc">Aylık ve yıllık gelir-gider takibi, kategori bazlı analiz ve CSV raporlama ile kliniğinizin mali sağlığını anlık izleyin.</div>
@@ -1432,11 +1586,11 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
 <!-- ══════════════ SPECS ══════════════ -->
 <section class="specs-section">
   <div class="container">
-    <div class="specs-header">
+    <div class="specs-header reveal">
       <div class="tag">Teknik Özellikler</div>
       <h2 class="section-title">Güvenilir & Hızlı</h2>
     </div>
-    <div class="specs-grid">
+    <div class="specs-grid stagger-children">
       <div class="spec-card">
         <div class="spec-icon" style="background:#EBF8FF">💾</div>
         <div class="spec-title">Yerel Veri Depolama</div>
@@ -1509,11 +1663,11 @@ body{font-family:'Inter',sans-serif;background:var(--cream);overflow-x:hidden}
 <!-- ══════════════ USE CASES ══════════════ -->
 <section class="use-section">
   <div class="container">
-    <div class="use-header">
+    <div class="use-header reveal">
       <div class="tag">Kullanım Senaryoları</div>
       <h2 class="section-title">Her diyetisyen için</h2>
     </div>
-    <div class="use-grid">
+    <div class="use-grid stagger-children">
       <div class="use-card">
         <p class="use-quote">"Hasta başına harcadığım hazırlık süresi yarıya indi. Kan tahlillerini PDF'den okutup anında plana dönüştürebiliyorum."</p>
         <div class="use-author">
@@ -1683,7 +1837,7 @@ function toggleFaq(el) {
 
 <!-- ══════════════ CTA ══════════════ -->
 <div class="cta-section">
-  <div class="cta-inner">
+  <div class="cta-inner reveal">
     <div class="cta-tag">Hemen Başlayın</div>
     <h2 class="cta-h2">Kliniğinizi<br>dijitale taşıyın</h2>
     <p class="cta-sub">KM Nutrition Pro ile hasta yönetimini, diyet planlamayı ve klinik analizleri tek platformda, çevrimdışı ve güvenli biçimde yönetin.</p>
@@ -1803,8 +1957,61 @@ document.querySelectorAll('#mobileNavOverlay a').forEach(function(l){
   <a href="ekran-goruntuleri.html">📸 Galeri</a>
   <a href="satin-al.html">💳 Fiyatlar</a>
   <a href="iletisim.html">📬 İletişim</a>
-  <a href="indir.html" class="primary">⬇ İndir</a>
+  <a href="indir.html" class="primary" style="display:inline-flex;align-items:center;justify-content:center;gap:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> İndir</a>
 </div>
+
+
+<!-- ── STICKY CTA BAR ── -->
+<div class="sticky-cta" id="stickyCta">
+  <div class="sticky-cta-left">
+    <div class="sticky-cta-title">KM Nutrition Pro</div>
+    <div class="sticky-cta-sub">7 gün ücretsiz dene · kredi kartı gerekmez</div>
+  </div>
+  <a href="indir.html" class="sticky-cta-btn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Ücretsiz İndir
+  </a>
+  <button class="sticky-cta-close" onclick="dismissStickyCta()" aria-label="Kapat">✕</button>
+</div>
+
+<script>
+/* ── Scroll Reveal ── */
+(function(){
+  var revealEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.stagger-children');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}
+    });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  revealEls.forEach(function(el){io.observe(el);});
+})();
+
+/* ── Sticky CTA Bar ── */
+var heroDone = false;
+var ctaDismissed = false;
+var stickyCta = document.getElementById('stickyCta');
+function checkSticky(){
+  if(ctaDismissed) return;
+  var hero = document.querySelector('.hero');
+  if(!hero) return;
+  var heroBottom = hero.getBoundingClientRect().bottom;
+  if(heroBottom < 0 && !heroDone){
+    stickyCta.classList.add('visible');
+    document.body.classList.add('sticky-visible');
+    heroDone = true;
+  } else if(heroBottom >= 0 && heroDone){
+    stickyCta.classList.remove('visible');
+    document.body.classList.remove('sticky-visible');
+    heroDone = false;
+  }
+}
+window.addEventListener('scroll', checkSticky, {passive:true});
+function dismissStickyCta(){
+  ctaDismissed = true;
+  stickyCta.classList.remove('visible');
+  document.body.classList.remove('sticky-visible');
+}
+</script>
 
 </body>
 </html>
