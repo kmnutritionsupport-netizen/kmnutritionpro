@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — KM Nutrition Pro</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#1A3C34;--green2:#2D6A4F;--gold:#B8973D;--goldl:#E8C96A;--cream:#F7F4EC;--text:#1C1C1C;--muted:#64748B;--border:#E2DDD5}
+body{font-family:'Inter',sans-serif;background:#0f1923;color:#e2e8f0;min-height:100vh}
+
+/* ADMIN NAV */
+.admin-nav{background:#1a2332;border-bottom:1px solid #2d3748;padding:14px 28px;display:flex;align-items:center;justify-content:space-between}
+.admin-logo{display:flex;align-items:center;gap:10px}
+.admin-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--goldl));border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.admin-logo-icon img{width:22px;height:22px;object-fit:contain}
+.admin-logo-text{font-size:15px;font-weight:700;color:#fff}
+.admin-logo-badge{background:#dc2626;color:#fff;font-size:10px;font-weight:700;border-radius:4px;padding:2px 6px;margin-left:8px}
+.admin-nav-right{display:flex;align-items:center;gap:12px}
+.admin-nav-user{font-size:12px;color:#94a3b8}
+.admin-btn{background:#2d3748;border:1px solid #4a5568;color:#e2e8f0;border-radius:7px;padding:7px 14px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif}
+.admin-btn:hover{background:#374151}
+.admin-btn.danger{background:#7f1d1d;border-color:#991b1b;color:#fca5a5}
+
+/* AUTH */
+.auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0f1923;padding:24px}
+.auth-box{background:#1a2332;border:1px solid #2d3748;border-radius:16px;padding:36px;width:100%;max-width:380px}
+.auth-title{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
+.auth-sub{font-size:13px;color:#64748b;margin-bottom:24px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:block}
+.form-input{width:100%;background:#0f1923;border:1px solid #374151;border-radius:8px;padding:11px 14px;font-size:14px;font-family:'Inter',sans-serif;color:#e2e8f0;outline:none}
+.form-input:focus{border-color:#4ade80}
+.btn-primary{width:100%;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+.auth-error{background:#7f1d1d;border:1px solid #991b1b;border-radius:8px;padding:10px 14px;font-size:13px;color:#fca5a5;margin-bottom:14px;display:none}
+
+/* LAYOUT */
+.admin-layout{display:flex;min-height:calc(100vh - 57px)}
+.admin-sidebar{width:220px;background:#1a2332;border-right:1px solid #2d3748;padding:20px 0;flex-shrink:0}
+.sidebar-section{padding:0 12px;margin-bottom:20px}
+.sidebar-label{font-size:10px;font-weight:700;color:#4a5568;text-transform:uppercase;letter-spacing:1px;padding:0 8px;margin-bottom:8px}
+.sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:500;color:#94a3b8;cursor:pointer;transition:all .2s;text-decoration:none}
+.sidebar-link:hover,.sidebar-link.active{background:#2d3748;color:#fff}
+.sidebar-link .badge{margin-left:auto;background:#dc2626;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:2px 7px}
+
+/* MAIN */
+.admin-main{flex:1;padding:28px;overflow-x:hidden}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:6px}
+.page-sub{font-size:13px;color:#64748b;margin-bottom:24px}
+
+/* KPI Cards */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.kpi-card{background:#1a2332;border:1px solid #2d3748;border-radius:14px;padding:20px}
+.kpi-icon{font-size:22px;margin-bottom:10px}
+.kpi-val{font-size:28px;font-weight:700;color:#fff;line-height:1}
+.kpi-label{font-size:12px;color:#64748b;margin-top:4px}
+.kpi-trend{font-size:11px;margin-top:6px}
+.kpi-trend.up{color:#4ade80}
+.kpi-trend.down{color:#f87171}
+
+/* Table */
+.table-card{background:#1a2332;border:1px solid #2d3748;border-radius:14px;overflow:hidden;margin-bottom:24px}
+.table-header{padding:16px 20px;border-bottom:1px solid #2d3748;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.table-title{font-size:15px;font-weight:700;color:#fff}
+.table-actions{display:flex;gap:8px}
+.search-input{background:#0f1923;border:1px solid #374151;border-radius:8px;padding:8px 14px;font-size:13px;font-family:'Inter',sans-serif;color:#e2e8f0;outline:none;width:220px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #2d3748;white-space:nowrap}
+td{padding:13px 16px;font-size:13px;border-bottom:1px solid #1e2a3a;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+.badge{border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700}
+.badge.active{background:#14532d;color:#4ade80}
+.badge.trial{background:#1e3a5f;color:#93c5fd}
+.badge.pending{background:#78350f;color:#fcd34d}
+.badge.expired{background:#7f1d1d;color:#fca5a5}
+.badge.cancelled{background:#1f2937;color:#9ca3af}
+.badge.paid{background:#14532d;color:#4ade80}
+
+/* Action buttons */
+.act-btn{background:#2d3748;border:1px solid #4a5568;color:#e2e8f0;border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;white-space:nowrap}
+.act-btn:hover{background:#374151}
+.act-btn.green{background:#14532d;border-color:#166534;color:#4ade80}
+.act-btn.green:hover{background:#166534}
+.act-btn.red{background:#7f1d1d;border-color:#991b1b;color:#fca5a5}
+.act-btn.red:hover{background:#991b1b}
+.act-btn.gold{background:#78350f;border-color:#92400e;color:#fcd34d}
+.act-btn.gold:hover{background:#92400e}
+
+/* Form card */
+.form-card{background:#1a2332;border:1px solid #2d3748;border-radius:14px;padding:24px;margin-bottom:20px}
+.form-card-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #2d3748}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{margin-bottom:16px}
+.form-label-dark{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:block}
+.form-select{width:100%;background:#0f1923;border:1px solid #374151;border-radius:8px;padding:11px 14px;font-size:14px;font-family:'Inter',sans-serif;color:#e2e8f0;outline:none}
+.form-input-dark{width:100%;background:#0f1923;border:1px solid #374151;border-radius:8px;padding:11px 14px;font-size:14px;font-family:'Inter',sans-serif;color:#e2e8f0;outline:none}
+.form-input-dark:focus,.form-select:focus{border-color:#4ade80}
+.btn-green{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:transform .2s}
+.btn-green:hover{transform:translateY(-1px)}
+
+/* Toast */
+.toast{position:fixed;top:20px;right:20px;background:#1a2332;border:1px solid #2d3748;border-radius:12px;padding:14px 20px;font-size:13px;color:#e2e8f0;box-shadow:0 8px 32px rgba(0,0,0,.4);z-index:9999;transform:translateX(120%);transition:transform .3s;max-width:320px}
+.toast.show{transform:translateX(0)}
+.toast.success{border-color:#16a34a;color:#4ade80}
+.toast.error{border-color:#dc2626;color:#fca5a5}
+
+/* Loading */
+.loading{display:flex;align-items:center;justify-content:center;min-height:200px}
+.spinner{width:32px;height:32px;border:2px solid #2d3748;border-top-color:#4ade80;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Empty state */
+.empty{text-align:center;padding:40px;color:#4a5568}
+.empty-icon{font-size:40px;margin-bottom:12px}
+
+@media(max-width:900px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .admin-sidebar{display:none}
+  .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- AUTH -->
+<div class="auth-screen" id="authScreen">
+  <div class="auth-box">
+    <div style="font-size:32px;margin-bottom:16px">🔐</div>
+    <div class="auth-title">Admin Girişi</div>
+    <div class="auth-sub">KM Nutrition Pro yönetim paneli</div>
+    <div id="authError" class="auth-error"></div>
+    <div class="form-group">
+      <label class="form-label">E-posta</label>
+      <input type="email" class="form-input" id="adminEmail" placeholder="admin@email.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Şifre</label>
+      <input type="password" class="form-input" id="adminPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()">
+    </div>
+    <button class="btn-primary" onclick="adminLogin()">Giriş Yap</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" style="display:none">
+  <nav class="admin-nav">
+    <div class="admin-logo">
+      <div class="admin-logo-icon"><img src="logo.png" alt=""></div>
+      <div class="admin-logo-text">KM Nutrition Pro</div>
+      <span class="admin-logo-badge">ADMIN</span>
+    </div>
+    <div class="admin-nav-right">
+      <span class="admin-nav-user" id="adminNavEmail"></span>
+      <button class="admin-btn" onclick="window.open('index.html','_blank')">🌐 Siteye Git</button>
+      <button class="admin-btn danger" onclick="adminSignOut()">Çıkış</button>
+    </div>
+  </nav>
+
+  <div class="admin-layout">
+    <!-- SIDEBAR -->
+    <div class="admin-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Genel</div>
+        <div class="sidebar-link active" onclick="showPage('dashboard',this)">📊 Gösterge Paneli</div>
+        <div class="sidebar-link" onclick="showPage('users',this)">👥 Kullanıcılar</div>
+        <div class="sidebar-link" onclick="showPage('subscriptions',this)">🔑 Abonelikler <span class="badge" id="pendingBadge" style="display:none">0</span></div>
+        <div class="sidebar-link" onclick="showPage('orders',this)">💳 Siparişler</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">İşlemler</div>
+        <div class="sidebar-link" onclick="showPage('addSub',this)">➕ Abonelik Ekle</div>
+        <div class="sidebar-link" onclick="showPage('addOrder',this)">💰 Sipariş Ekle</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Site</div>
+        <a href="panel.html" target="_blank" class="sidebar-link">👤 Kullanıcı Paneli</a>
+        <a href="satin-al.html" target="_blank" class="sidebar-link">💳 Fiyatlar</a>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="admin-main">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-title">Gösterge Paneli</div>
+        <div class="page-sub">Genel bakış ve özet istatistikler</div>
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon">👥</div><div class="kpi-val" id="kpiUsers">—</div><div class="kpi-label">Toplam Kullanıcı</div></div>
+          <div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-val" id="kpiActive">—</div><div class="kpi-label">Aktif Abonelik</div></div>
+          <div class="kpi-card"><div class="kpi-icon">⏳</div><div class="kpi-val" id="kpiPending">—</div><div class="kpi-label">Onay Bekliyor</div></div>
+          <div class="kpi-card"><div class="kpi-icon">💰</div><div class="kpi-val" id="kpiRevenue">—</div><div class="kpi-label">Toplam Gelir</div></div>
+        </div>
+        <div class="table-card">
+          <div class="table-header"><div class="table-title">⏳ Onay Bekleyen Abonelikler</div></div>
+          <div class="table-wrap"><table><thead><tr><th>Kullanıcı</th><th>Plan</th><th>Tarih</th><th>İşlem</th></tr></thead><tbody id="pendingTable"><tr><td colspan="4"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div class="page" id="page-users">
+        <div class="page-title">Kullanıcılar</div>
+        <div class="page-sub">Kayıtlı tüm kullanıcılar</div>
+        <div class="table-card">
+          <div class="table-header">
+            <div class="table-title">Kullanıcı Listesi</div>
+            <input type="text" class="search-input" placeholder="İsim veya e-posta ara..." oninput="filterUsers(this.value)">
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Ad Soyad</th><th>E-posta</th><th>Telefon</th><th>Kayıt Tarihi</th><th>Abonelik</th><th>İşlem</th></tr></thead><tbody id="usersTable"><tr><td colspan="6"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- SUBSCRIPTIONS -->
+      <div class="page" id="page-subscriptions">
+        <div class="page-title">Abonelikler</div>
+        <div class="page-sub">Tüm abonelik kayıtları</div>
+        <div class="table-card">
+          <div class="table-header"><div class="table-title">Abonelik Listesi</div></div>
+          <div class="table-wrap"><table><thead><tr><th>Kullanıcı</th><th>Plan</th><th>Durum</th><th>Başlangıç</th><th>Bitiş</th><th>Lisans Key</th><th>İşlem</th></tr></thead><tbody id="subsTable"><tr><td colspan="7"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- ORDERS -->
+      <div class="page" id="page-orders">
+        <div class="page-title">Siparişler</div>
+        <div class="page-sub">Tüm satın alma geçmişi</div>
+        <div class="table-card">
+          <div class="table-header"><div class="table-title">Sipariş Listesi</div></div>
+          <div class="table-wrap"><table><thead><tr><th>Kullanıcı</th><th>Plan</th><th>Tutar</th><th>Durum</th><th>Tarih</th><th>Not</th></tr></thead><tbody id="ordersTable"><tr><td colspan="6"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- ADD SUBSCRIPTION -->
+      <div class="page" id="page-addSub">
+        <div class="page-title">Abonelik Ekle / Güncelle</div>
+        <div class="page-sub">Kullanıcıya manuel abonelik tanımla veya güncelle</div>
+        <div class="form-card">
+          <div class="form-card-title">Abonelik Bilgileri</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label-dark">Kullanıcı ID veya E-posta *</label>
+              <input type="text" class="form-input-dark" id="subUserId" placeholder="Kullanıcı ID veya e-posta">
+            </div>
+            <div class="form-group">
+              <label class="form-label-dark">Plan *</label>
+              <select class="form-select" id="subPlan">
+                <option value="trial">7 Günlük Deneme</option>
+                <option value="monthly">Aylık Plan (699₺)</option>
+                <option value="yearly">Yıllık Plan (5.990₺)</option>
+                <option value="lifetime">Ömür Boyu Lisans</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label-dark">Durum *</label>
+              <select class="form-select" id="subStatus">
+                <option value="active">Aktif</option>
+                <option value="trial">Deneme</option>
+                <option value="pending">Bekliyor</option>
+                <option value="expired">Süresi Doldu</option>
+                <option value="cancelled">İptal</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label-dark">Lisans Anahtarı</label>
+              <div style="display:flex;gap:8px">
+                <input type="text" class="form-input-dark" id="subLicenseKey" placeholder="Otomatik oluştur veya gir" style="flex:1">
+                <button class="act-btn gold" onclick="generateKey()">Oluştur</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label-dark">Başlangıç Tarihi *</label>
+              <input type="date" class="form-input-dark" id="subStartDate">
+            </div>
+            <div class="form-group">
+              <label class="form-label-dark">Bitiş Tarihi *</label>
+              <input type="date" class="form-input-dark" id="subEndDate">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label-dark">Not (isteğe bağlı)</label>
+            <input type="text" class="form-input-dark" id="subNote" placeholder="Ödeme notu, dekont no vb.">
+          </div>
+          <button class="btn-green" onclick="saveSubscription()">💾 Aboneliği Kaydet</button>
+        </div>
+      </div>
+
+      <!-- ADD ORDER -->
+      <div class="page" id="page-addOrder">
+        <div class="page-title">Sipariş Ekle</div>
+        <div class="page-sub">Havale/EFT ödemelerini manuel kaydet</div>
+        <div class="form-card">
+          <div class="form-card-title">Sipariş Bilgileri</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label-dark">Kullanıcı ID *</label>
+              <input type="text" class="form-input-dark" id="orderUserId" placeholder="Kullanıcı ID">
+            </div>
+            <div class="form-group">
+              <label class="form-label-dark">Plan *</label>
+              <select class="form-select" id="orderPlan">
+                <option value="monthly">Aylık Plan</option>
+                <option value="yearly">Yıllık Plan</option>
+                <option value="lifetime">Ömür Boyu</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label-dark">Tutar (₺) *</label>
+              <input type="number" class="form-input-dark" id="orderAmount" placeholder="699">
+            </div>
+            <div class="form-group">
+              <label class="form-label-dark">Ödeme Yöntemi</label>
+              <select class="form-select" id="orderMethod">
+                <option value="bank_transfer">Havale/EFT</option>
+                <option value="card">Kredi Kartı</option>
+                <option value="other">Diğer</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label-dark">Durum</label>
+              <select class="form-select" id="orderStatus">
+                <option value="paid">Ödendi</option>
+                <option value="pending">Bekliyor</option>
+                <option value="cancelled">İptal</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label-dark">Not</label>
+            <input type="text" class="form-input-dark" id="orderNote" placeholder="Dekont no, açıklama vb.">
+          </div>
+          <button class="btn-green" onclick="saveOrder()">💾 Siparişi Kaydet</button>
+        </div>
+      </div>
+
+    </div><!-- /admin-main -->
+  </div><!-- /admin-layout -->
+</div><!-- /adminPanel -->
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut as fbSignOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, setDoc, getDoc, query, orderBy, where, serverTimestamp, Timestamp, addDoc } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+const ADMIN_EMAIL = "kmnutritionsupport@gmail.com"; // Bunu kendi admin e-postanla değiştir
+
+const app = initializeApp({
+  apiKey: "AIzaSyCoOGEpRbVjP1Y31swQBx9SfnRQND6zIuE",
+  authDomain: "km-nutrition-web.firebaseapp.com",
+  projectId: "km-nutrition-web",
+  storageBucket: "km-nutrition-web.firebasestorage.app",
+  messagingSenderId: "1086344971047",
+  appId: "1:1086344971047:web:37b111568022b300865f02"
+});
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let allUsers=[], allSubs=[], allOrders=[];
+
+function toast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = (type==='success'?'✓ ':type==='error'?'✗ ':'') + msg;
+  t.className = 'toast show ' + type;
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+function fmtDate(d){ if(!d) return '—'; const date = d.toDate?d.toDate():new Date(d); return new Intl.DateTimeFormat('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric'}).format(date); }
+function planLabel(p){ return {monthly:'Aylık',yearly:'Yıllık',trial:'Deneme',lifetime:'Ömür Boyu'}[p]||p||'—'; }
+
+onAuthStateChanged(auth, async (user) => {
+  if (user && user.email === ADMIN_EMAIL) {
+    document.getElementById('authScreen').style.display='none';
+    document.getElementById('adminPanel').style.display='block';
+    document.getElementById('adminNavEmail').textContent = user.email;
+    await loadAllData();
+  } else if (user) {
+    await fbSignOut(auth);
+    document.getElementById('authError').textContent='Yetkisiz erişim.';
+    document.getElementById('authError').style.display='block';
+  }
+});
+
+async function loadAllData() {
+  await Promise.all([loadUsers(), loadSubscriptions(), loadOrders()]);
+  updateKPIs();
+  renderPendingTable();
+}
+
+async function loadUsers() {
+  const snap = await getDocs(collection(db,'users')).catch(()=>({docs:[]}));
+  allUsers = snap.docs.map(d=>({id:d.id,...d.data()}));
+  document.getElementById('kpiUsers').textContent = allUsers.length;
+  renderUsersTable(allUsers);
+}
+
+async function loadSubscriptions() {
+  const snap = await getDocs(collection(db,'subscriptions')).catch(()=>({docs:[]}));
+  allSubs = snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderSubsTable(allSubs);
+}
+
+async function loadOrders() {
+  const snap = await getDocs(collection(db,'orders')).catch(()=>({docs:[]}));
+  allOrders = snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderOrdersTable(allOrders);
+}
+
+function updateKPIs() {
+  const active = allSubs.filter(s=>s.status==='active').length;
+  const pending = allSubs.filter(s=>s.status==='pending').length;
+  const revenue = allOrders.filter(o=>o.status==='paid').reduce((sum,o)=>sum+(o.amount||0),0);
+  document.getElementById('kpiActive').textContent = active;
+  document.getElementById('kpiPending').textContent = pending;
+  document.getElementById('kpiRevenue').textContent = revenue.toLocaleString('tr-TR')+'₺';
+  if(pending>0){ document.getElementById('pendingBadge').textContent=pending; document.getElementById('pendingBadge').style.display=''; }
+}
+
+function getUserName(uid) {
+  const u = allUsers.find(u=>u.id===uid);
+  return u ? (u.name||u.email||uid) : uid;
+}
+
+function renderPendingTable() {
+  const pending = allSubs.filter(s=>s.status==='pending');
+  const tbody = document.getElementById('pendingTable');
+  if(pending.length===0){ tbody.innerHTML='<tr><td colspan="4"><div class="empty"><div class="empty-icon">✅</div>Bekleyen abonelik yok</div></td></tr>'; return; }
+  tbody.innerHTML = pending.map(s=>`
+    <tr>
+      <td>${getUserName(s.id)}</td>
+      <td>${planLabel(s.plan)}</td>
+      <td>${fmtDate(s.createdAt)}</td>
+      <td style="display:flex;gap:6px">
+        <button class="act-btn green" onclick="approveSub('${s.id}')">✓ Onayla</button>
+        <button class="act-btn red" onclick="rejectSub('${s.id}')">✗ Reddet</button>
+      </td>
+    </tr>`).join('');
+}
+
+function renderUsersTable(users) {
+  const tbody = document.getElementById('usersTable');
+  if(users.length===0){ tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">👥</div>Kullanıcı bulunamadı</div></td></tr>'; return; }
+  const subMap = {};
+  allSubs.forEach(s=>subMap[s.id]=s);
+  tbody.innerHTML = users.map(u=>{
+    const sub = subMap[u.id];
+    const statusBadge = sub ? `<span class="badge ${sub.status}">${{active:'Aktif',trial:'Deneme',pending:'Bekliyor',expired:'Doldu',cancelled:'İptal'}[sub.status]||sub.status}</span>` : '<span class="badge cancelled">Yok</span>';
+    return `<tr>
+      <td>${u.name||'—'}</td>
+      <td style="color:#94a3b8">${u.email||'—'}</td>
+      <td>${u.phone||'—'}</td>
+      <td>${fmtDate(u.createdAt)}</td>
+      <td>${statusBadge}</td>
+      <td><button class="act-btn gold" onclick="goAddSub('${u.id}')">Abonelik Ekle</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderSubsTable(subs) {
+  const tbody = document.getElementById('subsTable');
+  if(subs.length===0){ tbody.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-icon">🔑</div>Abonelik bulunamadı</div></td></tr>'; return; }
+  tbody.innerHTML = subs.map(s=>`
+    <tr>
+      <td>${getUserName(s.id)}</td>
+      <td>${planLabel(s.plan)}</td>
+      <td><span class="badge ${s.status}">${{active:'Aktif',trial:'Deneme',pending:'Bekliyor',expired:'Doldu',cancelled:'İptal'}[s.status]||s.status}</span></td>
+      <td>${fmtDate(s.startDate)}</td>
+      <td>${fmtDate(s.endDate)}</td>
+      <td style="font-family:monospace;font-size:11px;color:#94a3b8">${s.licenseKey||'—'}</td>
+      <td style="display:flex;gap:4px;flex-wrap:wrap">
+        <button class="act-btn green" onclick="approveSub('${s.id}')">Onayla</button>
+        <button class="act-btn red" onclick="rejectSub('${s.id}')">İptal</button>
+      </td>
+    </tr>`).join('');
+}
+
+function renderOrdersTable(orders) {
+  const tbody = document.getElementById('ordersTable');
+  if(orders.length===0){ tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">💳</div>Sipariş bulunamadı</div></td></tr>'; return; }
+  tbody.innerHTML = orders.map(o=>`
+    <tr>
+      <td>${getUserName(o.userId)}</td>
+      <td>${planLabel(o.plan)}</td>
+      <td style="font-weight:700;color:#4ade80">${o.amount?o.amount.toLocaleString('tr-TR')+'₺':'—'}</td>
+      <td><span class="badge ${o.status==='paid'?'paid':o.status==='pending'?'pending':'expired'}">${o.status==='paid'?'Ödendi':o.status==='pending'?'Bekliyor':'İptal'}</span></td>
+      <td>${fmtDate(o.createdAt)}</td>
+      <td style="color:#64748b;font-size:12px">${o.note||'—'}</td>
+    </tr>`).join('');
+}
+
+// ── Actions ──
+window.approveSub = async function(uid) {
+  const sub = allSubs.find(s=>s.id===uid);
+  if(!sub) return;
+  const endDate = new Date();
+  if(sub.plan==='monthly') endDate.setMonth(endDate.getMonth()+1);
+  else if(sub.plan==='yearly') endDate.setFullYear(endDate.getFullYear()+1);
+  else if(sub.plan==='trial') endDate.setDate(endDate.getDate()+7);
+  else endDate.setFullYear(endDate.getFullYear()+99);
+  await setDoc(doc(db,'subscriptions',uid),{ status:'active', startDate:Timestamp.now(), endDate:Timestamp.fromDate(endDate) },{merge:true});
+  toast('Abonelik onaylandı!');
+  await loadAllData();
+};
+
+window.rejectSub = async function(uid) {
+  await setDoc(doc(db,'subscriptions',uid),{status:'cancelled'},{merge:true});
+  toast('Abonelik iptal edildi.','error');
+  await loadAllData();
+};
+
+window.goAddSub = function(uid) {
+  document.getElementById('subUserId').value = uid;
+  showPage('addSub', document.querySelector('[onclick*="addSub"]'));
+};
+
+window.filterUsers = function(val) {
+  const filtered = allUsers.filter(u=>(u.name||'').toLowerCase().includes(val.toLowerCase())||(u.email||'').toLowerCase().includes(val.toLowerCase()));
+  renderUsersTable(filtered);
+};
+
+window.generateKey = function() {
+  const key = 'KMN-'+Math.random().toString(36).substr(2,4).toUpperCase()+'-'+Math.random().toString(36).substr(2,4).toUpperCase()+'-'+Math.random().toString(36).substr(2,4).toUpperCase();
+  document.getElementById('subLicenseKey').value = key;
+};
+
+window.saveSubscription = async function() {
+  const userId = document.getElementById('subUserId').value.trim();
+  const plan = document.getElementById('subPlan').value;
+  const status = document.getElementById('subStatus').value;
+  const licenseKey = document.getElementById('subLicenseKey').value.trim();
+  const startDateVal = document.getElementById('subStartDate').value;
+  const endDateVal = document.getElementById('subEndDate').value;
+  const note = document.getElementById('subNote').value.trim();
+  if(!userId||!startDateVal||!endDateVal){ toast('Zorunlu alanları doldurun.','error'); return; }
+  const data = { plan, status, licenseKey, note, updatedAt:serverTimestamp(), startDate:Timestamp.fromDate(new Date(startDateVal)), endDate:Timestamp.fromDate(new Date(endDateVal)) };
+  await setDoc(doc(db,'subscriptions',userId), data, {merge:true});
+  toast('Abonelik kaydedildi!');
+  await loadAllData();
+};
+
+window.saveOrder = async function() {
+  const userId = document.getElementById('orderUserId').value.trim();
+  const plan = document.getElementById('orderPlan').value;
+  const amount = parseFloat(document.getElementById('orderAmount').value);
+  const method = document.getElementById('orderMethod').value;
+  const status = document.getElementById('orderStatus').value;
+  const note = document.getElementById('orderNote').value.trim();
+  if(!userId||!amount){ toast('Zorunlu alanları doldurun.','error'); return; }
+  await addDoc(collection(db,'orders'),{ userId, plan, amount, method, status, note, createdAt:serverTimestamp() });
+  toast('Sipariş kaydedildi!');
+  await loadOrders();
+};
+
+window.adminLogin = async function() {
+  const email = document.getElementById('adminEmail').value.trim();
+  const pass = document.getElementById('adminPassword').value;
+  if(!email||!pass){ document.getElementById('authError').textContent='Tüm alanları doldurun.'; document.getElementById('authError').style.display='block'; return; }
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch(e) {
+    document.getElementById('authError').textContent='Giriş başarısız. E-posta veya şifre hatalı.';
+    document.getElementById('authError').style.display='block';
+  }
+};
+
+window.adminSignOut = async function(){ await fbSignOut(auth); location.reload(); };
+
+window.showPage = function(page, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  if(el) el.classList.add('active');
+  // Set default dates for add sub
+  if(page==='addSub'){ const today=new Date().toISOString().split('T')[0]; document.getElementById('subStartDate').value=today; }
+};
+
+// Set today's date default
+window.addEventListener('load',()=>{ const today=new Date().toISOString().split('T')[0]; const sd=document.getElementById('subStartDate'); if(sd)sd.value=today; });
+</script>
+</body>
+</html>
