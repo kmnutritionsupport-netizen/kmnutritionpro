@@ -166,6 +166,8 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);mi
 .request-success-desc{font-size:13px;color:#166534}
 @media(max-width:480px){.plan-cards{grid-template-columns:1fr}}
 </style>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">emailjs.init("mZ72iIn9mrvTXUJ1E");</script>
 </head>
 <body>
 
@@ -700,24 +702,44 @@ window.sendPurchaseRequest = async function() {
   btn.innerHTML = '⏳ Gönderiliyor...';
   try {
     const note = document.getElementById('requestNote').value.trim();
-    const amount = selectedPlan === 'monthly' ? 699 : 5990;
+    const planLabel = selectedPlan === 'monthly' ? 'Aylık Plan' : 'Yıllık Plan';
+    const amount = selectedPlan === 'monthly' ? '699₺' : '5.990₺';
+    const userName = user.displayName || user.email;
+
+    // Firestore'a sipariş kaydet
     await addDoc(collection(db,'orders'), {
       userId: user.uid,
       userEmail: user.email,
-      userName: user.displayName || user.email,
+      userName: userName,
       plan: selectedPlan,
-      amount,
+      amount: selectedPlan === 'monthly' ? 699 : 5990,
       method: 'bank_transfer',
       status: 'pending',
       note: note || '',
       createdAt: serverTimestamp()
     });
+
     // Firestore'da pending subscription oluştur
     await setDoc(doc(db,'subscriptions',user.uid), {
       plan: selectedPlan,
       status: 'pending',
       createdAt: serverTimestamp()
     }, { merge: true });
+
+    // EmailJS ile admin'e bildirim gönder
+    try {
+      await emailjs.send('km_nutrition', 'template_4te3qsc', {
+        user_name: userName,
+        user_email: user.email,
+        plan: planLabel,
+        amount: amount,
+        note: note || 'Belirtilmedi'
+      });
+    } catch(emailErr) {
+      console.warn('EmailJS hatası:', emailErr);
+      // E-posta başarısız olsa bile sipariş kaydedildi
+    }
+
     document.getElementById('purchaseForm').style.display = 'none';
     document.getElementById('requestSuccess').style.display = 'block';
   } catch(e) {
