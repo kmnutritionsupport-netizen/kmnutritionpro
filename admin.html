@@ -176,23 +176,14 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .article-row{cursor:pointer;transition:background .15s}
 .article-row:hover td{background:rgba(74,222,128,.04) !important}
 
-.init-loading{position:fixed;inset:0;background:#0f1923;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
-.init-loading .spinner{width:36px;height:36px;border:3px solid #2d3748;border-top-color:#4ade80;border-radius:50%;animation:spin .8s linear infinite}
-.init-loading p{font-size:13px;color:#64748b}
 </style>
 </head>
 <body>
 
 <div class="toast" id="toast"></div>
 
-<!-- INIT LOADING -->
-<div class="init-loading" id="initLoading">
-  <div class="spinner"></div>
-  <p>Yükleniyor...</p>
-</div>
-
 <!-- AUTH -->
-<div class="auth-screen" id="authScreen" style="display:none">
+<div class="auth-screen" id="authScreen">
   <div class="auth-box">
     <div style="text-align:center;margin-bottom:24px">
       <div style="font-size:40px;margin-bottom:12px">🔐</div>
@@ -596,16 +587,7 @@ function toast(msg, type='success') {
 function fmtDate(d){ if(!d) return '—'; const date = d.toDate?d.toDate():new Date(d); return new Intl.DateTimeFormat('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric'}).format(date); }
 function planLabel(p){ return {monthly:'Aylık',yearly:'Yıllık',trial:'Deneme',lifetime:'Ömür Boyu'}[p]||p||'—'; }
 
-// Timeout: 5 sn içinde auth gelmezse login göster
-const authTimeout = setTimeout(() => {
-  document.getElementById('initLoading').style.display = 'none';
-  document.getElementById('authScreen').style.display = 'flex';
-}, 5000);
-
 onAuthStateChanged(auth, async (user) => {
-  clearTimeout(authTimeout);
-  document.getElementById('initLoading').style.display = 'none';
-  
   if (user && user.email === ADMIN_EMAIL) {
     document.getElementById('authScreen').style.display = 'none';
     document.getElementById('adminPanel').style.display = 'block';
@@ -613,12 +595,10 @@ onAuthStateChanged(auth, async (user) => {
     await loadAllData();
   } else if (user) {
     await fbSignOut(auth);
-    document.getElementById('authScreen').style.display = 'flex';
     document.getElementById('authError').textContent = 'Bu hesabın admin yetkisi yok: ' + user.email;
     document.getElementById('authError').style.display = 'block';
-  } else {
-    document.getElementById('authScreen').style.display = 'flex';
   }
+  // user null ise login ekranı zaten görünüyor
 });
 
 async function loadAllData() {
