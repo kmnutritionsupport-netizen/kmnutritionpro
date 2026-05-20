@@ -91,6 +91,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .act-btn.green{background:#14532d;border-color:#166534;color:#4ade80}
 .act-btn.green:hover{background:#166534}
 .act-btn.red{background:#7f1d1d;border-color:#991b1b;color:#fca5a5}
+.act-btn.gold{background:#78350f;border-color:#92400e;color:#fcd34d}
 .act-btn.red:hover{background:#991b1b}
 .act-btn.gold{background:#78350f;border-color:#92400e;color:#fcd34d}
 .act-btn.gold:hover{background:#92400e}
@@ -546,7 +547,9 @@ function renderSubsTable(subs) {
   if(subs.length===0){ tbody.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-icon">🔑</div>Abonelik bulunamadı</div></td></tr>'; return; }
   tbody.innerHTML = subs.map(s=>{
     const statusLabel = {active:'Aktif',trial:'Deneme',pending:'Bekliyor',expired:'Doldu',cancelled:'İptal'};
-    const isCancelled = s.status === 'cancelled' || s.status === 'expired';
+    const isPending   = s.status === 'pending';
+    const isActive    = s.status === 'active' || s.status === 'trial';
+    const isDone      = s.status === 'cancelled' || s.status === 'expired';
     return `<tr>
       <td>${getUserName(s.id)}</td>
       <td>${planLabel(s.plan)}</td>
@@ -555,9 +558,11 @@ function renderSubsTable(subs) {
       <td>${fmtDate(s.endDate)}</td>
       <td style="font-family:monospace;font-size:11px;color:#94a3b8">${s.licenseKey||'—'}</td>
       <td style="display:flex;gap:4px;flex-wrap:wrap">
-        ${!isCancelled ? `<button class="act-btn green" onclick="approveSub('${s.id}')">Onayla</button>` : ''}
-        ${!isCancelled ? `<button class="act-btn red" onclick="rejectSub('${s.id}')">İptal Et</button>` : ''}
-        ${isCancelled ? `<button class="act-btn red" onclick="deleteSub('${s.id}')">🗑 Sil</button>` : ''}
+        ${isPending ? `<button class="act-btn green" onclick="approveSub('${s.id}')">✓ Onayla</button>` : ''}
+        ${isPending ? `<button class="act-btn" onclick="deleteSub('${s.id}')">🗑</button>` : ''}
+        ${isActive  ? `<button class="act-btn gold" onclick="extendSub('${s.id}')">↻ Uzat</button>` : ''}
+        ${isActive  ? `<button class="act-btn red" onclick="rejectSub('${s.id}')">✕ İptal</button>` : ''}
+        ${isDone    ? `<button class="act-btn red" onclick="deleteSub('${s.id}')">🗑 Sil</button>` : ''}
       </td>
     </tr>`;
   }).join('');
@@ -586,6 +591,23 @@ function renderOrdersTable(orders) {
 }
 
 // ── Actions ──
+window.extendSub = async function(uid) {
+  const sub = allSubs.find(s=>s.id===uid);
+  if(!sub) return;
+  if(!confirm('Aboneliği bir dönem uzatmak istediğinize emin misiniz?')) return;
+  const currentEnd = sub.endDate ? sub.endDate.toDate() : new Date();
+  const newEnd = new Date(currentEnd);
+  if(sub.plan==='monthly') newEnd.setMonth(newEnd.getMonth()+1);
+  else if(sub.plan==='yearly') newEnd.setFullYear(newEnd.getFullYear()+1);
+  else newEnd.setDate(newEnd.getDate()+7);
+  await setDoc(doc(db,'subscriptions',uid),{endDate:Timestamp.fromDate(newEnd)},{merge:true});
+  const idx = allSubs.findIndex(s=>s.id===uid);
+  if(idx>=0) allSubs[idx] = {...allSubs[idx], endDate:{toDate:()=>newEnd}};
+  renderSubsTable(allSubs);
+  toast('✓ Abonelik uzatıldı');
+  loadAllData();
+};
+
 window.approveSub = async function(uid) {
   const sub = allSubs.find(s=>s.id===uid);
   if(!sub) return;
@@ -595,8 +617,14 @@ window.approveSub = async function(uid) {
   else if(sub.plan==='trial') endDate.setDate(endDate.getDate()+7);
   else endDate.setFullYear(endDate.getFullYear()+99);
   await setDoc(doc(db,'subscriptions',uid),{ status:'active', startDate:Timestamp.now(), endDate:Timestamp.fromDate(endDate) },{merge:true});
-  toast('Abonelik onaylandı!');
-  await loadAllData();
+  // Lokal array'i hemen güncelle
+  const idx = allSubs.findIndex(s=>s.id===uid);
+  if(idx>=0) allSubs[idx] = {...allSubs[idx], status:'active', endDate:{toDate:()=>endDate}};
+  renderSubsTable(allSubs);
+  renderPendingTable();
+  updateKPIs();
+  toast('✓ Abonelik onaylandı!');
+  loadAllData();
 };
 
 window.rejectSub = async function(uid) {
