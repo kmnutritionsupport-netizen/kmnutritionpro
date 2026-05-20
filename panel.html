@@ -543,8 +543,13 @@ window.loginGoogle = async function() {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
     await setDoc(doc(db,'users',user.uid), { name:user.displayName, email:user.email, photo:user.photoURL, updatedAt:serverTimestamp() }, { merge:true });
+    // Admin kontrolü — Google girişinde de yönlendir
+    if (user.email === ADMIN_EMAIL) {
+      window.location.href = 'admin.html';
+      return;
+    }
   } catch(e) {
-    if (e.code !== 'auth/popup-closed-by-user') showError('Google girişi başarısız.');
+    if (e.code !== 'auth/popup-closed-by-user') showError('Google girişi başarısız: ' + e.message);
   }
 };
 
