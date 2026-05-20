@@ -127,6 +127,33 @@ tr:hover td{background:rgba(255,255,255,.02)}
   .admin-sidebar{display:none}
   .form-grid{grid-template-columns:1fr}
 }
+
+/* ── ORDER BADGE & MODAL ── */
+.sidebar-link .order-badge{margin-left:auto;background:#f59e0b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:2px 7px;animation:pulse-badge 2s infinite}
+@keyframes pulse-badge{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#1a2332;border:1px solid #2d3748;border-radius:20px;width:100%;max-width:520px;overflow:hidden;animation:modalIn .25s cubic-bezier(.22,1,.36,1)}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.modal-header{padding:20px 24px;border-bottom:1px solid #2d3748;display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:16px;font-weight:700;color:#fff}
+.modal-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.modal-body{padding:24px}
+.modal-field{margin-bottom:14px}
+.modal-label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.modal-value{font-size:14px;color:#e2e8f0;font-weight:500}
+.modal-value.mono{font-family:monospace;font-size:13px;color:#4ade80}
+.modal-actions{padding:16px 24px;border-top:1px solid #2d3748;display:flex;gap:10px;flex-wrap:wrap}
+.modal-btn{flex:1;padding:11px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;min-width:100px}
+.modal-btn.approve{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff}
+.modal-btn.approve:hover{transform:translateY(-1px)}
+.modal-btn.delete{background:#7f1d1d;color:#fca5a5;border:1px solid #991b1b}
+.modal-btn.delete:hover{background:#991b1b}
+.modal-btn.cancel{background:#2d3748;color:#94a3b8}
+.modal-btn.mark-paid{background:#1e3a5f;color:#93c5fd;border:1px solid #2563eb}
+.modal-btn.mark-paid:hover{background:#2563eb;color:#fff}
 </style>
 </head>
 <body>
@@ -175,7 +202,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
         <div class="sidebar-link active" onclick="showPage('dashboard',this)">📊 Gösterge Paneli</div>
         <div class="sidebar-link" onclick="showPage('users',this)">👥 Kullanıcılar</div>
         <div class="sidebar-link" onclick="showPage('subscriptions',this)">🔑 Abonelikler <span class="badge" id="pendingBadge" style="display:none">0</span></div>
-        <div class="sidebar-link" onclick="showPage('orders',this)">💳 Siparişler</div>
+        <div class="sidebar-link" onclick="showPage('orders',this)">💳 Siparişler <span class="order-badge" id="orderBadge" style="display:none">0</span></div>
       </div>
       <div class="sidebar-section">
         <div class="sidebar-label">İşlemler</div>
@@ -345,6 +372,54 @@ tr:hover td{background:rgba(255,255,255,.02)}
 
     </div><!-- /admin-main -->
   </div><!-- /admin-layout -->
+
+<!-- Order Detail Modal -->
+<div class="modal-overlay" id="orderModal" onclick="if(event.target===this)closeOrderModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">📋 Sipariş Detayı</div>
+      <button class="modal-close" onclick="closeOrderModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="modal-field">
+          <div class="modal-label">Kullanıcı</div>
+          <div class="modal-value" id="modalUser">—</div>
+        </div>
+        <div class="modal-field">
+          <div class="modal-label">E-posta</div>
+          <div class="modal-value" id="modalEmail" style="font-size:12px">—</div>
+        </div>
+        <div class="modal-field">
+          <div class="modal-label">Plan</div>
+          <div class="modal-value" id="modalPlan">—</div>
+        </div>
+        <div class="modal-field">
+          <div class="modal-label">Tutar</div>
+          <div class="modal-value" id="modalAmount" style="color:#4ade80;font-weight:700">—</div>
+        </div>
+        <div class="modal-field">
+          <div class="modal-label">Durum</div>
+          <div class="modal-value" id="modalStatus">—</div>
+        </div>
+        <div class="modal-field">
+          <div class="modal-label">Tarih</div>
+          <div class="modal-value" id="modalDate">—</div>
+        </div>
+      </div>
+      <div class="modal-field" style="margin-top:4px">
+        <div class="modal-label">Ödeme Yöntemi</div>
+        <div class="modal-value" id="modalMethod">—</div>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">Not / Dekont</div>
+        <div class="modal-value" id="modalNote" style="color:#94a3b8">—</div>
+      </div>
+    </div>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
+
 </div><!-- /adminPanel -->
 
 <!-- Firebase -->
@@ -490,13 +565,21 @@ function renderSubsTable(subs) {
 
 function renderOrdersTable(orders) {
   const tbody = document.getElementById('ordersTable');
+  // Update order badge
+  const pendingOrders = orders.filter(o=>o.status==='pending');
+  const ob = document.getElementById('orderBadge');
+  if(ob){ if(pendingOrders.length>0){ob.textContent=pendingOrders.length;ob.style.display='';}else{ob.style.display='none';} }
+
   if(orders.length===0){ tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">💳</div>Sipariş bulunamadı</div></td></tr>'; return; }
+  const statusMap = {paid:'Ödendi',pending:'Bekliyor',cancelled:'İptal'};
+  const badgeCls  = {paid:'paid',pending:'pending',cancelled:'expired'};
   tbody.innerHTML = orders.map(o=>`
-    <tr>
+    <tr style="cursor:pointer" onclick="openOrderModal('${o.id}')" title="Detay için tıkla">
       <td>${getUserName(o.userId)}</td>
       <td>${planLabel(o.plan)}</td>
       <td style="font-weight:700;color:#4ade80">${o.amount?o.amount.toLocaleString('tr-TR')+'₺':'—'}</td>
-      <td><span class="badge ${o.status==='paid'?'paid':o.status==='pending'?'pending':'expired'}">${o.status==='paid'?'Ödendi':o.status==='pending'?'Bekliyor':'İptal'}</span></td>
+      <td><span class="badge ${badgeCls[o.status]||'expired'}">${statusMap[o.status]||o.status}</span>
+          ${o.status==='pending'?'<span style="font-size:10px;color:#f59e0b;margin-left:6px">● Eylem gerekli</span>':''}</td>
       <td>${fmtDate(o.createdAt)}</td>
       <td style="color:#64748b;font-size:12px">${o.note||'—'}</td>
     </tr>`).join('');
@@ -651,36 +734,24 @@ window.generateKey = async function() {
     const rtdb = await initLegacyFirebase();
     let serial = 1;
 
-    if (rtdb) {
-      // RTDB'den mevcut tüm lisansları çek ve en yüksek serial'ı bul
-      const snap = await rtdb.ref('km_licenses').once('value');
-      const existing = snap.val() || {};
-      const serials = Object.values(existing)
-        .filter(v => v.type === type)
-        .map(v => parseInt(v.serial) || 0);
-      serial = serials.length > 0 ? Math.max(...serials) + 1 : 1;
-      // 9999 sınırını geç
-      if (serial > 9999) serial = 1;
-    }
+    // Benzersiz serial: saniye bazlı + rastgele offset (çakışma ihtimali < 1/milyar)
+    const tsComponent = Math.floor(Date.now() / 1000) % 4096;
+    const rndComponent = Math.floor(Math.random() * 4096);
+    serial = ((tsComponent * 64 + rndComponent) % 9998) + 1;
 
-    const key = genKey(type, serial);
+    let key = genKey(type, serial);
 
-    // Çakışma kontrolü — aynı key RTDB'de varsa serial artır
+    // Çakışma kontrolü — RTDB'de varsa yeni random serial dene (maks 5 deneme)
     if (rtdb) {
-      const clean = key.replace(/[-\s]/g,'').toUpperCase();
-      const existing = await rtdb.ref('km_licenses/'+clean).once('value');
-      if (existing.exists()) {
-        serial += 1;
-        const newKey = genKey(type, serial);
-        document.getElementById('subLicenseKey').value = newKey;
-        await rtdb.ref('km_licenses/'+newKey.replace(/[-\s]/g,'').toUpperCase()).set({
-          key: newKey, type, serial, days: type==='M'?30:365,
-          note: document.getElementById('subNote').value||'',
-          used: false, generated_at: new Date().toISOString(), activated_at: null
-        });
-        toast('✓ Benzersiz lisans anahtarı üretildi ve sisteme kaydedildi');
-        return;
+      for (let attempt = 0; attempt < 5; attempt++) {
+        const clean = key.replace(/[-\s]/g,'').toUpperCase();
+        const snap = await rtdb.ref('km_licenses/'+clean).once('value');
+        if (!snap.exists()) break; // Benzersiz, devam
+        // Çakışma — yeni serial üret
+        serial = Math.floor(Math.random() * 9998) + 1;
+        key = genKey(type, serial);
       }
+      const clean = key.replace(/[-\s]/g,'').toUpperCase();
       await rtdb.ref('km_licenses/'+clean).set({
         key, type, serial, days: type==='M'?30:365,
         note: document.getElementById('subNote').value||'',
@@ -725,6 +796,95 @@ window.saveOrder = async function() {
   await addDoc(collection(db,'orders'),{ userId, plan, amount, method, status, note, createdAt:serverTimestamp() });
   toast('Sipariş kaydedildi!');
   await loadOrders();
+};
+
+
+// ── Order Modal ──
+let currentOrderId = null;
+
+window.openOrderModal = function(orderId) {
+  const o = allOrders.find(x=>x.id===orderId);
+  if(!o) return;
+  currentOrderId = orderId;
+
+  const user = allUsers.find(u=>u.id===o.userId);
+  document.getElementById('modalUser').textContent = user?.name || getUserName(o.userId);
+  document.getElementById('modalEmail').textContent = o.userEmail || user?.email || '—';
+  document.getElementById('modalPlan').textContent = planLabel(o.plan);
+  document.getElementById('modalAmount').textContent = o.amount ? o.amount.toLocaleString('tr-TR')+'₺' : '—';
+  document.getElementById('modalDate').textContent = fmtDate(o.createdAt);
+  const methodMap = {bank_transfer:'Havale / EFT', card:'Kredi Kartı', other:'Diğer'};
+  document.getElementById('modalMethod').textContent = methodMap[o.method] || o.method || '—';
+  document.getElementById('modalNote').textContent = o.note || 'Not girilmemiş';
+
+  const statusMap = {paid:'✅ Ödendi', pending:'⏳ Onay Bekliyor', cancelled:'❌ İptal'};
+  document.getElementById('modalStatus').textContent = statusMap[o.status] || o.status;
+
+  // Actions based on status
+  const actions = document.getElementById('modalActions');
+  if(o.status === 'pending') {
+    actions.innerHTML = `
+      <button class="modal-btn approve" onclick="approveOrder('${orderId}')">✓ Onayla & Abonelik Başlat</button>
+      <button class="modal-btn mark-paid" onclick="markOrderPaid('${orderId}')">💳 Sadece Ödendi İşaretle</button>
+      <button class="modal-btn delete" onclick="deleteOrder('${orderId}')">🗑 Sil</button>
+      <button class="modal-btn cancel" onclick="closeOrderModal()">Kapat</button>
+    `;
+  } else if(o.status === 'paid') {
+    actions.innerHTML = `
+      <button class="modal-btn delete" onclick="deleteOrder('${orderId}')">🗑 Sil</button>
+      <button class="modal-btn cancel" onclick="closeOrderModal()">Kapat</button>
+    `;
+  } else {
+    actions.innerHTML = `
+      <button class="modal-btn delete" onclick="deleteOrder('${orderId}')">🗑 Sil</button>
+      <button class="modal-btn cancel" onclick="closeOrderModal()">Kapat</button>
+    `;
+  }
+
+  document.getElementById('orderModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeOrderModal = function() {
+  document.getElementById('orderModal').classList.remove('open');
+  document.body.style.overflow = '';
+  currentOrderId = null;
+};
+
+window.approveOrder = async function(orderId) {
+  const o = allOrders.find(x=>x.id===orderId);
+  if(!o) return;
+  // Siparişi ödendi yap
+  await setDoc(doc(db,'orders',orderId),{status:'paid'},{merge:true});
+  // Aboneliği aktif et
+  const endDate = new Date();
+  if(o.plan==='monthly') endDate.setMonth(endDate.getMonth()+1);
+  else if(o.plan==='yearly') endDate.setFullYear(endDate.getFullYear()+1);
+  else if(o.plan==='trial') endDate.setDate(endDate.getDate()+7);
+  else endDate.setFullYear(endDate.getFullYear()+99);
+  await setDoc(doc(db,'subscriptions',o.userId),{
+    plan:o.plan, status:'active',
+    startDate:Timestamp.now(),
+    endDate:Timestamp.fromDate(endDate)
+  },{merge:true});
+  closeOrderModal();
+  toast('✓ Sipariş onaylandı, abonelik aktif edildi!');
+  await loadAllData();
+};
+
+window.markOrderPaid = async function(orderId) {
+  await setDoc(doc(db,'orders',orderId),{status:'paid'},{merge:true});
+  closeOrderModal();
+  toast('✓ Sipariş ödendi olarak işaretlendi');
+  await loadAllData();
+};
+
+window.deleteOrder = async function(orderId) {
+  if(!confirm('Bu siparişi silmek istediğinize emin misiniz?')) return;
+  await deleteDoc(doc(db,'orders',orderId));
+  closeOrderModal();
+  toast('Sipariş silindi');
+  await loadAllData();
 };
 
 window.adminLogin = async function() {
