@@ -63,7 +63,7 @@ section{padding:96px 0}
 .nav-link:hover{background:rgba(255,255,255,.08);color:#fff}
 .nav-link.primary{background:linear-gradient(135deg,#B8973D,#E8C96A);color:#1a1a1a;font-weight:700;padding:8px 18px}
 .nav-link.primary:hover{background:linear-gradient(135deg,#a07835,#d4b455)}
-@media(max-width:600px){.nav{padding:16px 20px}.nav-pill{display:none}.nav-link span{display:none}.nav-link{padding:8px 10px}}
+@media(max-width:600px){.nav{padding:16px 20px}.nav-pill{display:none}.nav-link{display:none !important}.nav-link.primary{display:none !important}}
 
 /* HERO CONTENT */
 .hero-body{position:relative;z-index:10;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px 80px}
@@ -1948,7 +1948,7 @@ function toggleFaq(el) {
 <script>
 var current = 0;
 var total = 5;
-var duration = 6000;
+var duration = 12000;
 var elapsed = 0;
 var interval;
 var progressInterval;
@@ -1959,14 +1959,17 @@ function getDots(){ return document.querySelectorAll('.nav-dot'); }
 function goTo(n){
   var slides = getSlides();
   var dots = getDots();
-  // Aktif slaytı gizle
   slides[current].classList.remove('active');
-  slides[current].style.display = 'none';
+  slides[current].style.opacity = '0';
+  slides[current].style.position = 'absolute';
+  slides[current].style.visibility = 'hidden';
   current = (n + total) % total;
-  // Yeni slaytı göster
+  slides[current].style.position = 'relative';
+  slides[current].style.visibility = 'visible';
   slides[current].style.display = 'grid';
   setTimeout(function(){
     slides[current].classList.add('active');
+    slides[current].style.opacity = '';
   }, 10);
   dots.forEach(function(d,i){ d.classList.toggle('active', i===current); });
   elapsed = 0;
@@ -1989,8 +1992,16 @@ function startProgress(){
 
 // Başlangıçta aktif olmayan slaytları gizle
 getSlides().forEach(function(s, i){
-  if (i !== 0) s.style.display = 'none';
-  else s.style.display = 'grid';
+  if (i !== 0) {
+    s.style.display = 'grid';
+    s.style.position = 'absolute';
+    s.style.visibility = 'hidden';
+    s.style.opacity = '0';
+  } else {
+    s.style.display = 'grid';
+    s.style.position = 'relative';
+    s.style.visibility = 'visible';
+  }
 });
 startProgress();
 
@@ -2003,7 +2014,7 @@ document.addEventListener('keydown', function(e){
 
 <!-- WhatsApp Sabit Butonu -->
 <a href="https://wa.me/905422050936?text=Merhaba%2C%20KM%20Nutrition%20Pro%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" 
-   style="position:fixed;bottom:28px;right:28px;z-index:999;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .2s,box-shadow .2s;text-decoration:none"
+   class="wa-float" style="position:fixed;bottom:28px;right:28px;z-index:999;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .2s,box-shadow .2s;text-decoration:none"
    onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 8px 28px rgba(37,211,102,.5)'"
    onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 20px rgba(37,211,102,.4)'"
    title="WhatsApp ile iletişime geç">
