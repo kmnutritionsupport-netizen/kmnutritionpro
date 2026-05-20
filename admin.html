@@ -175,14 +175,24 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .preview-toggle{background:#2d3748;border:1px solid #4a5568;color:#94a3b8;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
 .article-row{cursor:pointer;transition:background .15s}
 .article-row:hover td{background:rgba(74,222,128,.04) !important}
+
+.init-loading{position:fixed;inset:0;background:#0f1923;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.init-loading .spinner{width:36px;height:36px;border:3px solid #2d3748;border-top-color:#4ade80;border-radius:50%;animation:spin .8s linear infinite}
+.init-loading p{font-size:13px;color:#64748b}
 </style>
 </head>
 <body>
 
 <div class="toast" id="toast"></div>
 
+<!-- INIT LOADING -->
+<div class="init-loading" id="initLoading">
+  <div class="spinner"></div>
+  <p>Yükleniyor...</p>
+</div>
+
 <!-- AUTH -->
-<div class="auth-screen" id="authScreen">
+<div class="auth-screen" id="authScreen" style="display:none">
   <div class="auth-box">
     <div style="font-size:32px;margin-bottom:16px">🔐</div>
     <div class="auth-title">Admin Girişi</div>
@@ -571,15 +581,23 @@ function fmtDate(d){ if(!d) return '—'; const date = d.toDate?d.toDate():new D
 function planLabel(p){ return {monthly:'Aylık',yearly:'Yıllık',trial:'Deneme',lifetime:'Ömür Boyu'}[p]||p||'—'; }
 
 onAuthStateChanged(auth, async (user) => {
+  // Auth durumu belli olunca loading'i gizle
+  document.getElementById('initLoading').style.display = 'none';
+  
   if (user && user.email === ADMIN_EMAIL) {
     document.getElementById('authScreen').style.display='none';
     document.getElementById('adminPanel').style.display='block';
     document.getElementById('adminNavEmail').textContent = user.email;
     await loadAllData();
   } else if (user) {
+    // Admin değil — çıkış yap ve hata göster
     await fbSignOut(auth);
-    document.getElementById('authError').textContent='Yetkisiz erişim.';
+    document.getElementById('authScreen').style.display='flex';
+    document.getElementById('authError').textContent='Bu hesabın admin yetkisi yok.';
     document.getElementById('authError').style.display='block';
+  } else {
+    // Giriş yapılmamış — login ekranını göster
+    document.getElementById('authScreen').style.display='flex';
   }
 });
 
