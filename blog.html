@@ -160,7 +160,7 @@ document.querySelectorAll('#mobileNavOverlay a').forEach(function(l){l.addEventL
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-import { getFirestore, collection, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
 
 const app = initializeApp({
   apiKey: "AIzaSyCoOGEpRbVjP1Y31swQBx9SfnRQND6zIuE",
@@ -191,8 +191,10 @@ const loading = document.getElementById('blogLoading');
 
 (async () => {
 try {
-  const snap = await getDocs(query(collection(db,'articles'), where('status','==','published'), orderBy('createdAt','desc')));
-  const articles = snap.docs.map(d=>({id:d.id,...d.data()}));
+  const snap = await getDocs(query(collection(db,'articles'), where('status','==','published')));
+  const articles = snap.docs
+    .map(d=>({id:d.id,...d.data()}))
+    .sort((a,b)=>{ const at=a.createdAt?.seconds||0, bt=b.createdAt?.seconds||0; return bt-at; });
 
   loading.remove();
 
