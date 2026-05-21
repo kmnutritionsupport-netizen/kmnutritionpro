@@ -106,7 +106,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text)}
     <p>Uzman içeriklerle sağlıklı beslenmenin her boyutunu keşfedin</p>
   </div>
 </div>
-<div class="blog-section">
+<div class="blog-section" style="min-height:60vh">
   <div class="blog-count" id="blogCount">Yükleniyor...</div>
   <div class="blog-grid" id="blogGrid">
     <div id="blogLoading" style="grid-column:1/-1;text-align:center;padding:60px 24px;color:#64748B">
@@ -189,6 +189,7 @@ const grid    = document.getElementById('blogGrid');
 const countEl = document.getElementById('blogCount');
 const loading = document.getElementById('blogLoading');
 
+(async () => {
 try {
   const snap = await getDocs(query(collection(db,'articles'), where('status','==','published'), orderBy('createdAt','desc')));
   const articles = snap.docs.map(d=>({id:d.id,...d.data()}));
@@ -231,6 +232,7 @@ try {
   countEl.textContent = '';
   console.log('Blog yükleme hatası:', e.message);
 }
+})();
 </script>
 
 </body>
