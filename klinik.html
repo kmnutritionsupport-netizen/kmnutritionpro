@@ -26,7 +26,7 @@ body{font-family:'Inter',sans-serif;background:#0d2219;color:#fff;min-height:100
 .grid-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:30px 30px}
 
 /* İçerik */
-.content{position:relative;z-index:10;text-align:center;padding:40px 24px;max-width:600px;width:100%}
+.content{position:relative;z-index:10;text-align:center;padding:40px 24px;max-width:600px;width:100%;margin:0 auto}
 
 /* Logo */
 .logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:48px;text-decoration:none}
@@ -221,9 +221,9 @@ p{font-size:16px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:48px;
 </div>
 
 <script>
-// Geri sayım — 60 gün sonrası
-var hedef = new Date();
-hedef.setDate(hedef.getDate() + 60);
+// Geri sayım — sabit hedef tarih (değiştirmek için sadece tarihi güncelle)
+var hedef = new Date("2026-07-20T10:00:00");
+
 
 function geriSayim() {
   var simdi = new Date();
